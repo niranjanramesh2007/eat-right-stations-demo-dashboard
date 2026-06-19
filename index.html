@@ -658,11 +658,14 @@
     .cat-badge {
       display: inline-flex;
       align-items: center;
-      padding: 3px 8px;
+      padding: 3px 9px;
       border-radius: 20px;
       font-size: 10px;
       font-weight: 700;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
+      color: #fff !important;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.18);
     }
 
     .zone-badge {
@@ -1666,9 +1669,16 @@
     };
 
     const CAT_COLORS = {
-      "NSG-1": "#ff4757", "NSG-2": "#ff6348", "NSG-3": "#ffa502", "NSG-4": "#eccc68",
-      "NSG-5": "#7bed9f", "NSG-6": "#2ed573", "SG-1": "#70a1ff", "SG-2": "#5352ed",
-      "SG-3": "#a29bfe", "HG-3": "#fd79a8"
+      "NSG-1": "#dc2626",  // deep red  — highest tier A
+      "NSG-2": "#ea580c",  // burnt orange
+      "NSG-3": "#d97706",  // amber
+      "NSG-4": "#65a30d",  // green
+      "NSG-5": "#0891b2",  // cyan-blue
+      "NSG-6": "#6366f1",  // indigo
+      "SG-1":  "#7c3aed",  // violet
+      "SG-2":  "#db2777",  // pink
+      "SG-3":  "#0f766e",  // teal
+      "HG-3":  "#92400e"   // brown-gold
     };
     const ZONE_COLORS = {
       "SR": "#00d2c8", "NR": "#3b82f6", "WR": "#f97316", "CR": "#a855f7", "ECR": "#22c55e",
@@ -2230,8 +2240,8 @@
       <td style="color:var(--text3)">${d.sno}</td>
       <td style="color:var(--text);font-weight:500">${d.name}</td>
       <td><code style="background:var(--bg2);padding:2px 6px;border-radius:4px;font-size:11px;color:var(--accent)">${d.code}</code></td>
-      <td><span class="cat-badge" style="background:${cc}22;color:${cc};border:1px solid ${cc}44">${d.category}</span></td>
-      <td><span class="zone-badge" style="background:${zc}22;color:${zc};border:1px solid ${zc}44">${d.zone}</span></td>
+      <td><span class="cat-badge" style="background:${cc};border:none">${d.category}</span></td>
+      <td><span class="zone-badge" style="background:${zc};color:#fff;border:none;box-shadow:0 1px 3px rgba(0,0,0,0.18)">${d.zone}</span></td>
       <td style="color:var(--text3);font-size:11px">${d.division}</td>
       <td style="color:var(--text2);font-size:11px">${d.district.length > 25 ? d.district.slice(0, 25) + '…' : d.district}</td>
       <td style="color:var(--text2)">${d.state}</td>
