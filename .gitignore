@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+*.swp
+*.swo
+
+# Logs / temp
+*.log
+out.txt
+corrections.txt
+
+# Large raw data files (keep excel_verified.json, exclude raw)
+stations_raw.json

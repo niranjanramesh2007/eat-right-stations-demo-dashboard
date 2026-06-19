@@ -1,0 +1,297 @@
+Saved 296 records
+TLY|THALASSERY|Kannur|Kerala
+UHP|UDHAMPUR|Udhampur|Jammu & Kashmir
+JAT|JAMMU TAWI|Jammu|Jammu & Kashmir
+SIR|SIRHIND|Fatehgarh Sahib|Punjab
+MTP|METTUPALAYAM|Coimbatore|Tamil Nadu
+NDB|NANDURBAR|Nandurbar|Maharashtra
+DWK|DWARKA|Devbhumi Dwarka|Gujarat
+AKV|ANKLESHWAR|Bharuch|Gujarat
+VRL|VERAVAL|Gir Somnath|Gujarat
+BH|BHARUCH|Bharuch|Gujarat
+AY|AYODHYA DHAM|Ayodhya|Uttar Pradesh
+CDE|CHANDERIYA|Chittaurgarh|Rajasthan
+NBH|NIMBAHERA|Chittaurgarh|Rajasthan
+COR|CHITTAURGARH|Chittaurgarh|Rajasthan
+GAYA|GAYA|Gaya|Bihar
+BRC|VADODARA|Vadodara Municipal Corporation|Gujarat
+ASH|AISHBAGH|Lucknow|Uttar Pradesh
+VSKP|VISAKHAPATNAM|Visakhapatnam|Andhra Pradesh
+NTSK|NEW TINSUKIA|Tinsukia|Assam
+KYQ|KAMAKHYA|Kamrup Metropolitan Dist.|Assam
+MSH|MAHESANA|Mahesana|Gujarat
+SBT|SABARMATI|Ahmedabad|Gujarat
+ANG|AHMADNAGAR|Ahmadnagar|Maharashtra
+CCH|CHINCHWAD|Pune|Maharashtra
+DD|DAUND|Pune|Maharashtra
+KPG|KOPARGAON|Ahmadnagar|Maharashtra
+SNSI|SAINAGAR SHIRDI|Ahmadnagar|Maharashtra
+STR|SATARA|Satara|Maharashtra
+KYJ|KAYAMKULAM|Alappuzha|Kerala
+MRJ|MIRAJ|Sangli|Maharashtra
+SVJR|SHIVAJINAGAR|Pune|Maharashtra
+KOP|KOLHAPUR|Kolhapur|Maharashtra
+PUNE|PUNE|Pune|Maharashtra
+R|RAIPUR|Raipur|Chhattisgarh
+DURG|DURG|Durg|Chhattisgarh
+BSP|BILASPUR|Bilaspur|Chhattisgarh
+HJP|HAJIPUR|Vaishali|Bihar
+SRTL|CHERTALA|Alappuzha|Kerala
+PUU|PUNALUR|Kollam|Kerala
+SA|SALEM|Salem|Tamil Nadu
+KSJ|KASGANJ|Kasganj|Uttar Pradesh
+BZA|VIJAYAWADA|N T R|Andhra Pradesh
+UDZ|UDAIPUR CITY|Udaipur|Rajasthan
+BRY|BAREILLY|Bareilly|Uttar Pradesh
+FTD|FATEHABAD CHANDRAWATIGANJ|Indore|Madhya Pradesh
+GPX|GAUTAMPURA ROAD|Indore|Madhya Pradesh
+DMO|DAMOH|Damoh|Madhya Pradesh
+RTA|RUTHIYAI|Guna|Madhya Pradesh
+AF|AGRA FORT|Agra|Uttar Pradesh
+AH|ACHHNERA|Agra|Uttar Pradesh
+CYI|CHHAYAPURI|Vadodara|Gujarat
+GUV|GURUVAYUR|Thrissur|Kerala
+KKZ|KOTTARAKARA|Kollam|Kerala
+DHO|DHOLPUR|Agra|Uttar Pradesh
+GDA|GODHRA|GODHRA(PANCHMAHAL)|Gujarat
+RKM|RAJA KI MANDI|Agra|Uttar Pradesh
+MTJ|MATHURA|Mathura|Uttar Pradesh
+KSV|KOSIKALAN|Mathura|Uttar Pradesh
+GUNA|GUNA|Guna|Madhya Pradesh
+IDH|IDGAH|Agra|Uttar Pradesh
+RNC|RANCHI|Ranchi|Jharkhand
+KOAA|KOLKATA|Kolkata|West Bengal
+HTE|HATIA|Ranchi|Jharkhand
+BKSC|BOKARO STEEL CITY|Bokaro|Jharkhand
+TATA|TATANAGAR|Purbi Singhbhum|Jharkhand
+KGP|KHARAGPUR|Paschim Mednipur|West Bengal
+BPC|BERHAMPORE COURT|Murshidabad|West Bengal
+MBB|MURSHIDABAD|Murshidabad|West Bengal
+QLD|QUILANDI|Kozhikode|Kerala
+FK|FEROK|Kozhikode|Kerala
+AAM|ANGADIPURAM|Malappuram|Kerala
+KTU|KUTTIPPURAM|Malappuram|Kerala
+WKI|WADAKKANCHEY|Thrissur|Kerala
+BHUJ|BHUJ|BHUJ(KUTCHH)|Gujarat
+PNU|PALANPUR|BANASKANTHA|Gujarat
+GIM|GANDHIDHAM|BHUJ(KUTCHH)|Gujarat
+MB|MORADABAD|Moradabad|Uttar Pradesh
+TDL|TUNDLA|Firozabad|Uttar Pradesh
+SEGM|SEWAGRAM|Wardha|Maharashtra
+WR|WARDHA|Wardha|Maharashtra
+BPQ|BALLARSHAH|Chandrapur|Maharashtra
+CD|CHANDRAPUR|Chandrapur|Maharashtra
+KYE|KHURAI|Sagar|Madhya Pradesh
+MKRN|MAKRONIA|Sagar|Madhya Pradesh
+PRRB|PRAYAGRAJ RAMBAGH|Prayagraj|Uttar Pradesh
+HRI|HARDOI|Hardoi|Uttar Pradesh
+GY|GONDIA|Gondiya|Maharashtra
+WKR|WANKANER|Rajkot|Gujarat
+BTD|BOTAD|Botad|Gujarat
+AN|AMALNER|Jalgaon|Maharashtra
+DDE|DONDAICHA|Dhule|Maharashtra
+ORAI|ORAI|Jalaun|Uttar Pradesh
+VDG|VADNAGAR|Mahesana|Gujarat
+PAY|PAYYANUR|Kannur|Kerala
+PAZ|PAYANGADI|Kannur|Kerala
+HSX|HOSHIARPUR|Hoshiarpur|Punjab
+MLDT|MALDA TOWN|Maldah|West Bengal
+KTJ|KHALTIPUR|Maldah|West Bengal
+JUC|JALANDHAR CITY|Jalandhar|Punjab
+ANSB|ANANDPUR SAHIB|Rupnagar|Punjab
+NAD|NAGDA|Ujjain|Madhya Pradesh
+UJN|UJJAIN|Ujjain|Madhya Pradesh
+JAO|JAORA|Ratlam|Madhya Pradesh
+CDG|CHANDIGARH|Chandigarh|Chandigarh
+RPJ|RAJPURA|Patiala|Punjab
+DUI|DHURI|Sangrur|Punjab
+ALU|ARIYALUR|Ariyalur|Tamil Nadu
+MM|MAHIM|Greater Mumbai|Maharashtra
+SEG|SHEGAON|Buldana|Maharashtra
+NK|NASHIK ROAD|Nashik|Maharashtra
+ADH|ANDHERI|Greater Mumbai|Maharashtra
+MX|MAHALAXMI|Greater Mumbai|Maharashtra
+BVI|BORIVALI|Greater Mumbai|Maharashtra
+MRU|MATUNGA ROAD|Greater Mumbai|Maharashtra
+GTR|GRANT ROAD|Greater Mumbai|Maharashtra
+CCG|CHURCHGATE|Greater Mumbai|Maharashtra
+BYR|BHAYANDER|Mira Bhayander Municipal Corporation (Thane Zone-7)|Maharashtra
+JOS|JOGESHWARI|Greater Mumbai|Maharashtra
+PBHD|PRABHADEVI|Greater Mumbai|Maharashtra
+GMN|GOREGAON|Greater Mumbai|Maharashtra
+DIC|DAHISAR|Greater Mumbai|Maharashtra
+DDR|DADAR|Greater Mumbai|Maharashtra
+BDTS|BANDRA TERMINUS|Greater Mumbai|Maharashtra
+NSP|NALLASOPARA|Palghar|Maharashtra
+BA|BANDRA LOCAL|Greater Mumbai|Maharashtra
+KILE|KANDIVALI|Greater Mumbai|Maharashtra
+MDD|MALAD|Greater Mumbai|Maharashtra
+BSR|VASAI ROAD|Greater Mumbai|Maharashtra
+VR|VIRAR|Palghar|Maharashtra
+MEL|MARINE LINE|Greater Mumbai|Maharashtra
+CYR|CHARNI ROAD|Greater Mumbai|Maharashtra
+STC|SANTACRUZ|Greater Mumbai|Maharashtra
+NIG|NAIGAON|Palghar|Maharashtra
+MMCT|MUMBAI CENTRAL|Greater Mumbai|Maharashtra
+VLP|VILE PARLEY|Greater Mumbai|Maharashtra
+KHAR|KHAR ROAD|Greater Mumbai|Maharashtra
+PL|LOWER PAREL|Greater Mumbai|Maharashtra
+RK|ROORKEE|Hardwar|Uttarakhand
+YNRK|YOG NAGRI RISHIKESH|Dehradun|Uttarakhand
+HW|HARIDWAR|Hardwar|Uttarakhand
+NDLS|NEW DELHI|New Delhi|Delhi
+DLI|OLD DELHI|New Delhi|Delhi
+NZM|HAZRAT NIZAMUDDIN|New Delhi|Delhi
+ANVT|ANAND VIHAR TERMINAL|New Delhi|Delhi
+DSA|DELHI SHAHDARA|New Delhi|Delhi
+DEC|DELHI CANTT|New Delhi|Delhi
+LKO|CHARBAGH  LUCKNOW|Lucknow|Uttar Pradesh
+DEE|DELHI SARAI ROHILLA|New Delhi|Delhi
+OKA|OKHLA|New Delhi|Delhi
+LKU|LALKUAN|Nainital|Uttarakhand
+MAN|MANINAGAR|Ahmedabad|Gujarat
+TAV|TALALA|Gir Somnath|Gujarat
+UJA|UNJHA|Mahesana|Gujarat
+KGM|KATHGODAM|Nainital|Uttarakhand
+NIL|NILAMBUR|Palakkad|Kerala
+PGTN|PALAKKAD TOWN|Palakkad|Kerala
+LAR|LALITPUR|Lalitpur|Uttar Pradesh
+PTKC|PATHANKOT CANTT STATION|Pathankot|Punjab
+OTP|OTTAPALAM|Palakkad|Kerala
+SWM|SAWAI MADHOPUR RAILWAY|Sawai Madhopur|Rajasthan
+AII|AJMER|Ajmer|Rajasthan
+JP|JAIPUR|Jaipur|Rajasthan
+DEOS|DEORIA|Gorakhpur|Uttar Pradesh
+GKP|GORAKHPUR|Gorakhpur|Uttar Pradesh
+PRYJ|PRAYAGRAJ|Prayagraj|Uttar Pradesh
+TRTR|TRIPUNITHURA|Ernakulam|Kerala
+BTI|BATHINDA|Bathinda|Punjab
+PLNI|PALANI|Dindigul|Tamil Nadu
+TN|THOOTHUKUDI|Thoothukkudi|Tamil Nadu
+SCT|SENGOTTAI|Tirunelveli|Tamil Nadu
+TSI|TENKASI|Tirunelveli|Tamil Nadu
+KWV|KURDUWADI|Solapur|Maharashtra
+GUR|GANGAPUR ROAD|Solapur|Maharashtra
+AKOR|AKKALKOT|Solapur|Maharashtra
+PVR|PANDHARPUR|Solapur|Maharashtra
+LUR|LATUR|Solapur|Maharashtra
+DRSV|DHARASHIV|Dharashiv|Maharashtra
+WADI|WADI|Kalaburagi|Karnataka
+SUR|SOLAPUR|Solapur|Maharashtra
+NCJ|NAGERCOIL|Kanyakumari|Tamil Nadu
+TRVL|TIRUVALLA|Pathanamthitta|Kerala
+BKNG|BHAKTI NAGAR|Rajkot|Gujarat
+HAPA|HAPA|Jamnagar|Gujarat
+NOQ|NEW ALIPURDUAR|Alipurduar|West Bengal
+KOJ|KOKRAJHAR|Kokrajhar|Assam
+FLK|FALAKATA|Alipurduar|West Bengal
+GKJ|GOLAKGANJ|Dhubri|Assam
+NCB|NEW COOCHBEHAR|Coochbehar|West Bengal
+BNV|BINNAGURI|Alipurduar|West Bengal
+DHH|DINHATA|Coochbehar|West Bengal
+DQG|DHUPGURI|Jalpaiguri|West Bengal
+TVC|TRIVANDRUM CENTRAL|Thiruvananthapuram|Kerala
+JPE|JALPAIGURI ROAD|Jalpaiguri|West Bengal
+NMZ|NEW MAL JN|Jalpaiguri|West Bengal
+ALLP|ALAPPUZHA|Alappuzha|Kerala
+SIN|SION|Navi Mumbai Municipal Corporation (Thane Zone-4)|Maharashtra
+MTN|MATUNGA|Bhiwandi Municipal Corporation (Thane Zone-5)|Maharashtra
+CHG|CHINCHPOKLI|Navi Mumbai Municipal Corporation (Thane Zone-2)|Maharashtra
+DMV|DIMAPUR|Dimapur|Nagaland
+BY|BYCULLA|Navi Mumbai Municipal Corporation (Thane Zone-3)|Maharashtra
+MSD|MASJID|Greater Mumbai|Maharashtra
+CSTM|CHHATRAPATI SHIVAJI MAHARAJ TERMINUS|Greater Mumbai|Maharashtra
+DDR|DADAR|Greater Mumbai|Maharashtra
+CRD|CURREY ROAD|Greater Mumbai|Maharashtra
+GC|GHATKOPAR STATION|Greater Mumbai|Maharashtra
+VAK|VARKALA|Thiruvananthapuram|Kerala
+TVP|THIRUVANANTHAPURAM PETTAH|Thiruvananthapuram|Kerala
+TVCN|THIRUVANANTHAPURAM NORTH|Thiruvananthapuram|Kerala
+PR|PAREL|Kalyan Tahashil (Thane Zone-8)|Maharashtra
+BND|BHANDUP STATION|Greater Mumbai|Maharashtra
+VK|VIKHROLI STATION|Greater Mumbai|Maharashtra
+VVH|VIDYAVIHAR STATION|Thane Municipal Corporation (Thane Zone-1)|Maharashtra
+ERN|ERNAKULAM TOWN|Ernakulam|Kerala
+AMPA|AMBALAPUZHA|Alappuzha|Kerala
+MAQ|MANGALORE CENTRAL|Dakshina Kannada|Karnataka
+MAJN|MANGALORE|Dakshina Kannada|Karnataka
+ETW|ERODE|Erode|Tamil Nadu
+MLND|MULUND STATION|Navi Mumbai Municipal Corporation (Thane Zone-3)|Maharashtra
+KLVA|KALVA STATION|Navi Mumbai Municipal Corporation (Thane Zone-3)|Maharashtra
+TNA|THANE|Navi Mumbai Municipal Corporation (Thane Zone-4)|Maharashtra
+MVLK|MAVELIKARA|Alappuzha|Kerala
+PASA|PARASSALA|Thiruvananthapuram|Kerala
+QLN|KOLLAM|Kollam|Kerala
+CGY|CHANGANACHERI|Kottayam|Kerala
+AWY|ALUVA|Ernakulam|Kerala
+TCR|THRISSUR|Thrissur|Kerala
+ERS|ERNAKULAM|Ernakulam|Kerala
+KPY|KARUNAGAPPALLY|Kollam|Kerala
+CNGR|CHENGANNUR|Alappuzha|Kerala
+VLK|VILLIVAKKAM|Thiruvallur|Tamil Nadu
+SNRD|SANDHURST ROAD|Greater Mumbai|Maharashtra
+CLA|KURLA|Greater Mumbai|Maharashtra
+KJRD|KANJURMARG|Greater Mumbai|Maharashtra
+ANND|ANAND|Anand|Gujarat
+MAS|PURATCHI THALAIVAR DR MG RAMACHANDRAN CENTRAL|Chennai|Tamil Nadu
+VN|VANIYAMBADI|Vellore|Tamil Nadu
+RJPM|RAJAPALAYAM|Virudhunagar|Tamil Nadu
+PGI|PARAPANANGADI|Malappuram|Kerala
+MASS|MOORE MARKET COMPLEX-CHENNAI|Chennai|Tamil Nadu
+MSB|CHENNAI BEACH|Chennai|Tamil Nadu
+TIR|TIRUR|Malappuram|Kerala
+TP|TIRUCHIRAPALLI FORT|Tiruchirappalli|Tamil Nadu
+PGT|PALAKKAD|Palakkad|Kerala
+SRR|SHORANUR|Palakkad|Kerala
+KTYM|KOTTAYAM|Kottayam|Kerala
+BDJ|VADAKARA|Kozhikode|Kerala
+TJ|THANJAVUR|Thanjavur|Tamil Nadu
+NGT|NAGAPATTINAM|Nagapattinam|Tamil Nadu
+VLKN|VELANKANNI|Nagapattinam|Tamil Nadu
+NYY|NEYYATTINKARA|Thiruvananthapuram|Kerala
+CLT|KOZHIKODE|Kozhikode|Kerala
+POY|POLLACHI|Coimbatore|Tamil Nadu
+BLY|BALLY|Howrah|West Bengal
+HWH|HOWRAH|Howrah|West Bengal
+CKI|CHALAKKUDI|Thrissur|Kerala
+RMM|RAMESWARAM|Ramanathapuram|Tamil Nadu
+CAN|KANNUR|Kannur|Kerala
+AFK|ANGAMALY|Ernakulam|Kerala
+SRGM|SRIRANGAM|Tiruchirappalli|Tamil Nadu
+BPB|BADARPUR|Karimganj|Assam
+DPU|DIPHU|Karbi Anglong|Assam
+ATU|ATTUR|Salem|Tamil Nadu
+SCL|SILCHAR|Cachar|Assam
+SZR|SARUPATHPAR|Golaghat|Assam
+NHLG|NEW HAFLONG|Dima Hasao|Assam
+LMG|LUMBDING|Hojai|Assam
+JID|JAGIROAD|Marigaon|Assam
+KXJ|KARIMGANJ|Karimganj|Assam
+LKA|LANKA|Hojai|Assam
+HJI|HOJAI|Hojai|Assam
+TGN|TALEGAON|Pune Municipal Corporation|Maharashtra
+KRD|KARAD|Satara|Maharashtra
+SLI|SANGLI|Sangli|Maharashtra
+HDP|HADAPSAR|Pune Municipal Corporation|Maharashtra
+AKRD|AKURDI|Pune Municipal Corporation|Maharashtra
+BRMT|BARAMATI|Pune Municipal Corporation|Maharashtra
+CPKK|CHAPARMUKH|Nagaon|Assam
+CVP|KOVILPATTI|Thoothukkudi|Tamil Nadu
+ROU|ROURKELA|SUNDARGARH(EXCEPT MUNICIPAL CORPORATION)|Orissa
+UAM|UDHAGAMANDALAM|The Nilgiris|Tamil Nadu
+JSG|JHARSUGUDA|JHARSUGUDA|Orissa
+BRG|BARGARH|BARAGARH|Orissa
+SBP|SAMBALPUR|SAMBALPUR MUNICIPAL CORPORATION|Orissa
+TIG|TITILAGARH|BOLANGIR|Orissa
+TCN|THIRUCHENDUR|Thoothukkudi|Tamil Nadu
+KMU|KUMBAKONAM|Thanjavur|Tamil Nadu
+HAS|HASSAN|Hassan|Karnataka
+CUPJ|CUDDALORE PORT|Cuddalore|Tamil Nadu
+TENI|TENI|Theni|Tamil Nadu
+TUP|TIRUPPUR|Tirupur|Tamil Nadu
+KGQ|KASARAGOD|Kasaragod|Kerala
+KZE|KANHANGAD|Kasaragod|Kerala
+TPJ|TIRUCHIRAPPALLI|Tiruchirappalli|Tamil Nadu
+KRR|KARUR|Karur|Tamil Nadu
+NTR|VIJAYAWADA|VIJAYAWADA|ANDHRA PRADESH
+VSKP|VISAKHAPATNAM|VISHAKAPATTINAM|ANDHRA PRADESH

@@ -1,0 +1,2272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eat Right Stations India | FSSAI Dashboard</title>
+  <meta name="description"
+    content="Interactive dashboard for FSSAI Eat Right Certified Railway Stations across India — visualize station locations, categories, zones and more.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --bg2: #e2e8f0;
+      --bg3: #cbd5e1;
+      --card: #ffffff;
+      --card2: #f8fafc;
+      --border: #e2e8f0;
+      --border2: #cbd5e1;
+      --text: #0f172a;
+      --text2: #334155;
+      --text3: #64748b;
+      --accent: #0da69e;
+      --accent2: #f95d2c;
+      --accent3: #d97706;
+      --green: #16a34a;
+      --purple: #7c3aed;
+      --blue: #2563eb;
+      --red: #dc2626;
+      --orange: #ea580c;
+      --glow: 0 4px 15px rgba(13, 166, 158, 0.15);
+      --glow2: 0 4px 15px rgba(249, 93, 44, 0.15);
+      --shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+      --radius: 12px;
+      --radius2: 8px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at 20% 20%, rgba(13, 166, 158, 0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(249, 93, 44, 0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 0%, rgba(37, 99, 235, 0.03) 0%, transparent 40%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #header {
+      position: sticky;
+      top: 0;
+      z-index: 99999;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+    }
+
+    .header-inner {
+      max-width: 1600px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 96px;
+      gap: 16px;
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 18px
+    }
+
+    .logo-img {
+      height: 78px;
+      width: auto;
+      object-fit: contain;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+
+    .logo-img:hover {
+      transform: scale(1.05);
+    }
+
+    .logo-img-eatright {
+      height: 64px;
+    }
+
+    .logo-img-fssai-script {
+      height: 74px;
+    }
+
+    .logo-img-fssai-emblem {
+      height: 78px;
+    }
+
+    .logo-img-railways {
+      height: 74px;
+    }
+
+
+    .header-title {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header-title h1 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      background: linear-gradient(90deg, #0a6e6a, #1e40af, #6d28d9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text
+    }
+
+    .header-title span {
+      font-size: 12px;
+      color: var(--text3);
+      font-weight: 400;
+      letter-spacing: 0.05em
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px
+    }
+
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      color: #22c55e;
+      font-weight: 600;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      animation: pulse-dot 1.5s infinite;
+    }
+
+    @keyframes pulse-dot {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(0.8)
+      }
+    }
+
+    .export-btn {
+      background: linear-gradient(135deg, var(--accent), var(--blue));
+      border: none;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: var(--radius2);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .export-btn:hover {
+      opacity: 0.85;
+      transform: translateY(-1px)
+    }
+
+    #main {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 20px 24px;
+      position: relative;
+      z-index: 1
+    }
+
+    #filter-bar {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .filter-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-right: 4px;
+      flex-shrink: 0;
+    }
+
+    .filter-select {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      padding: 7px 12px;
+      border-radius: var(--radius2);
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      min-width: 140px;
+      transition: all 0.2s;
+      outline: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 30px;
+    }
+
+    .filter-select:hover,
+    .filter-select:focus {
+      border-color: var(--accent)
+    }
+
+    #reset-btn {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #ef4444;
+      padding: 7px 16px;
+      border-radius: var(--radius2);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s;
+      margin-left: auto;
+    }
+
+    #reset-btn:hover {
+      background: rgba(239, 68, 68, 0.2)
+    }
+
+    .filter-count {
+      background: linear-gradient(135deg, var(--accent), var(--blue));
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-left: 4px;
+    }
+
+    #kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .kpi-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+      cursor: default;
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--kpi-color, var(--accent));
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--border2)
+    }
+
+    .kpi-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(0, 210, 200, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      margin-bottom: 12px;
+      border: 1px solid rgba(0, 210, 200, 0.15);
+    }
+
+    .kpi-val {
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(90deg, var(--kpi-color, var(--accent)), #0f172a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .kpi-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-top: 4px;
+    }
+
+    .kpi-sub {
+      font-size: 10px;
+      color: var(--text3);
+      margin-top: 6px;
+    }
+
+    #map-section {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .map-container {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .map-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title::before {
+      content: '';
+      width: 3px;
+      height: 16px;
+      border-radius: 2px;
+      background: linear-gradient(180deg, var(--accent), var(--blue));
+      flex-shrink: 0;
+    }
+
+    .map-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap
+    }
+
+    .map-btn {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      color: var(--text2);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .map-btn:hover,
+    .map-btn.active {
+      background: rgba(0, 210, 200, 0.15);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .colorby-select {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .colorby-select:focus {
+      border-color: var(--accent)
+    }
+
+    #map {
+      height: 500px;
+      width: 100%
+    }
+
+    .map-legend {
+      position: absolute;
+      bottom: 40px;
+      right: 10px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid #d1d9e8;
+      border-radius: var(--radius2);
+      padding: 10px 14px;
+      z-index: 500;
+      min-width: 130px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    .legend-title {
+      font-size: 10px;
+      font-weight: 700;
+      color: #4a5568;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 8px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 5px;
+      font-size: 10px;
+      color: #2d3748
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 6px currentColor
+    }
+
+    .map-stat-pill {
+      position: absolute;
+      top: 60px;
+      left: 10px;
+      background: rgba(13, 17, 23, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      padding: 8px 14px;
+      z-index: 500;
+      font-size: 11px;
+      color: var(--text2);
+    }
+
+    .map-stat-pill strong {
+      color: var(--accent);
+      font-size: 14px;
+      display: block
+    }
+
+    .sidebar-charts {
+      display: flex;
+      flex-direction: column;
+      gap: 16px
+    }
+
+    .chart-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      transition: border-color 0.2s;
+    }
+
+    .chart-card:hover {
+      border-color: var(--border2)
+    }
+
+    .chart-header {
+      margin-bottom: 12px
+    }
+
+    .chart-canvas-wrap {
+      position: relative
+    }
+
+    #charts-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .chart-card-full {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+
+    #timeline-row {
+      margin-bottom: 20px
+    }
+
+    .chart-card-wide {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+
+    #table-section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .table-header {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .table-search {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      padding: 8px 14px;
+      border-radius: var(--radius2);
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+      width: 240px;
+      outline: none;
+    }
+
+    .table-search:focus {
+      border-color: var(--accent)
+    }
+
+    .table-search::placeholder {
+      color: var(--text3)
+    }
+
+    .table-wrap {
+      overflow-x: auto
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px
+    }
+
+    thead tr {
+      background: var(--bg2)
+    }
+
+    th {
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: color 0.15s;
+      border-bottom: 1px solid var(--border);
+      user-select: none;
+    }
+
+    th:hover {
+      color: var(--accent)
+    }
+
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text2);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none
+    }
+
+    tbody tr {
+      transition: background 0.15s
+    }
+
+    tbody tr:hover {
+      background: rgba(0, 210, 200, 0.04)
+    }
+
+    .cat-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .zone-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text3);
+    }
+
+    .page-btns {
+      display: flex;
+      gap: 6px
+    }
+
+    .page-btn {
+      background: var(--bg2);
+      border: 1px solid var(--border2);
+      color: var(--text2);
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .page-btn:hover,
+    .page-btn.active {
+      background: rgba(0, 210, 200, 0.15);
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+    .page-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed
+    }
+
+    .leaflet-popup-content-wrapper {
+      background: #fff !important;
+      border: 1px solid #d1d9e8 !important;
+      border-radius: var(--radius2) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+      color: #1a2540 !important;
+      font-family: 'Inter', sans-serif !important;
+    }
+
+    .leaflet-popup-tip {
+      background: #fff !important
+    }
+
+    .leaflet-popup-content {
+      margin: 12px 16px !important;
+      min-width: 200px
+    }
+
+    .popup-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0a6e6a;
+      margin-bottom: 8px
+    }
+
+    .popup-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      margin-bottom: 4px;
+      gap: 12px;
+    }
+
+    .popup-key {
+      color: #6b7fa3;
+      font-weight: 500
+    }
+
+    .popup-val {
+      color: #1a2540;
+      font-weight: 600;
+      text-align: right
+    }
+
+    .leaflet-control-zoom a {
+      background: #fff !important;
+      color: #333 !important;
+      border-color: #ccc !important;
+    }
+
+    .leaflet-control-zoom a:hover {
+      background: #f5f5f5 !important
+    }
+
+    .dot-marker {
+      border-radius: 50%;
+      border: 2px solid rgba(0, 0, 0, 0.45);
+      cursor: pointer;
+      transition: transform 0.15s;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+
+    .dot-marker:hover {
+      transform: scale(1.5)
+    }
+
+    .custom-tooltip {
+      background: #ffffff !important;
+      border: 1px solid #cbd5e1 !important;
+      border-radius: 6px !important;
+      color: #0f172a !important;
+      font-family: 'Inter', sans-serif !important;
+      font-size: 10px !important;
+      font-weight: 700 !important;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1) !important;
+      padding: 4px 8px !important;
+    }
+
+    .custom-tooltip::before {
+      border-top-color: #ffffff !important;
+    }
+
+    .spotlight-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      filter: drop-shadow(0 0 0px transparent);
+    }
+
+    .spotlight-dot {
+      border-radius: 50%;
+      border: 2.5px solid #ffffff;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.25);
+      flex-shrink: 0;
+    }
+
+    .spotlight-stem {
+      width: 2px;
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0));
+      flex-shrink: 0;
+    }
+
+    .spotlight-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 1px;
+      pointer-events: none;
+    }
+
+    .spotlight-name {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      color: #0f172a;
+      text-shadow: -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 1.5px 1.5px 0 #fff, 0 2px 4px rgba(15, 23, 42, 0.3);
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+      max-width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .spotlight-cat {
+      font-family: 'Inter', sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      padding: 1px 5px;
+      border-radius: 8px;
+      margin-top: 2px;
+      white-space: nowrap;
+      text-shadow: none;
+      letter-spacing: 0.04em;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg)
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border2);
+      border-radius: 3px
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent)
+    }
+
+    #footer {
+      text-align: center;
+      padding: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--text3);
+      position: relative;
+      z-index: 1;
+    }
+
+    #footer a {
+      color: var(--accent);
+      text-decoration: none
+    }
+
+    @media(max-width:1100px) {
+      #map-section {
+        grid-template-columns: 1fr
+      }
+
+      .sidebar-charts {
+        flex-direction: row;
+        flex-wrap: wrap
+      }
+
+      .sidebar-charts .chart-card {
+        flex: 1;
+        min-width: 260px
+      }
+    }
+
+    @media(max-width:768px) {
+      #kpi-row {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      #charts-row {
+        grid-template-columns: 1fr
+      }
+
+      .header-title h1 {
+        font-size: 13px
+      }
+
+      #main {
+        padding: 14px
+      }
+
+      #header {
+        padding: 0 12px;
+      }
+
+      .header-inner {
+        height: auto;
+        padding: 12px 0;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo-group {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .logo-img {
+        height: 40px;
+      }
+
+      .logo-img-eatright {
+        height: 40px;
+      }
+
+      .logo-img-fssai-script {
+        height: 44px;
+      }
+
+      .logo-img-fssai-emblem {
+        height: 48px;
+      }
+    }
+
+    @media(max-width:480px) {
+      #kpi-row {
+        grid-template-columns: 1fr 1fr
+      }
+    }
+
+    /* Expiring certifications map alerts & styling */
+    @keyframes map-pulse-warning {
+      0% {
+        box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.8);
+      }
+      70% {
+        box-shadow: 0 0 0 10px rgba(234, 88, 12, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(234, 88, 12, 0);
+      }
+    }
+    .expiring-soon-marker {
+      animation: map-pulse-warning 1.5s infinite !important;
+      border-radius: 50% !important;
+      z-index: 1000 !important;
+    }
+    .popup-alert {
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+    .popup-alert.expiring {
+      background: rgba(249, 115, 22, 0.15);
+      color: #ea580c;
+      border: 1px solid rgba(249, 115, 22, 0.3);
+    }
+    .popup-alert.safe {
+      background: rgba(34, 197, 94, 0.1);
+      color: #16a34a;
+      border: 1px solid rgba(34, 197, 94, 0.2);
+    }
+    .custom-pin-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 30px;
+    }
+    .custom-pin {
+      width: 24px;
+      height: 30px;
+      filter: drop-shadow(0 2px 4px rgba(15,23,42,0.25));
+      transition: transform 0.15s;
+    }
+    .custom-pin:hover {
+      transform: scale(1.25);
+    }
+    .spotlight-pin {
+      width: 28px;
+      height: 35px;
+      filter: drop-shadow(0 2px 5px rgba(15,23,42,0.3));
+    }
+  </style>
+</head>
+
+<body>
+
+  <header id="header">
+    <div class="header-inner">
+      <div class="logo-group">
+        <img src="assets/eatright_horizontal_logo.jpg" alt="Eat Right India Logo" class="logo-img logo-img-eatright" title="Eat Right India">
+        <img src="assets/fssai_script_logo.png" alt="FSSAI Logo" class="logo-img logo-img-fssai-script" title="FSSAI">
+        <div class="header-title">
+          <h1>🍽️ Eat Right Stations — India</h1>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span style="font-size:12px;color:var(--text3);font-weight:400;letter-spacing:0.05em">FSSAI Certified Railway Stations Dashboard</span>
+            <span style="color:var(--border2);font-size:10px;">&#8226;</span>
+            <span style="font-size:11px;background:rgba(13,166,158,0.1);color:var(--accent);padding:2px 8px;border-radius:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px;">📅 Updated: June 19, 2026</span>
+          </div>
+        </div>
+        <img src="assets/fssai_emblem_logo.png" alt="Food Safety and Standards Authority of India" class="logo-img logo-img-fssai-emblem" title="Food Safety and Standards Authority of India">
+        <img src="assets/indian-railway-logo-png_seeklogo-390907.png" alt="Indian Railways Logo" class="logo-img logo-img-railways" title="Indian Railways">
+      </div>
+      <div class="header-right">
+        <div class="live-badge">
+          <div class="live-dot"></div>LIVE DATA
+        </div>
+        <button class="export-btn" onclick="exportCSV()" id="export-csv-btn">⬇ Export CSV</button>
+      </div>
+    </div>
+  </header>
+
+  <div id="main">
+
+    <div id="filter-bar">
+      <span class="filter-label">Filters:</span>
+      <select class="filter-select" id="f-zone" onchange="applyFilters()">
+        <option value="">All Zones</option>
+      </select>
+      <select class="filter-select" id="f-state" onchange="applyFilters()">
+        <option value="">All States</option>
+      </select>
+      <select class="filter-select" id="f-category" onchange="applyFilters()">
+        <option value="">All Categories</option>
+      </select>
+      <select class="filter-select" id="f-district" onchange="applyFilters()">
+        <option value="">All Districts</option>
+      </select>
+      <select class="filter-select" id="f-year" onchange="applyFilters()">
+        <option value="">All Years</option>
+        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+        <option value="2026">2026</option>
+      </select>
+      <span class="filter-count" id="filter-count">296</span>
+      <button id="reset-btn" onclick="resetFilters()">✕ Reset</button>
+    </div>
+
+    <div id="kpi-row">
+      <div class="kpi-card" style="--kpi-color:#00d2c8">
+        <div class="kpi-icon">🏭</div>
+        <div class="kpi-val" id="k-total">296</div>
+        <div class="kpi-label">Total Stations</div>
+        <div class="kpi-sub">Eat Right Certified</div>
+      </div>
+      <div class="kpi-card" style="--kpi-color:#3b82f6">
+        <div class="kpi-icon">🗺️</div>
+        <div class="kpi-val" id="k-zones">14</div>
+        <div class="kpi-label">Railway Zones</div>
+        <div class="kpi-sub">Zones covered</div>
+      </div>
+      <div class="kpi-card" style="--kpi-color:#f97316">
+        <div class="kpi-icon">📍</div>
+        <div class="kpi-val" id="k-states">21</div>
+        <div class="kpi-label">States / UTs</div>
+        <div class="kpi-sub">Geographic coverage</div>
+      </div>
+      <div class="kpi-card" style="--kpi-color:#a855f7">
+        <div class="kpi-icon">🏷️</div>
+        <div class="kpi-val" id="k-cats">10</div>
+        <div class="kpi-label">Categories</div>
+        <div class="kpi-sub">NSG / SG / HG tiers</div>
+      </div>
+    </div>
+
+    <div id="map-section">
+      <div class="map-container">
+        <div class="map-header">
+          <div class="section-title">🗺️ Geospatial Station Map</div>
+          <div class="map-controls">
+            <span style="font-size:11px;color:var(--text3);font-weight:600">Color by:</span>
+            <select class="colorby-select" id="colorby" onchange="refreshMapMarkers()">
+              <option value="category">Station Category</option>
+              <option value="zone">Zone</option>
+              <option value="state">State</option>
+              <option value="district">District</option>
+            </select>
+
+          </div>
+        </div>
+        <div style="position:relative">
+          <div id="map"></div>
+          <div class="map-stat-pill" id="map-stat"
+            style="background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);border:1px solid #d1d9e8;color:#1a2540;top:8px;">
+            <strong id="map-count" style="color:#0a6e6a">296</strong> <span style="color:#4a5568">stations shown</span>
+          </div>
+          <div class="map-legend" id="map-legend"></div>
+        </div>
+      </div>
+
+      <div class="sidebar-charts">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div class="section-title" style="font-size:12px">🍩 Category Distribution</div>
+          </div>
+          <div class="chart-canvas-wrap" style="height:340px">
+            <canvas id="chart-cat"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="charts-row">
+      <div class="chart-card-full">
+        <div class="chart-header" style="margin-bottom:12px">
+          <div class="section-title">🏆 Top States by Station Count</div>
+        </div>
+        <div style="position:relative;height:260px">
+          <canvas id="chart-states"></canvas>
+        </div>
+      </div>
+      <div class="chart-card-full">
+        <div class="chart-header" style="margin-bottom:12px">
+          <div class="section-title">📅 Certification Timeline</div>
+        </div>
+        <div style="position:relative;height:260px">
+          <canvas id="chart-timeline"></canvas>
+        </div>
+      </div>
+      <div class="chart-card-full">
+        <div class="chart-header" style="margin-bottom:12px">
+          <div class="section-title">🌐 Zone-wise Station Distribution</div>
+        </div>
+        <div style="position:relative;height:260px">
+          <canvas id="chart-zones"></canvas>
+        </div>
+      </div>
+      <div class="chart-card-full">
+        <div class="chart-header" style="margin-bottom:12px">
+          <div class="section-title">🚂 Top Divisions by Station Count</div>
+        </div>
+        <div style="position:relative;height:260px">
+          <canvas id="chart-divisions"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div id="table-section">
+      <div class="table-header">
+        <div class="section-title">📋 Station Data Table</div>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <input type="text" class="table-search" id="table-search" placeholder="🔍 Search stations..."
+            oninput="renderTable()">
+          <span id="table-info" style="font-size:11px;color:var(--text3)">Showing 1–20 of 296</span>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="data-table">
+          <thead>
+            <tr>
+              <th onclick="sortTable('sno')" id="th-sno">#</th>
+              <th onclick="sortTable('name')" id="th-name">Station Name</th>
+              <th onclick="sortTable('code')" id="th-code">Code</th>
+              <th onclick="sortTable('category')" id="th-category">Category</th>
+              <th onclick="sortTable('zone')" id="th-zone">Zone</th>
+              <th onclick="sortTable('division')" id="th-division">Division</th>
+              <th onclick="sortTable('district')" id="th-district">District</th>
+              <th onclick="sortTable('state')" id="th-state">State</th>
+              <th onclick="sortTable('awarded_date')" id="th-date">Awarded Date</th>
+              <th onclick="sortTable('expiry_date')" id="th-expiry">Expiry Date</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <span id="table-info2" style="font-size:11px;color:var(--text3)">Page 1</span>
+        <div class="page-btns" id="page-btns"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Update & Disclaimer Panel -->
+    <div style="max-width:1600px;margin:24px auto 0;padding:16px 24px;background:rgba(255,255,255,0.8);backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:var(--radius);text-align:center;font-size:11px;color:var(--text3);line-height:1.6;display:flex;flex-direction:column;align-items:center;gap:6px;">
+      <p>📅 <strong>Last Updated:</strong> June 19, 2026</p>
+      <p>⚠️ <strong>Disclaimer:</strong> The information is based on specific datasets and is subject to periodic updates and data renewal. This dashboard represents a student project/work and is not an official FSSAI publication.</p>
+    </div>
+
+    <footer id="footer">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+      <p>🍽️ <strong style="color:var(--text2)">Eat Right Stations India Dashboard</strong> &mdash; Powered by FSSAI
+        &nbsp;|&nbsp; 296 Certified Railway Stations &nbsp;|&nbsp; Map: OpenStreetMap &amp; OpenRailwayMap</p>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center">
+        <span
+          style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;font-weight:600">Built
+          by</span>
+        <span style="color:#000000;font-weight:700;font-size:12px">Arun
+          Karthick P</span>
+        <span style="color:var(--border2)">&#8226;</span>
+        <span style="color:#000000;font-weight:700;font-size:12px">Niranjan
+          R</span>
+        <span style="color:var(--border2)">&#8226;</span>
+        <span style="color:#000000;font-weight:700;font-size:12px">Madhan Kumar S</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const RAW_DATA = [
+      {"sno": 1, "name": "THALASSERY", "code": "TLY", "category": "NSG-3", "division": "PALAKKAD", "zone": "SR", "district": "Kannur", "state": "Kerala", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 2, "name": "UDHAMPUR", "code": "UHP", "category": "NSG-4", "division": "FEROZPUR", "zone": "NR", "district": "Udhampur", "state": "Jammu & Kashmir", "awarded_date": "2024-06-26", "expiry_date": "2026-06-26"},
+      {"sno": 3, "name": "JAMMU TAWI", "code": "JAT", "category": "NSG-2", "division": "FEROZPUR", "zone": "NR", "district": "Jammu", "state": "Jammu & Kashmir", "awarded_date": "2024-06-26", "expiry_date": "2026-06-26"},
+      {"sno": 4, "name": "SIRHIND", "code": "SIR", "category": "NSG-4", "division": "AMBALA", "zone": "NR", "district": "Fatehgarh Sahib", "state": "Punjab", "awarded_date": "2024-07-08", "expiry_date": "2026-07-08"},
+      {"sno": 5, "name": "METTUPALAYAM", "code": "MTP", "category": "NSG-4", "division": "SALEM", "zone": "SR", "district": "Coimbatore", "state": "Tamil Nadu", "awarded_date": "2024-06-26", "expiry_date": "2026-06-26"},
+      {"sno": 6, "name": "NANDURBAR", "code": "NDB", "category": "NSG-3", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Nandurbar", "state": "Maharashtra", "awarded_date": "2024-07-19", "expiry_date": "2026-07-19"},
+      {"sno": 7, "name": "DWARKA", "code": "DWK", "category": "NSG-3", "division": "RAJKOT", "zone": "WR", "district": "Devbhumi Dwarka", "state": "Gujarat", "awarded_date": "2024-07-19", "expiry_date": "2026-07-19"},
+      {"sno": 8, "name": "ANKLESHWAR", "code": "AKV", "category": "NSG-3", "division": "VADODARA", "zone": "WR", "district": "Bharuch", "state": "Gujarat", "awarded_date": "2024-07-19", "expiry_date": "2026-07-19"},
+      {"sno": 9, "name": "VERAVAL", "code": "VRL", "category": "NSG-3", "division": "BHAVNAGAR", "zone": "WR", "district": "Gir Somnath", "state": "Gujarat", "awarded_date": "2024-07-19", "expiry_date": "2026-07-19"},
+      {"sno": 10, "name": "BHARUCH", "code": "BH", "category": "NSG-3", "division": "VADODARA", "zone": "WR", "district": "Bharuch", "state": "Gujarat", "awarded_date": "2024-07-19", "expiry_date": "2026-07-19"},
+      {"sno": 11, "name": "AYODHYA DHAM", "code": "AY", "category": "NSG-1", "division": "Lucknow", "zone": "NR", "district": "Ayodhya", "state": "Uttar Pradesh", "awarded_date": "2024-09-09", "expiry_date": "2026-09-09"},
+      {"sno": 12, "name": "CHANDERIYA", "code": "CDE", "category": "NSG-5", "division": "Ratlam", "zone": "WR", "district": "Chittaurgarh", "state": "Rajasthan", "awarded_date": "2024-07-31", "expiry_date": "2026-07-31"},
+      {"sno": 13, "name": "NIMBAHERA", "code": "NBH", "category": "NSG-5", "division": "Ratlam", "zone": "WR", "district": "Chittaurgarh", "state": "Rajasthan", "awarded_date": "2024-07-31", "expiry_date": "2026-07-31"},
+      {"sno": 14, "name": "CHITTAURGARH", "code": "COR", "category": "NSG-3", "division": "Ratlam", "zone": "WR", "district": "Chittaurgarh", "state": "Rajasthan", "awarded_date": "2024-07-31", "expiry_date": "2026-07-31"},
+      {"sno": 15, "name": "GAYA", "code": "GAYA", "category": "NSG-2", "division": "Deen Dayal Upadhyaya", "zone": "ECR", "district": "Gaya", "state": "Bihar", "awarded_date": "2024-09-12", "expiry_date": "2026-09-12"},
+      {"sno": 16, "name": "VADODARA", "code": "BRC", "category": "NSG-2", "division": "VADODARA", "zone": "WR", "district": "Vadodara Municipal Corporation", "state": "Gujarat", "awarded_date": "2024-08-28", "expiry_date": "2026-08-28"},
+      {"sno": 17, "name": "AISHBAGH", "code": "ASH", "category": "NSG-3", "division": "Lucknow", "zone": "NER", "district": "Lucknow", "state": "Uttar Pradesh", "awarded_date": "2024-08-28", "expiry_date": "2026-08-28"},
+      {"sno": 18, "name": "VISAKHAPATNAM", "code": "VSKP", "category": "NSG-1", "division": "WALTAIR", "zone": "ECOR", "district": "Visakhapatnam", "state": "Andhra Pradesh", "awarded_date": "2024-09-12", "expiry_date": "2026-09-12"},
+      {"sno": 19, "name": "NEW TINSUKIA", "code": "NTSK", "category": "NSG-3", "division": "TINSUKIA", "zone": "NFR", "district": "Tinsukia", "state": "Assam", "awarded_date": "2024-09-12", "expiry_date": "2026-09-12"},
+      {"sno": 20, "name": "KAMAKHYA", "code": "KYQ", "category": "NSG-2", "division": "LUMDING", "zone": "NFR", "district": "Kamrup Metropolitan Dist.", "state": "Assam", "awarded_date": "2024-09-12", "expiry_date": "2026-09-12"},
+      {"sno": 21, "name": "MAHESANA", "code": "MSH", "category": "NSG-3", "division": "AHMEDABAD", "zone": "WR", "district": "Mahesana", "state": "Gujarat", "awarded_date": "2024-11-01", "expiry_date": "2026-11-01"},
+      {"sno": 22, "name": "SABARMATI", "code": "SBT", "category": "NSG-5", "division": "AHMEDABAD", "zone": "WR", "district": "Ahmedabad", "state": "Gujarat", "awarded_date": "2024-11-01", "expiry_date": "2026-11-01"},
+      {"sno": 23, "name": "AHMADNAGAR", "code": "ANG", "category": "NSG-3", "division": "Solapur", "zone": "CR", "district": "Ahmadnagar", "state": "Maharashtra", "awarded_date": "2024-11-01", "expiry_date": "2026-11-01"},
+      {"sno": 24, "name": "CHINCHWAD", "code": "CCH", "category": "SG-3", "division": "PUNE", "zone": "CR", "district": "Pune", "state": "Maharashtra", "awarded_date": "2024-11-01", "expiry_date": "2026-11-01"},
+      {"sno": 25, "name": "DAUND", "code": "DD", "category": "NSG-3", "division": "Solapur", "zone": "CR", "district": "Pune", "state": "Maharashtra", "awarded_date": "2024-11-08", "expiry_date": "2026-11-08"},
+      {"sno": 26, "name": "KOPARGAON", "code": "KPG", "category": "NSG-3", "division": "Solapur", "zone": "CR", "district": "Ahmadnagar", "state": "Maharashtra", "awarded_date": "2024-11-01", "expiry_date": "2026-11-01"},
+      {"sno": 27, "name": "SAINAGAR SHIRDI", "code": "SNSI", "category": "NSG-3", "division": "Solapur", "zone": "CR", "district": "Ahmadnagar", "state": "Maharashtra", "awarded_date": "2024-11-01", "expiry_date": "2026-11-01"},
+      {"sno": 28, "name": "SATARA", "code": "STR", "category": "NSG-4", "division": "Pune", "zone": "CR", "district": "Satara", "state": "Maharashtra", "awarded_date": "2024-11-08", "expiry_date": "2026-11-08"},
+      {"sno": 29, "name": "KAYAMKULAM", "code": "KYJ", "category": "NSG-3", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Alappuzha", "state": "Kerala", "awarded_date": "2024-11-08", "expiry_date": "2026-11-08"},
+      {"sno": 30, "name": "MIRAJ", "code": "MRJ", "category": "NSG-3", "division": "Pune", "zone": "CR", "district": "Sangli", "state": "Maharashtra", "awarded_date": "2024-11-08", "expiry_date": "2026-11-08"},
+      {"sno": 31, "name": "SHIVAJINAGAR", "code": "SVJR", "category": "SG-3", "division": "Pune", "zone": "CR", "district": "Pune", "state": "Maharashtra", "awarded_date": "2024-11-08", "expiry_date": "2026-11-08"},
+      {"sno": 32, "name": "KOLHAPUR", "code": "KOP", "category": "NSG-3", "division": "Pune", "zone": "CR", "district": "Kolhapur", "state": "Maharashtra", "awarded_date": "2024-11-08", "expiry_date": "2026-11-08"},
+      {"sno": 33, "name": "PUNE", "code": "PUNE", "category": "NSG-1", "division": "Pune", "zone": "CR", "district": "Pune", "state": "Maharashtra", "awarded_date": "2024-11-08", "expiry_date": "2026-11-08"},
+      {"sno": 34, "name": "RAIPUR", "code": "R", "category": "NSG-2", "division": "Raipur", "zone": "SECR", "district": "Raipur", "state": "Chhattisgarh", "awarded_date": "2024-11-08", "expiry_date": "2026-11-08"},
+      {"sno": 35, "name": "DURG", "code": "DURG", "category": "NSG-2", "division": "Raipur", "zone": "SECR", "district": "Durg", "state": "Chhattisgarh", "awarded_date": "2024-11-08", "expiry_date": "2026-11-08"},
+      {"sno": 36, "name": "BILASPUR", "code": "BSP", "category": "NSG-2", "division": "Bilaspur", "zone": "SECR", "district": "Bilaspur", "state": "Chhattisgarh", "awarded_date": "2024-11-08", "expiry_date": "2026-11-08"},
+      {"sno": 37, "name": "HAJIPUR", "code": "HJP", "category": "NSG-2", "division": "Sonpur", "zone": "ECR", "district": "Vaishali", "state": "Bihar", "awarded_date": "2024-11-08", "expiry_date": "2026-11-08"},
+      {"sno": 38, "name": "CHERTALA", "code": "SRTL", "category": "NSG-4", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Alappuzha", "state": "Kerala", "awarded_date": "2024-11-08", "expiry_date": "2026-11-08"},
+      {"sno": 39, "name": "PUNALUR", "code": "PUU", "category": "NSG-6", "division": "Madurai", "zone": "SR", "district": "Kollam", "state": "Kerala", "awarded_date": "2024-11-08", "expiry_date": "2026-11-08"},
+      {"sno": 40, "name": "SALEM", "code": "SA", "category": "NSG-2", "division": "SALEM", "zone": "SR", "district": "Salem", "state": "Tamil Nadu", "awarded_date": "2024-12-23", "expiry_date": "2026-12-23"},
+      {"sno": 41, "name": "KASGANJ", "code": "KSJ", "category": "NSG-4", "division": "Izzatnagar", "zone": "NER", "district": "Kasganj", "state": "Uttar Pradesh", "awarded_date": "2025-01-16", "expiry_date": "2027-01-16"},
+      {"sno": 42, "name": "VIJAYAWADA", "code": "BZA", "category": "NSG-1", "division": "VIJAYAWADA", "zone": "ECOR", "district": "N T R", "state": "Andhra Pradesh", "awarded_date": "2025-01-16", "expiry_date": "2027-01-16"},
+      {"sno": 43, "name": "UDAIPUR CITY", "code": "UDZ", "category": "NSG-2", "division": "Ajmer", "zone": "NWR", "district": "Udaipur", "state": "Rajasthan", "awarded_date": "2025-07-02", "expiry_date": "2027-07-02"},
+      {"sno": 44, "name": "BAREILLY", "code": "BRY", "category": "NSG-3", "division": "Izzatnagar", "zone": "NER", "district": "Bareilly", "state": "Uttar Pradesh", "awarded_date": "2024-12-23", "expiry_date": "2026-12-23"},
+      {"sno": 45, "name": "FATEHABAD CHANDRAWATIGANJ", "code": "FTD", "category": "NSG-6", "division": "Ratlam", "zone": "WR", "district": "Indore", "state": "Madhya Pradesh", "awarded_date": "2025-01-30", "expiry_date": "2027-01-30"},
+      {"sno": 46, "name": "GAUTAMPURA ROAD", "code": "GPX", "category": "HG-3", "division": "Ratlam", "zone": "WR", "district": "Indore", "state": "Madhya Pradesh", "awarded_date": "2025-01-30", "expiry_date": "2027-01-30"},
+      {"sno": 47, "name": "DAMOH", "code": "DMO", "category": "NSG-3", "division": "Jabalpur", "zone": "WCR", "district": "Damoh", "state": "Madhya Pradesh", "awarded_date": "2025-01-31", "expiry_date": "2027-01-31"},
+      {"sno": 48, "name": "RUTHIYAI", "code": "RTA", "category": "NSG-5", "division": "Bhopal", "zone": "WCR", "district": "Guna", "state": "Madhya Pradesh", "awarded_date": "2025-01-16", "expiry_date": "2027-01-16"},
+      {"sno": 49, "name": "AGRA FORT", "code": "AF", "category": "NSG-3", "division": "Agra", "zone": "NCR", "district": "Agra", "state": "Uttar Pradesh", "awarded_date": "2025-01-24", "expiry_date": "2027-01-24"},
+      {"sno": 50, "name": "ACHHNERA", "code": "AH", "category": "NSG-5", "division": "Agra", "zone": "NCR", "district": "Agra", "state": "Uttar Pradesh", "awarded_date": "2025-01-24", "expiry_date": "2027-01-24"},
+      {"sno": 51, "name": "CHHAYAPURI", "code": "CYI", "category": "NSG-6", "division": "VADODARA", "zone": "WR", "district": "Vadodara", "state": "Gujarat", "awarded_date": "2025-01-16", "expiry_date": "2027-01-16"},
+      {"sno": 52, "name": "GURUVAYUR", "code": "GUV", "category": "NSG-4", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Thrissur", "state": "Kerala", "awarded_date": "2025-01-16", "expiry_date": "2027-01-16"},
+      {"sno": 53, "name": "KOTTARAKARA", "code": "KKZ", "category": "NSG-6", "division": "Madurai", "zone": "SR", "district": "Kollam", "state": "Kerala", "awarded_date": "2025-01-16", "expiry_date": "2027-01-16"},
+      {"sno": 54, "name": "DHOLPUR", "code": "DHO", "category": "NSG-4", "division": "Agra", "zone": "NCR", "district": "Agra", "state": "Uttar Pradesh", "awarded_date": "2025-01-24", "expiry_date": "2027-01-24"},
+      {"sno": 55, "name": "GODHRA", "code": "GDA", "category": "NSG-4", "division": "VADODARA", "zone": "WR", "district": "GODHRA(PANCHMAHAL)", "state": "Gujarat", "awarded_date": "2025-01-16", "expiry_date": "2027-01-16"},
+      {"sno": 56, "name": "RAJA KI MANDI", "code": "RKM", "category": "NSG-4", "division": "Agra", "zone": "NCR", "district": "Agra", "state": "Uttar Pradesh", "awarded_date": "2025-01-24", "expiry_date": "2027-01-24"},
+      {"sno": 57, "name": "MATHURA", "code": "MTJ", "category": "NSG-2", "division": "Agra", "zone": "NCR", "district": "Mathura", "state": "Uttar Pradesh", "awarded_date": "2025-01-24", "expiry_date": "2027-01-24"},
+      {"sno": 58, "name": "KOSIKALAN", "code": "KSV", "category": "NSG-4", "division": "Agra", "zone": "NCR", "district": "Mathura", "state": "Uttar Pradesh", "awarded_date": "2025-01-24", "expiry_date": "2027-01-24"},
+      {"sno": 59, "name": "GUNA", "code": "GUNA", "category": "NSG-4", "division": "Bhopal", "zone": "WCR", "district": "Guna", "state": "Madhya Pradesh", "awarded_date": "2025-01-16", "expiry_date": "2027-01-16"},
+      {"sno": 60, "name": "IDGAH", "code": "IDH", "category": "NSG-4", "division": "Agra", "zone": "NCR", "district": "Agra", "state": "Uttar Pradesh", "awarded_date": "2025-03-12", "expiry_date": "2027-03-12"},
+      {"sno": 61, "name": "RANCHI", "code": "RNC", "category": "NSG-2", "division": "Ranchi", "zone": "SER", "district": "Ranchi", "state": "Jharkhand", "awarded_date": "2025-01-16", "expiry_date": "2027-01-16"},
+      {"sno": 62, "name": "KOLKATA", "code": "KOAA", "category": "NSG-2", "division": "Sealdah", "zone": "ER", "district": "Kolkata", "state": "West Bengal", "awarded_date": "2025-01-31", "expiry_date": "2027-01-31"},
+      {"sno": 63, "name": "HATIA", "code": "HTE", "category": "NSG-3", "division": "Ranchi", "zone": "SER", "district": "Ranchi", "state": "Jharkhand", "awarded_date": "2025-01-16", "expiry_date": "2027-01-16"},
+      {"sno": 64, "name": "BOKARO STEEL CITY", "code": "BKSC", "category": "NSG-3", "division": "Adra", "zone": "SER", "district": "Bokaro", "state": "Jharkhand", "awarded_date": "2025-01-31", "expiry_date": "2027-01-31"},
+      {"sno": 65, "name": "TATANAGAR", "code": "TATA", "category": "NSG-2", "division": "Chakradharpur", "zone": "SER", "district": "Purbi Singhbhum", "state": "Jharkhand", "awarded_date": "2025-01-31", "expiry_date": "2027-01-31"},
+      {"sno": 66, "name": "KHARAGPUR", "code": "KGP", "category": "NSG-2", "division": "KHARAGPUR", "zone": "SER", "district": "Paschim Mednipur", "state": "West Bengal", "awarded_date": "2025-01-31", "expiry_date": "2027-01-31"},
+      {"sno": 67, "name": "BERHAMPORE COURT", "code": "BPC", "category": "NSG-3", "division": "Sealdah", "zone": "ER", "district": "Murshidabad", "state": "West Bengal", "awarded_date": "2025-01-31", "expiry_date": "2027-01-31"},
+      {"sno": 68, "name": "MURSHIDABAD", "code": "MBB", "category": "NSG-5", "division": "Sealdah", "zone": "ER", "district": "Murshidabad", "state": "West Bengal", "awarded_date": "2025-01-31", "expiry_date": "2027-01-31"},
+      {"sno": 69, "name": "QUILANDI", "code": "QLD", "category": "NSG-3", "division": "PALAKKAD", "zone": "SR", "district": "Kozhikode", "state": "Kerala", "awarded_date": "2025-01-24", "expiry_date": "2027-01-24"},
+      {"sno": 70, "name": "FEROK", "code": "FK", "category": "NSG-5", "division": "PALAKKAD", "zone": "SR", "district": "Kozhikode", "state": "Kerala", "awarded_date": "2025-01-24", "expiry_date": "2027-01-24"},
+      {"sno": 71, "name": "ANGADIPURAM", "code": "AAM", "category": "NSG-5", "division": "PALAKKAD", "zone": "SR", "district": "Malappuram", "state": "Kerala", "awarded_date": "2025-01-24", "expiry_date": "2027-01-24"},
+      {"sno": 72, "name": "KUTTIPPURAM", "code": "KTU", "category": "NSG-4", "division": "PALAKKAD", "zone": "SR", "district": "Malappuram", "state": "Kerala", "awarded_date": "2025-01-24", "expiry_date": "2027-01-24"},
+      {"sno": 73, "name": "WADAKKANCHEY", "code": "WKI", "category": "NSG-5", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Thrissur", "state": "Kerala", "awarded_date": "2025-01-24", "expiry_date": "2027-01-24"},
+      {"sno": 74, "name": "BHUJ", "code": "BHUJ", "category": "NSG-3", "division": "AHMEDABAD", "zone": "WR", "district": "BHUJ(KUTCHH)", "state": "Gujarat", "awarded_date": "2025-01-31", "expiry_date": "2027-01-31"},
+      {"sno": 75, "name": "PALANPUR", "code": "PNU", "category": "NSG-3", "division": "AHMEDABAD", "zone": "WR", "district": "BANASKANTHA", "state": "Gujarat", "awarded_date": "2025-01-31", "expiry_date": "2027-01-31"},
+      {"sno": 76, "name": "GANDHIDHAM", "code": "GIM", "category": "NSG-3", "division": "AHMEDABAD", "zone": "WR", "district": "BHUJ(KUTCHH)", "state": "Gujarat", "awarded_date": "2025-01-31", "expiry_date": "2027-01-31"},
+      {"sno": 77, "name": "MORADABAD", "code": "MB", "category": "NSG-3", "division": "Moradabad", "zone": "NR", "district": "Moradabad", "state": "Uttar Pradesh", "awarded_date": "2025-02-20", "expiry_date": "2027-02-20"},
+      {"sno": 78, "name": "TUNDLA", "code": "TDL", "category": "NSG-3", "division": "Prayagraj", "zone": "NCR", "district": "Firozabad", "state": "Uttar Pradesh", "awarded_date": "2025-04-23", "expiry_date": "2027-04-23"},
+      {"sno": 79, "name": "SEWAGRAM", "code": "SEGM", "category": "NSG-4", "division": "Nagpur", "zone": "WR", "district": "Wardha", "state": "Maharashtra", "awarded_date": "2025-02-20", "expiry_date": "2027-02-20"},
+      {"sno": 80, "name": "WARDHA", "code": "WR", "category": "NSG-3", "division": "Nagpur", "zone": "WR", "district": "Wardha", "state": "Maharashtra", "awarded_date": "2025-02-20", "expiry_date": "2027-02-20"},
+      {"sno": 81, "name": "BALLARSHAH", "code": "BPQ", "category": "NSG-3", "division": "Nagpur", "zone": "CR", "district": "Chandrapur", "state": "Maharashtra", "awarded_date": "2025-02-20", "expiry_date": "2027-02-20"},
+      {"sno": 82, "name": "CHANDRAPUR", "code": "CD", "category": "NSG-4", "division": "Nagpur", "zone": "CR", "district": "Chandrapur", "state": "Maharashtra", "awarded_date": "2025-02-20", "expiry_date": "2027-02-20"},
+      {"sno": 83, "name": "KHURAI", "code": "KYE", "category": "NSG-5", "division": "Jabalpur", "zone": "WCR", "district": "Sagar", "state": "Madhya Pradesh", "awarded_date": "2025-02-20", "expiry_date": "2027-02-20"},
+      {"sno": 84, "name": "MAKRONIA", "code": "MKRN", "category": "NSG-5", "division": "Jabalpur", "zone": "WCR", "district": "Sagar", "state": "Madhya Pradesh", "awarded_date": "2025-04-23", "expiry_date": "2027-04-23"},
+      {"sno": 85, "name": "PRAYAGRAJ RAMBAGH", "code": "PRRB", "category": "NSG-4", "division": "Prayagraj", "zone": "NCR", "district": "Prayagraj", "state": "Uttar Pradesh", "awarded_date": "2025-02-20", "expiry_date": "2027-02-20"},
+      {"sno": 86, "name": "HARDOI", "code": "HRI", "category": "NSG-3", "division": "HARDOI", "zone": "NR", "district": "Hardoi", "state": "Uttar Pradesh", "awarded_date": "2025-02-20", "expiry_date": "2027-02-20"},
+      {"sno": 87, "name": "GONDIA", "code": "GY", "category": "NSG-3", "division": "Nagpur", "zone": "SECR", "district": "Gondiya", "state": "Maharashtra", "awarded_date": "2025-03-12", "expiry_date": "2027-03-12"},
+      {"sno": 88, "name": "WANKANER", "code": "WKR", "category": "NSG-5", "division": "RAJKOT", "zone": "WR", "district": "Rajkot", "state": "Gujarat", "awarded_date": "2025-03-12", "expiry_date": "2027-03-12"},
+      {"sno": 89, "name": "BOTAD", "code": "BTD", "category": "NSG-4", "division": "BHAVNAGAR", "zone": "WR", "district": "Botad", "state": "Gujarat", "awarded_date": "2025-03-12", "expiry_date": "2027-03-12"},
+      {"sno": 90, "name": "AMALNER", "code": "AN", "category": "NSG-5", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Jalgaon", "state": "Maharashtra", "awarded_date": "2025-03-12", "expiry_date": "2027-03-12"},
+      {"sno": 91, "name": "DONDAICHA", "code": "DDE", "category": "NSG-4", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Dhule", "state": "Maharashtra", "awarded_date": "2025-03-12", "expiry_date": "2027-03-12"},
+      {"sno": 93, "name": "ORAI", "code": "ORAI", "category": "NSG-4", "division": "Jhansi", "zone": "NCR", "district": "Jalaun", "state": "Uttar Pradesh", "awarded_date": "2025-04-24", "expiry_date": "2027-04-24"},
+      {"sno": 94, "name": "VADNAGAR", "code": "VDG", "category": "NSG-6", "division": "AHMEDABAD", "zone": "WR", "district": "Mahesana", "state": "Gujarat", "awarded_date": "2025-04-23", "expiry_date": "2027-04-23"},
+      {"sno": 95, "name": "PAYYANUR", "code": "PAY", "category": "NSG-3", "division": "PALAKKAD", "zone": "SR", "district": "Kannur", "state": "Kerala", "awarded_date": "2025-04-23", "expiry_date": "2027-04-23"},
+      {"sno": 96, "name": "PAYANGADI", "code": "PAZ", "category": "NSG-5", "division": "PALAKKAD", "zone": "SR", "district": "Kannur", "state": "Kerala", "awarded_date": "2025-04-23", "expiry_date": "2027-04-23"},
+      {"sno": 97, "name": "HOSHIARPUR", "code": "HSX", "category": "NSG-5", "division": "Firozpur", "zone": "NR", "district": "Hoshiarpur", "state": "Punjab", "awarded_date": "2025-04-23", "expiry_date": "2027-04-23"},
+      {"sno": 98, "name": "MALDA TOWN", "code": "MLDT", "category": "NSG-3", "division": "Malda", "zone": "ER", "district": "Maldah", "state": "West Bengal", "awarded_date": "2025-04-23", "expiry_date": "2027-04-23"},
+      {"sno": 99, "name": "KHALTIPUR", "code": "KTJ", "category": "NSG-5", "division": "Malda", "zone": "ER", "district": "Maldah", "state": "West Bengal", "awarded_date": "2025-04-23", "expiry_date": "2027-04-23"},
+      {"sno": 100, "name": "JALANDHAR CITY", "code": "JUC", "category": "NSG-2", "division": "Firozpur", "zone": "NR", "district": "Jalandhar", "state": "Punjab", "awarded_date": "2025-04-23", "expiry_date": "2027-04-23"},
+      {"sno": 101, "name": "ANANDPUR SAHIB", "code": "ANSB", "category": "NSG-5", "division": "AMBALA", "zone": "NR", "district": "Rupnagar", "state": "Punjab", "awarded_date": "2025-04-23", "expiry_date": "2027-04-23"},
+      {"sno": 102, "name": "NAGDA", "code": "NAD", "category": "NSG-4", "division": "Ratlam", "zone": "WR", "district": "Ujjain", "state": "Madhya Pradesh", "awarded_date": "2025-04-23", "expiry_date": "2027-04-23"},
+      {"sno": 103, "name": "UJJAIN", "code": "UJN", "category": "NSG-2", "division": "Ratlam", "zone": "WR", "district": "Ujjain", "state": "Madhya Pradesh", "awarded_date": "2025-04-23", "expiry_date": "2027-04-23"},
+      {"sno": 104, "name": "JAORA", "code": "JAO", "category": "NSG-5", "division": "Ratlam", "zone": "WR", "district": "Ratlam", "state": "Madhya Pradesh", "awarded_date": "2025-04-23", "expiry_date": "2027-04-23"},
+      {"sno": 105, "name": "CHANDIGARH", "code": "CDG", "category": "NSG-2", "division": "Ambala", "zone": "NR", "district": "Chandigarh", "state": "Chandigarh", "awarded_date": "2025-04-23", "expiry_date": "2027-04-23"},
+      {"sno": 106, "name": "RAJPURA", "code": "RPJ", "category": "NSG-4", "division": "AMBALA", "zone": "NR", "district": "Patiala", "state": "Punjab", "awarded_date": "2025-04-23", "expiry_date": "2027-04-23"},
+      {"sno": 107, "name": "DHURI", "code": "DUI", "category": "NSG-5", "division": "AMBALA", "zone": "NR", "district": "Sangrur", "state": "Punjab", "awarded_date": "2025-04-23", "expiry_date": "2027-04-23"},
+      {"sno": 109, "name": "ARIYALUR", "code": "ALU", "category": "NSG-5", "division": "TIRUCHIRAPALLI", "zone": "SR", "district": "Ariyalur", "state": "Tamil Nadu", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 110, "name": "MAHIM", "code": "MM", "category": "SG-1", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 111, "name": "SHEGAON", "code": "SEG", "category": "NSG-3", "division": "Bhusawal", "zone": "CR", "district": "Buldana", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 112, "name": "NASHIK ROAD", "code": "NK", "category": "NSG-2", "division": "Bhusawal", "zone": "CR", "district": "Nashik", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 113, "name": "ANDHERI", "code": "ADH", "category": "SG-1", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 114, "name": "MAHALAXMI", "code": "MX", "category": "SG-2", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 115, "name": "BORIVALI", "code": "BVI", "category": "SG-1", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 116, "name": "MATUNGA ROAD", "code": "MRU", "category": "SG-2", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 117, "name": "GRANT ROAD", "code": "GTR", "category": "SG-2", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 118, "name": "CHURCHGATE", "code": "CCG", "category": "SG-1", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 119, "name": "BHAYANDER", "code": "BYR", "category": "SG-1", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Mira Bhayander Municipal Corporation (Thane Zone-7)", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 120, "name": "JOGESHWARI", "code": "JOS", "category": "SG-1", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 121, "name": "PRABHADEVI", "code": "PBHD", "category": "SG-2", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 122, "name": "GOREGAON", "code": "GMN", "category": "SG-1", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 123, "name": "DAHISAR", "code": "DIC", "category": "SG-1", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 124, "name": "DADAR", "code": "DDR", "category": "NSG-1", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 125, "name": "BANDRA TERMINUS", "code": "BDTS", "category": "NSG-2", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 126, "name": "NALLASOPARA", "code": "NSP", "category": "SG-1", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Palghar", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 127, "name": "BANDRA LOCAL", "code": "BA", "category": "NSG-2", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 128, "name": "KANDIVALI", "code": "KILE", "category": "SG-1", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 129, "name": "MALAD", "code": "MDD", "category": "SG-1", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 130, "name": "VASAI ROAD", "code": "BSR", "category": "SG-1", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 131, "name": "VIRAR", "code": "VR", "category": "SG-1", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Palghar", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 132, "name": "MARINE LINE", "code": "MEL", "category": "SG-2", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 133, "name": "CHARNI ROAD", "code": "CYR", "category": "SG-2", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 134, "name": "SANTACRUZ", "code": "STC", "category": "SG-1", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 135, "name": "NAIGAON", "code": "NIG", "category": "SG-2", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Palghar", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 136, "name": "MUMBAI CENTRAL", "code": "MMCT", "category": "NSG-1", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-04-23", "expiry_date": "2027-04-23"},
+      {"sno": 137, "name": "VILE PARLEY", "code": "VLP", "category": "SG-1", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 138, "name": "KHAR ROAD", "code": "KHAR", "category": "SG-1", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 139, "name": "LOWER PAREL", "code": "PL", "category": "SG-2", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 140, "name": "ROORKEE", "code": "RK", "category": "NSG-3", "division": "Moradabad", "zone": "NR", "district": "Hardwar", "state": "Uttarakhand", "awarded_date": "2025-04-23", "expiry_date": "2027-04-23"},
+      {"sno": 141, "name": "YOG NAGRI RISHIKESH", "code": "YNRK", "category": "NSG-5", "division": "Moradabad", "zone": "NR", "district": "Dehradun", "state": "Uttarakhand", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 142, "name": "HARIDWAR", "code": "HW", "category": "NSG-2", "division": "Moradabad", "zone": "NR", "district": "Hardwar", "state": "Uttarakhand", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 143, "name": "NEW DELHI", "code": "NDLS", "category": "NSG-1", "division": "Delhi", "zone": "NR", "district": "New Delhi", "state": "Delhi", "awarded_date": "2025-04-24", "expiry_date": "2027-04-24"},
+      {"sno": 144, "name": "OLD DELHI", "code": "DLI", "category": "NSG-1", "division": "Delhi", "zone": "NR", "district": "New Delhi", "state": "Delhi", "awarded_date": "2025-04-24", "expiry_date": "2027-04-24"},
+      {"sno": 145, "name": "HAZRAT NIZAMUDDIN", "code": "NZM", "category": "NSG-1", "division": "Delhi", "zone": "NR", "district": "New Delhi", "state": "Delhi", "awarded_date": "2025-04-24", "expiry_date": "2027-04-24"},
+      {"sno": 146, "name": "ANAND VIHAR TERMINAL", "code": "ANVT", "category": "NSG-2", "division": "Delhi", "zone": "NR", "district": "New Delhi", "state": "Delhi", "awarded_date": "2025-04-24", "expiry_date": "2027-04-24"},
+      {"sno": 147, "name": "DELHI SHAHDARA", "code": "DSA", "category": "NSG-3", "division": "Delhi", "zone": "NR", "district": "New Delhi", "state": "Delhi", "awarded_date": "2025-04-24", "expiry_date": "2027-04-24"},
+      {"sno": 148, "name": "DELHI CANTT", "code": "DEC", "category": "NSG-3", "division": "Delhi", "zone": "NR", "district": "New Delhi", "state": "Delhi", "awarded_date": "2025-04-24", "expiry_date": "2027-04-24"},
+      {"sno": 149, "name": "CHARBAGH  LUCKNOW", "code": "LKO", "category": "NSG-2", "division": "Lucknow", "zone": "NR", "district": "Lucknow", "state": "Uttar Pradesh", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 150, "name": "DELHI SARAI ROHILLA", "code": "DEE", "category": "NSG-2", "division": "Delhi", "zone": "NR", "district": "New Delhi", "state": "Delhi", "awarded_date": "2025-04-24", "expiry_date": "2027-04-24"},
+      {"sno": 151, "name": "OKHLA", "code": "OKA", "category": "NSG-5", "division": "Delhi", "zone": "NR", "district": "New Delhi", "state": "Delhi", "awarded_date": "2025-04-24", "expiry_date": "2027-04-24"},
+      {"sno": 152, "name": "LALKUAN", "code": "LKU", "category": "NSG-4", "division": "Izzatnagar", "zone": "NER", "district": "Nainital", "state": "Uttarakhand", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 153, "name": "MANINAGAR", "code": "MAN", "category": "NSG-4", "division": "AHMEDABAD", "zone": "WR", "district": "Ahmedabad", "state": "Gujarat", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 154, "name": "TALALA", "code": "TAV", "category": "NSG-6", "division": "BHAVNAGAR", "zone": "WR", "district": "Gir Somnath", "state": "Gujarat", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 155, "name": "UNJHA", "code": "UJA", "category": "NSG-4", "division": "AHMEDABAD", "zone": "WR", "district": "Mahesana", "state": "Gujarat", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 156, "name": "KATHGODAM", "code": "KGM", "category": "NSG-3", "division": "Izzatnagar", "zone": "NER", "district": "Nainital", "state": "Uttarakhand", "awarded_date": "2025-05-06", "expiry_date": "2027-05-06"},
+      {"sno": 157, "name": "NILAMBUR", "code": "NIL", "category": "NSG-5", "division": "PALAKKAD", "zone": "SR", "district": "Palakkad", "state": "Kerala", "awarded_date": "2025-06-11", "expiry_date": "2027-06-11"},
+      {"sno": 158, "name": "PALAKKAD TOWN", "code": "PGTN", "category": "NSG-5", "division": "PALAKKAD", "zone": "SR", "district": "Palakkad", "state": "Kerala", "awarded_date": "2025-06-11", "expiry_date": "2027-06-11"},
+      {"sno": 159, "name": "LALITPUR", "code": "LAR", "category": "NSG-4", "division": "JHANSI", "zone": "NCR", "district": "Lalitpur", "state": "Uttar Pradesh", "awarded_date": "2025-06-11", "expiry_date": "2027-06-11"},
+      {"sno": 160, "name": "PATHANKOT CANTT STATION", "code": "PTKC", "category": "NSG-3", "division": "Firozpur", "zone": "NR", "district": "Pathankot", "state": "Punjab", "awarded_date": "2025-08-27", "expiry_date": "2027-08-27"},
+      {"sno": 161, "name": "OTTAPALAM", "code": "OTP", "category": "NSG-3", "division": "PALAKKAD", "zone": "SR", "district": "Palakkad", "state": "Kerala", "awarded_date": "2025-06-11", "expiry_date": "2027-06-11"},
+      {"sno": 162, "name": "SAWAI MADHOPUR RAILWAY", "code": "SWM", "category": "NSG-3", "division": "Kota", "zone": "WCR", "district": "Sawai Madhopur", "state": "Rajasthan", "awarded_date": "2025-07-02", "expiry_date": "2027-07-02"},
+      {"sno": 163, "name": "AJMER", "code": "AII", "category": "NSG-2", "division": "Ajmer", "zone": "NWR", "district": "Ajmer", "state": "Rajasthan", "awarded_date": "2025-07-02", "expiry_date": "2027-07-02"},
+      {"sno": 164, "name": "JAIPUR", "code": "JP", "category": "NSG-2", "division": "Jaipur", "zone": "NWR", "district": "Jaipur", "state": "Rajasthan", "awarded_date": "2025-07-02", "expiry_date": "2027-07-02"},
+      {"sno": 165, "name": "DEORIA", "code": "DEOS", "category": "NSG-3", "division": "BANARAS", "zone": "NER", "district": "Gorakhpur", "state": "Uttar Pradesh", "awarded_date": "2025-07-02", "expiry_date": "2027-07-02"},
+      {"sno": 166, "name": "GORAKHPUR", "code": "GKP", "category": "NSG-1", "division": "LUCKNOW", "zone": "NER", "district": "Gorakhpur", "state": "Uttar Pradesh", "awarded_date": "2025-07-02", "expiry_date": "2027-07-02"},
+      {"sno": 167, "name": "PRAYAGRAJ", "code": "PRYJ", "category": "NSG-2", "division": "PRAYAGRAJ", "zone": "NCR", "district": "Prayagraj", "state": "Uttar Pradesh", "awarded_date": "2025-07-02", "expiry_date": "2027-07-02"},
+      {"sno": 168, "name": "TRIPUNITHURA", "code": "TRTR", "category": "NSG-5", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Ernakulam", "state": "Kerala", "awarded_date": "2025-07-02", "expiry_date": "2027-07-02"},
+      {"sno": 169, "name": "BATHINDA", "code": "BTI", "category": "NSG-3", "division": "AMBALA", "zone": "NR", "district": "Bathinda", "state": "Punjab", "awarded_date": "2025-07-02", "expiry_date": "2027-07-02"},
+      {"sno": 170, "name": "PALANI", "code": "PLNI", "category": "NSG-4", "division": "Madurai", "zone": "SR", "district": "Dindigul", "state": "Tamil Nadu", "awarded_date": "2025-08-27", "expiry_date": "2027-08-27"},
+      {"sno": 171, "name": "THOOTHUKUDI", "code": "TN", "category": "NSG-3", "division": "Madurai", "zone": "SR", "district": "Thoothukkudi", "state": "Tamil Nadu", "awarded_date": "2025-08-27", "expiry_date": "2027-08-27"},
+      {"sno": 172, "name": "SENGOTTAI", "code": "SCT", "category": "NSG-5", "division": "Madurai", "zone": "SR", "district": "Tirunelveli", "state": "Tamil Nadu", "awarded_date": "2025-08-27", "expiry_date": "2027-08-27"},
+      {"sno": 173, "name": "TENKASI", "code": "TSI", "category": "NSG-3", "division": "Madurai", "zone": "SR", "district": "Tirunelveli", "state": "Tamil Nadu", "awarded_date": "2025-08-27", "expiry_date": "2027-08-27"},
+      {"sno": 174, "name": "KURDUWADI", "code": "KWV", "category": "NSG-4", "division": "Solapur", "zone": "CR", "district": "Solapur", "state": "Maharashtra", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 175, "name": "GANGAPUR ROAD", "code": "GUR", "category": "NSG-3", "division": "Solapur", "zone": "CR", "district": "Solapur", "state": "Maharashtra", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 176, "name": "AKKALKOT", "code": "AKOR", "category": "NSG-5", "division": "Solapur", "zone": "CR", "district": "Solapur", "state": "Maharashtra", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 177, "name": "PANDHARPUR", "code": "PVR", "category": "NSG-4", "division": "Solapur", "zone": "CR", "district": "Solapur", "state": "Maharashtra", "awarded_date": "2025-11-28", "expiry_date": "2027-11-28"},
+      {"sno": 178, "name": "LATUR", "code": "LUR", "category": "NSG-4", "division": "Solapur", "zone": "CR", "district": "Solapur", "state": "Maharashtra", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 179, "name": "DHARASHIV", "code": "DRSV", "category": "NSG-5", "division": "Solapur", "zone": "CR", "district": "Dharashiv", "state": "Maharashtra", "awarded_date": "2025-11-28", "expiry_date": "2027-11-28"},
+      {"sno": 180, "name": "WADI", "code": "WADI", "category": "NSG-4", "division": "Solapur Division", "zone": "CR", "district": "Kalaburagi", "state": "Karnataka", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 181, "name": "SOLAPUR", "code": "SUR", "category": "NSG-2", "division": "Solapur", "zone": "CR", "district": "Solapur", "state": "Maharashtra", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 182, "name": "NAGERCOIL", "code": "NCJ", "category": "NSG-3", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Kanyakumari", "state": "Tamil Nadu", "awarded_date": "2025-12-04", "expiry_date": "2027-12-04"},
+      {"sno": 183, "name": "TIRUVALLA", "code": "TRVL", "category": "NSG-3", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Pathanamthitta", "state": "Kerala", "awarded_date": "2025-11-28", "expiry_date": "2027-11-28"},
+      {"sno": 184, "name": "BHAKTI NAGAR", "code": "BKNG", "category": "NSG-5", "division": "RAJKOT", "zone": "WR", "district": "Rajkot", "state": "Gujarat", "awarded_date": "2025-12-04", "expiry_date": "2027-12-04"},
+      {"sno": 185, "name": "HAPA", "code": "HAPA", "category": "NSG-5", "division": "RAJKOT", "zone": "WR", "district": "Jamnagar", "state": "Gujarat", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 186, "name": "NEW ALIPURDUAR", "code": "NOQ", "category": "NSG-3", "division": "Alipurduar", "zone": "NFR", "district": "Alipurduar", "state": "West Bengal", "awarded_date": "2025-12-04", "expiry_date": "2027-12-04"},
+      {"sno": 187, "name": "KOKRAJHAR", "code": "KOJ", "category": "NSG-4", "division": "ALIPURDUAR", "zone": "NFR", "district": "Kokrajhar", "state": "Assam", "awarded_date": "2026-01-31", "expiry_date": "2028-01-31"},
+      {"sno": 188, "name": "FALAKATA", "code": "FLK", "category": "NSG-5", "division": "Alipurduar", "zone": "NFR", "district": "Alipurduar", "state": "West Bengal", "awarded_date": "2025-12-04", "expiry_date": "2027-12-04"},
+      {"sno": 189, "name": "GOLAKGANJ", "code": "GKJ", "category": "NSG-6", "division": "ALIPURDUAR", "zone": "NFR", "district": "Dhubri", "state": "Assam", "awarded_date": "2026-01-01", "expiry_date": "2028-01-01"},
+      {"sno": 190, "name": "NEW COOCHBEHAR", "code": "NCB", "category": "NSG-3", "division": "Alipurduar", "zone": "NFR", "district": "Coochbehar", "state": "West Bengal", "awarded_date": "2025-12-04", "expiry_date": "2027-12-04"},
+      {"sno": 191, "name": "BINNAGURI", "code": "BNV", "category": "NSG-5", "division": "Alipurduar", "zone": "NFR", "district": "Alipurduar", "state": "West Bengal", "awarded_date": "2025-12-04", "expiry_date": "2027-12-04"},
+      {"sno": 192, "name": "DINHATA", "code": "DHH", "category": "NSG-5", "division": "Alipurduar", "zone": "NFR", "district": "Coochbehar", "state": "West Bengal", "awarded_date": "2025-12-04", "expiry_date": "2027-12-04"},
+      {"sno": 193, "name": "DHUPGURI", "code": "DQG", "category": "NSG-4", "division": "Alipurduar", "zone": "NFR", "district": "Jalpaiguri", "state": "West Bengal", "awarded_date": "2025-12-04", "expiry_date": "2027-12-04"},
+      {"sno": 194, "name": "TRIVANDRUM CENTRAL", "code": "TVC", "category": "NSG-2", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Thiruvananthapuram", "state": "Kerala", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 195, "name": "JALPAIGURI ROAD", "code": "JPE", "category": "NSG-5", "division": "Alipurduar", "zone": "NFR", "district": "Jalpaiguri", "state": "West Bengal", "awarded_date": "2025-12-04", "expiry_date": "2027-12-04"},
+      {"sno": 196, "name": "NEW MAL JN", "code": "NMZ", "category": "NSG-5", "division": "Alipurduar", "zone": "NFR", "district": "Jalpaiguri", "state": "West Bengal", "awarded_date": "2025-12-04", "expiry_date": "2027-12-04"},
+      {"sno": 197, "name": "ALAPPUZHA", "code": "ALLP", "category": "NSG-3", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Alappuzha", "state": "Kerala", "awarded_date": "2025-12-04", "expiry_date": "2027-12-04"},
+      {"sno": 198, "name": "SION", "code": "SIN", "category": "SG-1", "division": "MUMBAI", "zone": "CR", "district": "Navi Mumbai Municipal Corporation (Thane Zone-4)", "state": "Maharashtra", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 199, "name": "MATUNGA", "code": "MTN", "category": "SG-2", "division": "MUMBAI", "zone": "CR", "district": "Bhiwandi Municipal Corporation (Thane Zone-5)", "state": "Maharashtra", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 200, "name": "CHINCHPOKLI", "code": "CHG", "category": "SG-2", "division": "MUMBAI", "zone": "CR", "district": "Navi Mumbai Municipal Corporation (Thane Zone-2)", "state": "Maharashtra", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 201, "name": "DIMAPUR", "code": "DMV", "category": "NSG-3", "division": "LUMDING", "zone": "NFR", "district": "Dimapur", "state": "Nagaland", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 202, "name": "BYCULLA", "code": "BY", "category": "SG-2", "division": "MUMBAI", "zone": "CR", "district": "Navi Mumbai Municipal Corporation (Thane Zone-3)", "state": "Maharashtra", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 203, "name": "MASJID", "code": "MSD", "category": "SG-2", "division": "MUMBAI", "zone": "CR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 204, "name": "CHHATRAPATI SHIVAJI MAHARAJ TERMINUS", "code": "CSTM", "category": "NSG-1", "division": "MUMBAI", "zone": "CR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 205, "name": "DADAR", "code": "DDR", "category": "NSG-1", "division": "MUMBAI CENTRAL", "zone": "WR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 206, "name": "CURREY ROAD", "code": "CRD", "category": "SG-2", "division": "MUMBAI", "zone": "CR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 207, "name": "GHATKOPAR STATION", "code": "GC", "category": "SG-1", "division": "MUMBAI", "zone": "CR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 208, "name": "VARKALA", "code": "VAK", "category": "NSG-3", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Thiruvananthapuram", "state": "Kerala", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 209, "name": "THIRUVANANTHAPURAM PETTAH", "code": "TVP", "category": "NSG-6", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Thiruvananthapuram", "state": "Kerala", "awarded_date": "2025-11-28", "expiry_date": "2027-11-28"},
+      {"sno": 210, "name": "THIRUVANANTHAPURAM NORTH", "code": "TVCN", "category": "NSG-3", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Thiruvananthapuram", "state": "Kerala", "awarded_date": "2025-11-28", "expiry_date": "2027-11-28"},
+      {"sno": 211, "name": "PAREL", "code": "PR", "category": "SG-3", "division": "MUMBAI", "zone": "CR", "district": "Kalyan Tahashil (Thane Zone-8)", "state": "Maharashtra", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 212, "name": "BHANDUP STATION", "code": "BND", "category": "SG-1", "division": "MUMBAI", "zone": "CR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2026-01-29", "expiry_date": "2028-01-29"},
+      {"sno": 213, "name": "VIKHROLI STATION", "code": "VK", "category": "SG-1", "division": "MUMBAI", "zone": "CR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 214, "name": "VIDYAVIHAR STATION", "code": "VVH", "category": "SG-2", "division": "MUMBAI", "zone": "CR", "district": "Thane Municipal Corporation (Thane Zone-1)", "state": "Maharashtra", "awarded_date": "2025-10-24", "expiry_date": "2027-10-24"},
+      {"sno": 215, "name": "ERNAKULAM TOWN", "code": "ERN", "category": "NSG-2", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Ernakulam", "state": "Kerala", "awarded_date": "2025-12-04", "expiry_date": "2027-12-04"},
+      {"sno": 216, "name": "AMBALAPUZHA", "code": "AMPA", "category": "NSG-5", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Alappuzha", "state": "Kerala", "awarded_date": "2025-12-04", "expiry_date": "2027-12-04"},
+      {"sno": 217, "name": "MANGALORE CENTRAL", "code": "MAQ", "category": "NSG-2", "division": "Palakkad", "zone": "SR", "district": "Dakshina Kannada", "state": "Karnataka", "awarded_date": "2026-01-01", "expiry_date": "2028-01-01"},
+      {"sno": 218, "name": "MANGALORE", "code": "MAJN", "category": "NSG-3", "division": "Palakkad", "zone": "SR", "district": "Dakshina Kannada", "state": "Karnataka", "awarded_date": "2026-01-01", "expiry_date": "2028-01-01"},
+      {"sno": 219, "name": "ERODE", "code": "ETW", "category": "NSG-2", "division": "SALEM", "zone": "SR", "district": "Erode", "state": "Tamil Nadu", "awarded_date": "2026-01-01", "expiry_date": "2028-01-01"},
+      {"sno": 220, "name": "MULUND STATION", "code": "MLND", "category": "SG-1", "division": "MUMBAI", "zone": "CR", "district": "Navi Mumbai Municipal Corporation (Thane Zone-3)", "state": "Maharashtra", "awarded_date": "2025-11-28", "expiry_date": "2027-11-28"},
+      {"sno": 221, "name": "KALVA STATION", "code": "KLVA", "category": "SG-2", "division": "MUMBAI", "zone": "CR", "district": "Navi Mumbai Municipal Corporation (Thane Zone-3)", "state": "Maharashtra", "awarded_date": "2026-01-01", "expiry_date": "2028-01-01"},
+      {"sno": 222, "name": "THANE", "code": "TNA", "category": "NSG-1", "division": "MUMBAI", "zone": "CR", "district": "Navi Mumbai Municipal Corporation (Thane Zone-4)", "state": "Maharashtra", "awarded_date": "2025-11-28", "expiry_date": "2027-11-28"},
+      {"sno": 223, "name": "MAVELIKARA", "code": "MVLK", "category": "NSG-5", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Alappuzha", "state": "Kerala", "awarded_date": "2025-12-04", "expiry_date": "2027-12-04"},
+      {"sno": 224, "name": "PARASSALA", "code": "PASA", "category": "NSG-5", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Thiruvananthapuram", "state": "Kerala", "awarded_date": "2025-12-01", "expiry_date": "2027-12-01"},
+      {"sno": 225, "name": "KOLLAM", "code": "QLN", "category": "NSG-2", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Kollam", "state": "Kerala", "awarded_date": "2025-12-01", "expiry_date": "2027-12-01"},
+      {"sno": 226, "name": "CHANGANACHERI", "code": "CGY", "category": "NSG-4", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Kottayam", "state": "Kerala", "awarded_date": "2025-12-04", "expiry_date": "2027-12-04"},
+      {"sno": 227, "name": "ALUVA", "code": "AWY", "category": "NSG-3", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Ernakulam", "state": "Kerala", "awarded_date": "2025-12-04", "expiry_date": "2027-12-04"},
+      {"sno": 228, "name": "THRISSUR", "code": "TCR", "category": "NSG-2", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Thrissur", "state": "Kerala", "awarded_date": "2025-12-04", "expiry_date": "2027-12-04"},
+      {"sno": 229, "name": "ERNAKULAM", "code": "ERS", "category": "NSG-2", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Ernakulam", "state": "Kerala", "awarded_date": "2025-12-04", "expiry_date": "2027-12-04"},
+      {"sno": 230, "name": "KARUNAGAPPALLY", "code": "KPY", "category": "NSG-4", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Kollam", "state": "Kerala", "awarded_date": "2025-12-01", "expiry_date": "2027-12-01"},
+      {"sno": 231, "name": "CHENGANNUR", "code": "CNGR", "category": "NSG-3", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Alappuzha", "state": "Kerala", "awarded_date": "2025-12-04", "expiry_date": "2027-12-04"},
+      {"sno": 232, "name": "VILLIVAKKAM", "code": "VLK", "category": "SG-3", "division": "CHENNAI", "zone": "SR", "district": "Thiruvallur", "state": "Tamil Nadu", "awarded_date": "2026-01-01", "expiry_date": "2028-01-01"},
+      {"sno": 233, "name": "SANDHURST ROAD", "code": "SNRD", "category": "SG-2", "division": "MUMBAI", "zone": "CR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-11-28", "expiry_date": "2027-11-28"},
+      {"sno": 234, "name": "KURLA", "code": "CLA", "category": "SG-1", "division": "MUMBAI", "zone": "CR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-11-28", "expiry_date": "2027-11-28"},
+      {"sno": 235, "name": "KANJURMARG", "code": "KJRD", "category": "SG-2", "division": "MUMBAI", "zone": "CR", "district": "Greater Mumbai", "state": "Maharashtra", "awarded_date": "2025-11-28", "expiry_date": "2027-11-28"},
+      {"sno": 236, "name": "ANAND", "code": "ANND", "category": "NSG-3", "division": "VADODARA", "zone": "WR", "district": "Anand", "state": "Gujarat", "awarded_date": "2026-01-01", "expiry_date": "2028-01-01"},
+      {"sno": 237, "name": "PURATCHI THALAIVAR DR MG RAMACHANDRAN CENTRAL", "code": "MAS", "category": "NSG-1", "division": "CHENNAI", "zone": "SR", "district": "Chennai", "state": "Tamil Nadu", "awarded_date": "2026-01-01", "expiry_date": "2028-01-01"},
+      {"sno": 238, "name": "VANIYAMBADI", "code": "VN", "category": "NSG-5", "division": "CHENNAI", "zone": "SR", "district": "Vellore", "state": "Tamil Nadu", "awarded_date": "2026-01-01", "expiry_date": "2028-01-01"},
+      {"sno": 239, "name": "RAJAPALAYAM", "code": "RJPM", "category": "NSG-4", "division": "Madurai", "zone": "SR", "district": "Virudhunagar", "state": "Tamil Nadu", "awarded_date": "2026-01-01", "expiry_date": "2028-01-01"},
+      {"sno": 240, "name": "PARAPANANGADI", "code": "PGI", "category": "NSG-5", "division": "PALAKKAD", "zone": "SR", "district": "Malappuram", "state": "Kerala", "awarded_date": "2026-01-29", "expiry_date": "2028-01-29"},
+      {"sno": 241, "name": "MOORE MARKET COMPLEX-CHENNAI", "code": "MASS", "category": "SG-2", "division": "CHENNAI", "zone": "SR", "district": "Chennai", "state": "Tamil Nadu", "awarded_date": "2026-01-01", "expiry_date": "2028-01-01"},
+      {"sno": 242, "name": "CHENNAI BEACH", "code": "MSB", "category": "NSG-2", "division": "CHENNAI", "zone": "SR", "district": "Chennai", "state": "Tamil Nadu", "awarded_date": "2026-01-01", "expiry_date": "2028-01-01"},
+      {"sno": 243, "name": "TIRUR", "code": "TIR", "category": "NSG-3", "division": "PALAKKAD", "zone": "SR", "district": "Malappuram", "state": "Kerala", "awarded_date": "2026-01-29", "expiry_date": "2028-01-29"},
+      {"sno": 244, "name": "TIRUCHIRAPALLI FORT", "code": "TP", "category": "NSG-5", "division": "TIRUCHIRAPALLI", "zone": "SR", "district": "Tiruchirappalli", "state": "Tamil Nadu", "awarded_date": "2026-01-01", "expiry_date": "2028-01-01"},
+      {"sno": 245, "name": "PALAKKAD", "code": "PGT", "category": "NSG-2", "division": "PALAKKAD", "zone": "SR", "district": "Palakkad", "state": "Kerala", "awarded_date": "2026-01-01", "expiry_date": "2028-01-01"},
+      {"sno": 246, "name": "SHORANUR", "code": "SRR", "category": "NSG-3", "division": "PALAKKAD", "zone": "SR", "district": "Palakkad", "state": "Kerala", "awarded_date": "2026-01-29", "expiry_date": "2028-01-29"},
+      {"sno": 247, "name": "KOTTAYAM", "code": "KTYM", "category": "NSG-3", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Kottayam", "state": "Kerala", "awarded_date": "2026-01-01", "expiry_date": "2028-01-01"},
+      {"sno": 248, "name": "VADAKARA", "code": "BDJ", "category": "NSG-3", "division": "PALAKKAD", "zone": "SR", "district": "Kozhikode", "state": "Kerala", "awarded_date": "2026-01-01", "expiry_date": "2028-01-01"},
+      {"sno": 249, "name": "THANJAVUR", "code": "TJ", "category": "NSG-3", "division": "TIRUCHIRAPALLI", "zone": "SR", "district": "Thanjavur", "state": "Tamil Nadu", "awarded_date": "2026-01-01", "expiry_date": "2028-01-01"},
+      {"sno": 250, "name": "NAGAPATTINAM", "code": "NGT", "category": "NSG-3", "division": "TIRUCHIRAPALLI", "zone": "SR", "district": "Nagapattinam", "state": "Tamil Nadu", "awarded_date": "2026-01-01", "expiry_date": "2028-01-01"},
+      {"sno": 251, "name": "VELANKANNI", "code": "VLKN", "category": "NSG-5", "division": "TIRUCHIRAPALLI", "zone": "SR", "district": "Nagapattinam", "state": "Tamil Nadu", "awarded_date": "2026-01-01", "expiry_date": "2028-01-01"},
+      {"sno": 252, "name": "NEYYATTINKARA", "code": "NYY", "category": "NSG-5", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Thiruvananthapuram", "state": "Kerala", "awarded_date": "2026-01-29", "expiry_date": "2028-01-29"},
+      {"sno": 253, "name": "KOZHIKODE", "code": "CLT", "category": "NSG-2", "division": "PALAKKAD", "zone": "SR", "district": "Kozhikode", "state": "Kerala", "awarded_date": "2026-01-29", "expiry_date": "2028-01-29"},
+      {"sno": 254, "name": "POLLACHI", "code": "POY", "category": "NSG-5", "division": "PALAKKAD", "zone": "SR", "district": "Coimbatore", "state": "Tamil Nadu", "awarded_date": "2026-01-29", "expiry_date": "2028-01-29"},
+      {"sno": 255, "name": "BALLY", "code": "BLY", "category": "SG-3", "division": "Howrah", "zone": "ER", "district": "Howrah", "state": "West Bengal", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 256, "name": "HOWRAH", "code": "HWH", "category": "NSG-1", "division": "Howrah", "zone": "ER", "district": "Howrah", "state": "West Bengal", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 257, "name": "CHALAKKUDI", "code": "CKI", "category": "NSG-5", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Thrissur", "state": "Kerala", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 258, "name": "RAMESWARAM", "code": "RMM", "category": "NSG-3", "division": "Madurai", "zone": "SR", "district": "Ramanathapuram", "state": "Tamil Nadu", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 259, "name": "KANNUR", "code": "CAN", "category": "NSG-2", "division": "PALAKKAD", "zone": "SR", "district": "Kannur", "state": "Kerala", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 260, "name": "ANGAMALY", "code": "AFK", "category": "NSG-4", "division": "THIRUVANANTHAPURAM", "zone": "SR", "district": "Ernakulam", "state": "Kerala", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 261, "name": "SRIRANGAM", "code": "SRGM", "category": "NSG-5", "division": "TIRUCHIRAPALLI", "zone": "SR", "district": "Tiruchirappalli", "state": "Tamil Nadu", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 262, "name": "BADARPUR", "code": "BPB", "category": "NSG-5", "division": "LUMDING", "zone": "NFR", "district": "Karimganj", "state": "Assam", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 263, "name": "DIPHU", "code": "DPU", "category": "NSG-5", "division": "LUMDING", "zone": "NFR", "district": "Karbi Anglong", "state": "Assam", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 264, "name": "ATTUR", "code": "ATU", "category": "NSG-5", "division": "SALEM", "zone": "SR", "district": "Salem", "state": "Tamil Nadu", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 265, "name": "SILCHAR", "code": "SCL", "category": "NSG-4", "division": "LUMDING", "zone": "NFR", "district": "Cachar", "state": "Assam", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 266, "name": "SARUPATHPAR", "code": "SZR", "category": "NSG-5", "division": "LUMDING", "zone": "NFR", "district": "Golaghat", "state": "Assam", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 267, "name": "NEW HAFLONG", "code": "NHLG", "category": "NSG-4", "division": "LUMDING", "zone": "NFR", "district": "Dima Hasao", "state": "Assam", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 268, "name": "LUMBDING", "code": "LMG", "category": "NSG-4", "division": "LUMDING", "zone": "NFR", "district": "Hojai", "state": "Assam", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 269, "name": "JAGIROAD", "code": "JID", "category": "NSG-5", "division": "LUMDING", "zone": "NFR", "district": "Marigaon", "state": "Assam", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 270, "name": "KARIMGANJ", "code": "KXJ", "category": "NSG-3", "division": "LUMDING", "zone": "NFR", "district": "Karimganj", "state": "Assam", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 271, "name": "LANKA", "code": "LKA", "category": "NSG-5", "division": "LUMDING", "zone": "NFR", "district": "Hojai", "state": "Assam", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 272, "name": "HOJAI", "code": "HJI", "category": "NSG-5", "division": "LUMDING", "zone": "NFR", "district": "Hojai", "state": "Assam", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 273, "name": "TALEGAON", "code": "TGN", "category": "SG-3", "division": "Pune", "zone": "CR", "district": "Pune Municipal Corporation", "state": "Maharashtra", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 274, "name": "KARAD", "code": "KRD", "category": "NSG-5", "division": "Pune", "zone": "CR", "district": "Satara", "state": "Maharashtra", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 275, "name": "SANGLI", "code": "SLI", "category": "NSG-4", "division": "Pune", "zone": "CR", "district": "Sangli", "state": "Maharashtra", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 276, "name": "HADAPSAR", "code": "HDP", "category": "NSG-6", "division": "Pune", "zone": "CR", "district": "Pune Municipal Corporation", "state": "Maharashtra", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 277, "name": "AKURDI", "code": "AKRD", "category": "SG-3", "division": "Pune", "zone": "CR", "district": "Pune Municipal Corporation", "state": "Maharashtra", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 278, "name": "BARAMATI", "code": "BRMT", "category": "NSG-5", "division": "Pune", "zone": "CR", "district": "Pune Municipal Corporation", "state": "Maharashtra", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 279, "name": "CHAPARMUKH", "code": "CPKK", "category": "NSG-5", "division": "LUMDING", "zone": "NFR", "district": "Nagaon", "state": "Assam", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 280, "name": "KOVILPATTI", "code": "CVP", "category": "NSG-3", "division": "Madurai", "zone": "SR", "district": "Thoothukkudi", "state": "Tamil Nadu", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 281, "name": "ROURKELA", "code": "ROU", "category": "NSG-3", "division": "Chakradharpur", "zone": "SER", "district": "SUNDARGARH(EXCEPT MUNICIPAL CORPORATION)", "state": "Orissa", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 282, "name": "UDHAGAMANDALAM", "code": "UAM", "category": "NSG-4", "division": "SALEM", "zone": "SR", "district": "The Nilgiris", "state": "Tamil Nadu", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 283, "name": "JHARSUGUDA", "code": "JSG", "category": "NSG-3", "division": "Chakradharpur", "zone": "SER", "district": "JHARSUGUDA", "state": "Orissa", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 284, "name": "BARGARH", "code": "BRG", "category": "NSG-5", "division": "Sambalpur", "zone": "ECOR", "district": "BARAGARH", "state": "Orissa", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 285, "name": "SAMBALPUR", "code": "SBP", "category": "NSG-3", "division": "Sambalpur", "zone": "ECOR", "district": "SAMBALPUR MUNICIPAL CORPORATION", "state": "Orissa", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 286, "name": "TITILAGARH", "code": "TIG", "category": "NSG-4", "division": "Sambalpur", "zone": "ECOR", "district": "BOLANGIR", "state": "Orissa", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 287, "name": "THIRUCHENDUR", "code": "TCN", "category": "NSG-4", "division": "Madurai", "zone": "SR", "district": "Thoothukkudi", "state": "Tamil Nadu", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 288, "name": "KUMBAKONAM", "code": "KMU", "category": "NSG-3", "division": "TIRUCHIRAPALLI", "zone": "SR", "district": "Thanjavur", "state": "Tamil Nadu", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 289, "name": "HASSAN", "code": "HAS", "category": "NSG-4", "division": "Mysuru", "zone": "SWR", "district": "Hassan", "state": "Karnataka", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 290, "name": "CUDDALORE PORT", "code": "CUPJ", "category": "NSG-5", "division": "TIRUCHIRAPALLI", "zone": "SR", "district": "Cuddalore", "state": "Tamil Nadu", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 291, "name": "TENI", "code": "TENI", "category": "NSG-5", "division": "Madurai", "zone": "SR", "district": "Theni", "state": "Tamil Nadu", "awarded_date": "2026-03-30", "expiry_date": "2028-03-30"},
+      {"sno": 292, "name": "TIRUPPUR", "code": "TUP", "category": "NSG-3", "division": "SALEM", "zone": "SR", "district": "Tirupur", "state": "Tamil Nadu", "awarded_date": "2026-06-02", "expiry_date": "2028-06-02"},
+      {"sno": 293, "name": "KASARAGOD", "code": "KGQ", "category": "NSG-3", "division": "PALAKKAD", "zone": "SR", "district": "Kasaragod", "state": "Kerala", "awarded_date": "2026-06-02", "expiry_date": "2028-06-02"},
+      {"sno": 294, "name": "KANHANGAD", "code": "KZE", "category": "NSG-4", "division": "PALAKKAD", "zone": "SR", "district": "Kasaragod", "state": "Kerala", "awarded_date": "2026-06-02", "expiry_date": "2028-06-02"},
+      {"sno": 295, "name": "TIRUCHIRAPPALLI", "code": "TPJ", "category": "NSG-2", "division": "TIRUCHIRAPALLI", "zone": "SR", "district": "Tiruchirappalli", "state": "Tamil Nadu", "awarded_date": "2026-06-02", "expiry_date": "2028-06-02"},
+      {"sno": 296, "name": "KARUR", "code": "KRR", "category": "NSG-4", "division": "SALEM", "zone": "SR", "district": "Karur", "state": "Tamil Nadu", "awarded_date": "2026-06-02", "expiry_date": "2028-06-02"},
+      {"sno": 297, "name": "VIJAYAWADA", "code": "NTR", "category": "NSG-1", "division": "VIJAYAWADA", "zone": "SCR", "district": "VIJAYAWADA", "state": "ANDHRA PRADESH", "awarded_date": "2025-01-16", "expiry_date": "2027-01-16"},
+      {"sno": 298, "name": "VISAKHAPATNAM", "code": "VSKP", "category": "NSG-1", "division": "VISAKHAPATNAM", "zone": "SCOR", "district": "VISHAKAPATTINAM", "state": "ANDHRA PRADESH", "awarded_date": "2024-09-12", "expiry_date": "2026-09-12"},
+    ];
+
+    const COORDS = {
+      "TLY": [11.748, 75.491], "UHP": [32.926, 75.141], "JAT": [32.729, 74.862], "SIR": [30.629, 76.389],
+      "MTP": [11.297, 76.944], "NDB": [21.368, 74.243], "DWK": [22.239, 68.968], "AKV": [21.627, 72.987],
+      "VRL": [20.907, 70.37], "BH": [21.722, 73.005], "AY": [26.795, 82.194], "CAN": [11.869, 75.369],
+      "NBH": [24.626, 74.677], "COR": [24.889, 74.629], "GAYA": [24.796, 84.999], "BRC": [22.316, 73.181],
+      "ASH": [26.837, 80.906], "VSKP": [17.686, 83.218], "NTSK": [27.489, 95.361], "KYQ": [26.179, 91.681],
+      "MSH": [23.601, 72.398], "SBT": [23.075, 72.619], "ANG": [19.094, 74.74], "CCH": [18.627, 73.812],
+      "DD": [18.456, 74.583], "KPG": [19.714, 74.476], "SNSI": [19.767, 74.476], "STR": [17.685, 73.999],
+      "KYJ": [9.178, 76.502], "MRJ": [16.828, 74.654], "SVJR": [18.524, 73.842], "KOP": [16.705, 74.237],
+      "PUNE": [18.528, 73.874], "R": [21.225, 81.632], "DURG": [21.19, 81.285], "BSP": [22.087, 82.149],
+      "HJP": [25.693, 85.194], "SRTL": [9.884, 76.329], "PUU": [9.01, 76.927], "SA": [11.65, 78.145],
+      "KSJ": [27.812, 78.645], "BZA": [16.52, 80.62], "NTR": [16.52, 80.62], "CDE": [24.918, 74.643], "UDZ": [24.574, 73.686], "BRY": [28.345, 79.413],
+      "FTD": [22.8, 75.827], "GPX": [22.755, 75.689], "DMO": [23.833, 79.442], "RTA": [24.599, 77.586],
+      "AF": [27.177, 78.002], "AH": [27.185, 77.671], "CYI": [22.254, 73.197], "GUV": [10.595, 76.039],
+      "KKZ": [9.001, 76.771], "DHO": [26.699, 77.867], "GDA": [22.776, 73.616], "RKM": [27.183, 77.98],
+      "MTJ": [27.488, 77.672], "KSV": [27.6, 77.699], "GUNA": [24.647, 77.316], "IDH": [27.18, 77.97],
+      "RNC": [23.344, 85.31], "KOAA": [22.563, 88.344], "HTE": [23.356, 85.297], "BKSC": [23.675, 86.151],
+      "TATA": [22.782, 86.183], "KGP": [22.356, 87.319], "BPC": [24.095, 88.254], "MBB": [24.181, 88.267],
+      "QLD": [11.494, 75.657], "FK": [11.178, 75.838], "AAM": [10.993, 76.106], "KTU": [10.872, 76.018],
+      "WKI": [10.606, 76.31], "BHUJ": [23.253, 69.665], "PNU": [24.176, 72.429], "GIM": [23.075, 70.132],
+      "MB": [28.835, 78.776], "TDL": [27.208, 78.517], "SEGM": [20.799, 78.617], "WR": [20.745, 78.602],
+      "BPQ": [19.924, 79.372], "CD": [19.952, 79.293], "KYE": [23.755, 78.753], "MKRN": [23.841, 78.773],
+      "PRRB": [25.434, 81.866], "HRI": [27.399, 80.134], "GY": [21.455, 80.194], "WKR": [22.607, 70.944],
+      "BTD": [22.02, 71.67], "AN": [21.034, 75.059], "DDE": [21.326, 74.569], "ORAI": [25.993, 79.445],
+      "VDG": [23.784, 72.627], "PAY": [12.098, 75.197], "PAZ": [12.177, 75.228], "HSX": [31.534, 75.911],
+      "MLDT": [25.003, 88.141], "KTJ": [24.895, 88.039], "JUC": [31.319, 75.576], "ANSB": [31.237, 76.499],
+      "NAD": [23.453, 75.418], "UJN": [23.179, 75.784], "JAO": [23.633, 75.72], "CDG": [30.708, 76.8],
+      "RPJ": [30.474, 76.598], "DUI": [30.038, 75.859], "ALU": [11.141, 79.08], "MM": [19.042, 72.838],
+      "SEG": [20.794, 76.691], "NK": [19.997, 73.794], "ADH": [19.119, 72.847], "MX": [18.993, 72.824],
+      "BVI": [19.232, 72.853], "MRU": [19.048, 72.868], "GTR": [18.964, 72.819], "CCG": [18.935, 72.825],
+      "BYR": [19.299, 72.844], "JOS": [19.14, 72.847], "PBHD": [19.01, 72.824], "GMN": [19.166, 72.85],
+      "DIC": [19.247, 72.852], "DDR": [19.018, 72.84], "BDTS": [19.051, 72.838], "NSP": [19.417, 72.795],
+      "BA": [19.054, 72.838], "KILE": [19.207, 72.851], "MDD": [19.186, 72.851], "BSR": [19.393, 72.817],
+      "VR": [19.456, 72.807], "MEL": [18.942, 72.822], "CYR": [18.951, 72.82], "STC": [19.08, 72.838],
+      "NIG": [19.358, 72.82], "MMCT": [18.971, 72.821], "VLP": [19.097, 72.84], "KHAR": [19.067, 72.838],
+      "PL": [18.994, 72.833], "RK": [29.861, 77.888], "YNRK": [30.103, 78.304], "HW": [29.948, 78.162],
+      "NDLS": [28.642, 77.219], "DLI": [28.657, 77.23], "NZM": [28.585, 77.258], "ANVT": [28.646, 77.318],
+      "DSA": [28.672, 77.296], "DEC": [28.579, 77.135], "LKO": [26.839, 80.924], "DEE": [28.655, 77.192],
+      "OKA": [28.538, 77.27], "LKU": [29.079, 79.508], "MAN": [22.996, 72.613], "TAV": [20.76, 70.374],
+      "UJA": [23.75, 72.673], "KGM": [29.233, 79.527], "NIL": [11.289, 76.313], "PGTN": [10.776, 76.661],
+      "LAR": [24.687, 78.417], "PTKC": [32.271, 75.647], "OTP": [10.769, 76.393], "SWM": [25.996, 76.345],
+      "AII": [26.454, 74.64], "JP": [26.919, 75.787], "DEOS": [26.503, 83.785], "GKP": [26.75, 83.373],
+      "PRYJ": [25.451, 81.883], "TRTR": [9.956, 76.337], "BTI": [30.21, 74.945], "PLNI": [10.457, 77.522],
+      "TN": [8.807, 78.149], "SCT": [8.981, 77.27], "TSI": [8.957, 77.344], "KWV": [17.63, 75.399],
+      "GUR": [17.357, 75.146], "AKOR": [17.517, 76.199], "PVR": [17.678, 75.328], "LUR": [18.4, 76.574],
+      "DRSV": [17.986, 76.019], "WADI": [17.065, 76.989], "SUR": [17.687, 75.9], "NCJ": [8.17, 77.43],
+      "TRVL": [9.381, 76.573], "BKNG": [22.252, 70.777], "HAPA": [22.461, 70.093], "NOQ": [26.499, 89.553],
+      "KOJ": [26.397, 90.27], "FLK": [26.536, 89.225], "GKJ": [26.12, 90.009], "NCB": [26.353, 89.45],
+      "BNV": [26.692, 88.942], "DHH": [26.139, 89.461], "DQG": [26.584, 88.848], "TVC": [8.487, 76.948],
+      "JPE": [26.544, 88.736], "NMZ": [26.812, 88.727], "ALLP": [9.494, 76.338], "SIN": [19.034, 72.862],
+      "MTN": [19.025, 72.858], "CHG": [18.984, 72.833], "DMV": [25.901, 93.737], "BY": [18.989, 72.836],
+      "MSD": [18.948, 72.835], "CSTM": [18.94, 72.836], "DDR-C": [19.018, 72.841], "CRD": [18.994, 72.844],
+      "GC": [19.077, 72.897], "VAK": [8.73, 76.715], "TVP": [8.497, 76.956], "TVCN": [8.502, 76.959],
+      "PR": [18.994, 72.856], "BND": [19.148, 72.934], "VK": [19.108, 72.928], "VVH": [19.094, 72.917],
+      "ERN": [9.997, 76.28], "AMPA": [9.388, 76.357], "MAQ": [12.866, 74.842], "MAJN": [12.846, 74.827],
+      "ETW": [11.341, 77.717], "MLND": [19.17, 72.958], "KLVA": [19.175, 73.007], "TNA": [19.183, 72.975],
+      "MVLK": [9.253, 76.549], "PASA": [8.369, 77.175], "QLN": [8.887, 76.598], "CGY": [9.454, 76.551],
+      "AWY": [10.103, 76.353], "TCR": [10.527, 76.218], "ERS": [9.98, 76.29], "KPY": [9.045, 76.539],
+      "CNGR": [9.266, 76.617], "VLK": [13.13, 80.226], "SNRD": [18.956, 72.836], "CLA": [19.071, 72.887],
+      "KJRD": [19.122, 72.938], "ANND": [22.556, 72.948], "MAS": [13.083, 80.276], "VN": [12.686, 78.602],
+      "RJPM": [9.452, 77.553], "PGI": [10.926, 75.831], "MASS": [13.082, 80.273], "MSB": [13.102, 80.287],
+      "TIR": [10.895, 75.918], "TP": [10.804, 78.694], "PGT": [10.776, 76.652], "SRR": [10.773, 76.288],
+      "KTYM": [9.592, 76.523], "BDJ": [11.609, 75.594], "TJ": [10.787, 79.139], "NGT": [10.765, 79.843],
+      "VLKN": [10.688, 79.853], "NYY": [8.399, 77.085], "CLT": [11.249, 75.784], "POY": [10.66, 77.014],
+      "BLY": [22.652, 88.336], "HWH": [22.583, 88.346], "CKI": [10.306, 76.33], "RMM": [9.288, 79.312],
+      "AFK": [10.196, 76.316], "SRGM": [10.864, 78.69], "BPB": [24.873, 92.595], "DPU": [25.847, 93.437],
+      "ATU": [11.579, 78.601], "SCL": [24.832, 92.798], "SZR": [26.457, 93.681], "NHLG": [25.167, 93.03],
+      "LMG": [25.55, 93.169], "JID": [26.303, 92.138], "KXJ": [24.869, 92.363], "LKA": [26.016, 92.849],
+      "HJI": [26.015, 92.867], "TGN": [18.726, 73.674], "KRD": [17.292, 74.185], "SLI": [16.854, 74.563],
+      "HDP": [18.495, 73.93], "AKRD": [18.626, 73.769], "BRMT": [18.152, 74.579], "CPKK": [26.165, 92.517],
+      "CVP": [9.174, 77.868], "ROU": [22.221, 84.861], "UAM": [11.413, 76.7], "JSG": [21.854, 83.999],
+      "BRG": [21.338, 83.621], "SBP": [21.47, 83.983], "TIG": [20.296, 83.152], "TCN": [8.501, 78.128],
+      "KMU": [10.963, 79.393], "HAS": [13.004, 76.097], "CUPJ": [11.748, 79.769], "TENI": [10.007, 77.477],
+      "TUP": [11.108, 77.342], "KGQ": [12.5, 74.987], "KZE": [12.346, 75.07], "TPJ": [10.802, 78.685],
+      "KRR": [10.961, 78.078], "CPR": [22.254, 73.197], "GIMB": [23.075, 70.132], "BRGR": [21.338, 83.621]
+    };
+
+    const DISTRICT_COORDS = {
+      "Kannur": [11.869, 75.369], "Udhampur": [32.926, 75.141], "Jammu": [32.729, 74.862], "Fatehgarh Sahib": [30.629, 76.39],
+      "Coimbatore": [11.016, 76.958], "Nandurbar": [21.368, 74.24], "Devbhumi Dwarka": [22.239, 68.97], "Bharuch": [21.722, 73.0],
+      "Gir Somnath": [20.907, 70.37], "Ayodhya": [26.795, 82.19], "Chittaurgarh": [24.889, 74.63], "Gaya": [24.796, 85.0],
+      "Vadodara Municipal Corporation": [22.307, 73.181], "Lucknow": [26.847, 80.947], "Visakhapatnam": [17.686, 83.218],
+      "Tinsukia": [27.489, 95.36], "Kamrup Metropolitan Dist.": [26.144, 91.726], "Mahesana": [23.601, 72.4],
+      "Ahmedabad": [23.022, 72.572], "Ahmadnagar": [19.094, 74.74], "Pune": [18.521, 73.856], "Satara": [17.685, 74.0],
+      "Alappuzha": [9.494, 76.338], "Sangli": [16.856, 74.56], "Kolhapur": [16.705, 74.237], "Raipur": [21.25, 81.629],
+      "Durg": [21.19, 81.285], "Bilaspur": [22.087, 82.149], "Vaishali": [25.693, 85.19], "Kollam": [8.887, 76.598],
+      "Salem": [11.654, 78.146], "Kasganj": [27.812, 78.645], "N T R": [16.52, 80.62], "Udaipur": [24.574, 73.686],
+      "Bareilly": [28.345, 79.413], "Indore": [22.719, 75.857], "Damoh": [23.833, 79.44], "Guna": [24.647, 77.32],
+      "Agra": [27.177, 78.002], "Thrissur": [10.527, 76.218], "Mathura": [27.488, 77.67], "Ranchi": [23.344, 85.309],
+      "Kolkata": [22.563, 88.344], "Bokaro": [23.675, 86.15], "Purbi Singhbhum": [22.782, 86.18], "Paschim Mednipur": [22.356, 87.32],
+      "Murshidabad": [24.181, 88.27], "Kozhikode": [11.249, 75.784], "Malappuram": [11.119, 76.071], "BHUJ(KUTCHH)": [23.253, 69.665],
+      "BANASKANTHA": [24.176, 72.43], "Moradabad": [28.835, 78.776], "Firozabad": [27.15, 78.395], "Wardha": [20.745, 78.602],
+      "Chandrapur": [19.952, 79.293], "Sagar": [23.838, 78.744], "Prayagraj": [25.451, 81.883], "Hardoi": [27.399, 80.134],
+      "Gondiya": [21.455, 80.19], "Rajkot": [22.3, 70.8], "Botad": [22.02, 71.67], "Jalgaon": [21.005, 75.563],
+      "Dhule": [20.901, 74.777], "Jalaun": [25.993, 79.445], "Hoshiarpur": [31.534, 75.911], "Maldah": [25.003, 88.14],
+      "Jalandhar": [31.319, 75.576], "Rupnagar": [30.966, 76.525], "Ujjain": [23.179, 75.784], "Ratlam": [23.334, 75.037],
+      "Chandigarh": [30.736, 76.788], "Patiala": [30.34, 76.395], "Sangrur": [30.238, 75.842], "Ariyalur": [11.141, 79.08],
+      "Greater Mumbai": [19.076, 72.877], "Buldana": [20.528, 76.183], "Nashik": [20.011, 73.79], "Mira Bhayander Municipal Corporation (Thane Zone-7)": [19.299, 72.86],
+      "Palghar": [19.697, 72.766], "Hardwar": [29.948, 78.162], "Dehradun": [30.316, 78.032], "New Delhi": [28.635, 77.224],
+      "Nainital": [29.392, 79.461], "Pathankot": [32.271, 75.647], "Sawai Madhopur": [25.996, 76.345], "Ajmer": [26.454, 74.64],
+      "Jaipur": [26.919, 75.787], "Gorakhpur": [26.75, 83.373], "Ernakulam": [9.98, 76.29], "Bathinda": [30.21, 74.945],
+      "Dindigul": [10.362, 77.969], "Thoothukkudi": [8.807, 78.149], "Tirunelveli": [8.731, 77.698], "Solapur": [17.687, 75.9],
+      "Dharashiv": [17.986, 76.019], "Kalaburagi": [17.328, 76.82], "Kanyakumari": [8.084, 77.55], "Pathanamthitta": [9.267, 76.787],
+      "Alipurduar": [26.49, 89.527], "Kokrajhar": [26.397, 90.27], "Dhubri": [26.02, 89.98], "Coochbehar": [26.349, 89.449],
+      "Jalpaiguri": [26.542, 88.731], "Thiruvananthapuram": [8.487, 76.948], "Navi Mumbai Municipal Corporation (Thane Zone-4)": [19.033, 73.029],
+      "Bhiwandi Municipal Corporation (Thane Zone-5)": [19.299, 73.061], "Navi Mumbai Municipal Corporation (Thane Zone-2)": [19.016, 73.021],
+      "Dimapur": [25.901, 93.737], "Navi Mumbai Municipal Corporation (Thane Zone-3)": [19.023, 73.027],
+      "Kalyan Tahashil (Thane Zone-8)": [19.243, 73.136], "Thane Municipal Corporation (Thane Zone-1)": [19.183, 72.975],
+      "Dakshina Kannada": [12.866, 74.842], "Erode": [11.341, 77.717], "Kottayam": [9.592, 76.523],
+      "Vellore": [12.924, 79.132], "Virudhunagar": [9.568, 77.626], "Ramanathapuram": [9.376, 78.831],
+      "Karimganj": [24.869, 92.363], "Karbi Anglong": [25.847, 93.437], "Cachar": [24.832, 92.798],
+      "Golaghat": [26.457, 93.68], "Dima Hasao": [25.167, 93.03], "Hojai": [26.016, 92.849], "Marigaon": [26.303, 92.14],
+      "Nagaon": [26.35, 92.684], "Pune Municipal Corporation": [18.521, 73.856], "SUNDARGARH(EXCEPT MUNICIPAL CORPORATION)": [22.118, 84.03],
+      "JHARSUGUDA": [21.854, 83.999], "BARAGARH": [21.338, 83.621], "SAMBALPUR MUNICIPAL CORPORATION": [21.47, 83.983],
+      "BOLANGIR": [20.296, 83.152], "The Nilgiris": [11.413, 76.7], "Hassan": [13.004, 76.097],
+      "Cuddalore": [11.748, 79.769], "Theni": [10.007, 77.477], "Tirupur": [11.108, 77.342],
+      "Kasaragod": [12.5, 74.987], "Tiruchirappalli": [10.802, 78.685], "Karur": [10.961, 78.078],
+      "Howrah": [22.583, 88.346], "Thanjavur": [10.787, 79.139], "Nagapattinam": [10.765, 79.843],
+      "Anand": [22.556, 72.948], "Chennai": [13.083, 80.276], "Thiruvallur": [13.13, 80.226],
+      "Palakkad": [10.776, 76.652], "GODHRA(PANCHMAHAL)": [22.776, 73.616], "Vaishali": [25.693, 85.194]
+    };
+
+    const CAT_COLORS = {
+      "NSG-1": "#ff4757", "NSG-2": "#ff6348", "NSG-3": "#ffa502", "NSG-4": "#eccc68",
+      "NSG-5": "#7bed9f", "NSG-6": "#2ed573", "SG-1": "#70a1ff", "SG-2": "#5352ed",
+      "SG-3": "#a29bfe", "HG-3": "#fd79a8"
+    };
+    const ZONE_COLORS = {
+      "SR": "#00d2c8", "NR": "#3b82f6", "WR": "#f97316", "CR": "#a855f7", "ECR": "#22c55e",
+      "NER": "#eab308", "ECOR": "#ef4444", "NFR": "#06b6d4", "SECR": "#8b5cf6",
+      "NWR": "#d946ef", "WCR": "#84cc16", "NCR": "#14b8a6", "SER": "#f43f5e", "ER": "#fb923c",
+      "SWR": "#ec4899", "SCR": "#059669", "SCOR": "#4f46e5"
+    };
+
+    function getColor(d, by) {
+      if (by === 'category') return CAT_COLORS[d.category] || '#aaa';
+      if (by === 'zone') return ZONE_COLORS[d.zone] || '#aaa';
+      const states = [...new Set(RAW_DATA.map(x => x.state))];
+      const hue = (states.indexOf(d.state) / states.length) * 360;
+      if (by === 'state') return `hsl(${hue},70%,55%)`;
+      const districts = [...new Set(RAW_DATA.map(x => x.district))];
+      const hue2 = (districts.indexOf(d.district) / districts.length) * 360;
+      if (by === 'district') return `hsl(${hue2},60%,50%)`;
+      return '#00d2c8';
+    }
+
+    function getCoords(d) {
+      return COORDS[d.code] || DISTRICT_COORDS[d.district] || [20.5937, 78.9629];
+    }
+
+    let filteredData = [...RAW_DATA];
+    let tableSort = { col: 'sno', dir: 1 };
+    let tablePage = 1;
+    const PAGE_SIZE = 20;
+
+    let markerLayer = null;
+    let map;
+
+    function populateFilters() {
+      const zones = [...new Set(RAW_DATA.map(d => d.zone))].sort();
+      const states = [...new Set(RAW_DATA.map(d => d.state))].sort();
+      const cats = [...new Set(RAW_DATA.map(d => d.category))].sort();
+      const districts = [...new Set(RAW_DATA.map(d => d.district))].sort();
+
+      const fz = document.getElementById('f-zone');
+      zones.forEach(z => { const o = document.createElement('option'); o.value = z; o.textContent = z; fz.appendChild(o) });
+      const fs = document.getElementById('f-state');
+      states.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; fs.appendChild(o) });
+      const fc = document.getElementById('f-category');
+      cats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; fc.appendChild(o) });
+      const fd = document.getElementById('f-district');
+      districts.forEach(d => { const o = document.createElement('option'); o.value = d; o.textContent = d; fd.appendChild(o) });
+    }
+
+    function applyFilters() {
+      const zone = document.getElementById('f-zone').value;
+      const state = document.getElementById('f-state').value;
+      const cat = document.getElementById('f-category').value;
+      const dist = document.getElementById('f-district').value;
+      const yr = document.getElementById('f-year').value;
+
+      filteredData = RAW_DATA.filter(d => {
+        if (zone && d.zone !== zone) return false;
+        if (state && d.state !== state) return false;
+        if (cat && d.category !== cat) return false;
+        if (dist && d.district !== dist) return false;
+        if (yr && !d.awarded_date.startsWith(yr)) return false;
+        return true;
+      });
+
+      document.getElementById('filter-count').textContent = filteredData.length;
+      tablePage = 1;
+      updateKPI();
+      refreshMapMarkers();
+      renderCharts();
+      renderTable();
+    }
+
+    function resetFilters() {
+      ['f-zone', 'f-state', 'f-category', 'f-district', 'f-year'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+      applyFilters();
+    }
+
+    function animateCount(el, target) {
+      let start = 0;
+      const dur = 600, step = 16;
+      const inc = target / (dur / step);
+      const timer = setInterval(() => {
+        start = Math.min(start + inc, target);
+        el.textContent = Math.round(start);
+        if (start >= target) clearInterval(timer);
+      }, step);
+    }
+
+    function updateKPI() {
+      const zones = new Set(filteredData.map(d => d.zone)).size;
+      const states = new Set(filteredData.map(d => d.state)).size;
+      const cats = new Set(filteredData.map(d => d.category)).size;
+
+      animateCount(document.getElementById('k-total'), filteredData.length);
+      animateCount(document.getElementById('k-zones'), zones);
+      animateCount(document.getElementById('k-states'), states);
+      animateCount(document.getElementById('k-cats'), cats);
+    }
+
+    function initMap() {
+      map = L.map('map', {
+        zoomControl: false,
+        attributionControl: false,
+        dragging: true,
+        scrollWheelZoom: true,
+        doubleClickZoom: true,
+        touchZoom: true,
+        boxZoom: true,
+        keyboard: true,
+        zoomSnap: 0.25,
+        zoomDelta: 0.25,
+        wheelPxPerZoomLevel: 75, // slow scroll zoom speed for premium control
+        wheelDebounceTime: 80
+      });
+      map.fitBounds([[8.0, 68.0], [37.0, 97.5]]);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19
+      }).addTo(map);
+
+      L.tileLayer('https://tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openrailwaymap.org">OpenRailwayMap</a>',
+        maxZoom: 19, opacity: 0.65
+      }).addTo(map);
+
+      fetch('assets/india-composite.geojson')
+        .then(res => res.json())
+        .then(geoData => {
+          L.geoJSON(geoData, {
+            style: {
+              color: '#ef4444',
+              weight: 2.5,
+              opacity: 0.9,
+              fillColor: 'rgba(239, 68, 68, 0.02)',
+              fillOpacity: 0.05
+            }
+          }).addTo(map);
+        });
+
+      L.control.zoom({ position: 'topright' }).addTo(map);
+      L.control.attribution({ prefix: false }).addTo(map);
+      refreshMapMarkers();
+    }
+
+    function refreshMapMarkers() {
+      const colorBy = document.getElementById('colorby').value;
+      if (markerLayer) markerLayer.clearLayers();
+      if (!markerLayer) {
+        markerLayer = L.layerGroup().addTo(map);
+      }
+
+      const isShortlisted = filteredData.length < RAW_DATA.length;
+
+      filteredData.forEach(d => {
+        const [lat, lng] = getCoords(d);
+        const color = getColor(d, colorBy);
+        const shortName = d.name.length > 14 ? d.name.slice(0, 13).trim() + '…' : d.name;
+
+        // Expiry calculation (60 days deadline, no expired status)
+        const expiryDate = new Date(d.expiry_date);
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        expiryDate.setHours(0,0,0,0);
+        const diffTime = expiryDate - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        // Expiring soon is equal to or less than 60 days
+        const isExpiringSoon = diffDays >= 0 && diffDays <= 60;
+
+        let expiringClass = '';
+        if (isExpiringSoon) expiringClass = 'expiring-soon-marker';
+
+        let icon;
+        if (isShortlisted) {
+          icon = L.divIcon({
+            className: '',
+            html: `<div class="spotlight-wrap">
+          <div class="spotlight-pin ${expiringClass}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 30" width="28" height="35">
+              <ellipse cx="12" cy="28" rx="5" ry="1.5" fill="rgba(0,0,0,0.15)" />
+              <path d="M12 2C7.58 2 4 5.58 4 10c0 6 8 18 8 18s8-12 8-18c0-4.42-3.58-8-8-8z" fill="${color}" stroke="#ffffff" stroke-width="1" />
+              <circle cx="12" cy="10" r="5.5" fill="#ffffff" />
+              <image href="assets/eatright_logo.png" x="6.5" y="4.5" width="11" height="11" />
+            </svg>
+          </div>
+          <div class="spotlight-stem" style="height:10px;"></div>
+          <div class="spotlight-label">
+            <div class="spotlight-name">${shortName}</div>
+            <div class="spotlight-cat" style="background:${color};color:#fff;box-shadow:0 1.5px 4px rgba(15,23,42,0.15)">${d.category}</div>
+          </div>
+        </div>`,
+            iconSize: [90, 80],
+            iconAnchor: [45, 35] // Anchor to bottom tip of the pin body
+          });
+        } else {
+          icon = L.divIcon({
+            className: '',
+            html: `<div class="custom-pin-wrap">
+          <div class="custom-pin ${expiringClass}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 30" width="24" height="30">
+              <ellipse cx="12" cy="28" rx="5" ry="1.5" fill="rgba(0,0,0,0.15)" />
+              <path d="M12 2C7.58 2 4 5.58 4 10c0 6 8 18 8 18s8-12 8-18c0-4.42-3.58-8-8-8z" fill="${color}" stroke="#ffffff" stroke-width="1" />
+              <circle cx="12" cy="10" r="5.5" fill="#ffffff" />
+              <image href="assets/eatright_logo.png" x="6.5" y="4.5" width="11" height="11" />
+            </svg>
+          </div>
+        </div>`,
+            iconSize: [24, 30],
+            iconAnchor: [12, 30] // Anchor to bottom tip of the pin body
+          });
+        }
+
+        const marker = L.marker([lat, lng], { icon });
+
+        let alertHtml = '';
+        if (isExpiringSoon) {
+          alertHtml = `<div class="popup-alert expiring">⚠️ GOING TO EXPIRE (${diffDays} days left)</div>`;
+        } else {
+          alertHtml = `<div class="popup-alert safe">🟢 ACTIVE</div>`;
+        }
+
+        marker.bindPopup(`
+      ${alertHtml}
+      <div class="popup-name">🚉 ${d.name}</div>
+      <div class="popup-row"><span class="popup-key">Code</span><span class="popup-val">${d.code}</span></div>
+      <div class="popup-row"><span class="popup-key">Category</span><span class="popup-val" style="color:${CAT_COLORS[d.category] || '#aaa'}">${d.category}</span></div>
+      <div class="popup-row"><span class="popup-key">Zone</span><span class="popup-val" style="color:${ZONE_COLORS[d.zone] || '#aaa'}">${d.zone}</span></div>
+      <div class="popup-row"><span class="popup-key">Division</span><span class="popup-val">${d.division}</span></div>
+      <div class="popup-row"><span class="popup-key">District</span><span class="popup-val">${d.district}</span></div>
+      <div class="popup-row"><span class="popup-key">State</span><span class="popup-val">${d.state}</span></div>
+      <div class="popup-row"><span class="popup-key">Awarded</span><span class="popup-val">${d.awarded_date}</span></div>
+      <div class="popup-row"><span class="popup-key">Expiry Date</span><span class="popup-val" style="color:var(--orange);font-weight:600">${d.expiry_date}</span></div>
+    `, { maxWidth: 280 });
+
+        if (!isShortlisted) {
+          marker.bindTooltip(d.name, {
+            permanent: false,
+            direction: 'top',
+            opacity: 0.95,
+            className: 'custom-tooltip'
+          });
+        }
+
+        markerLayer.addLayer(marker);
+      });
+
+      document.getElementById('map-count').textContent = filteredData.length;
+
+      updateLegend(colorBy);
+    }
+
+    function updateLegend(colorBy) {
+      const leg = document.getElementById('map-legend');
+      let html = `<div class="legend-title">Color by ${colorBy}</div>`;
+      const items = {};
+
+      if (colorBy === 'category') {
+        filteredData.forEach(d => { items[d.category] = getColor(d, 'category') });
+      } else if (colorBy === 'zone') {
+        filteredData.forEach(d => { items[d.zone] = getColor(d, 'zone') });
+      } else {
+        const unique = [...new Set(filteredData.map(d => colorBy === 'state' ? d.state : d.district))].slice(0, 8);
+        unique.forEach(v => {
+          const sample = filteredData.find(d => (colorBy === 'state' ? d.state : d.district) === v);
+          items[v.length > 15 ? v.slice(0, 15) + '…' : v] = getColor(sample, colorBy);
+        });
+        if ([...new Set(filteredData.map(d => colorBy === 'state' ? d.state : d.district))].length > 8)
+          html += `<div style="font-size:9px;color:var(--text3);margin-bottom:4px">Top 8 shown</div>`;
+      }
+
+      Object.entries(items).sort().forEach(([k, v]) => {
+        html += `<div class="legend-item"><div class="legend-dot" style="background:${v};box-shadow:0 0 6px ${v}80"></div>${k}</div>`;
+      });
+      // Add section for alerts at the bottom of the legend
+      html += `
+      <div class="legend-divider" style="margin:8px 0;border-top:1px solid var(--border);opacity:0.6;"></div>
+      <div class="legend-title" style="margin-top:4px;">⚠️ Expiry Alerts</div>
+      <div class="legend-item" style="display:flex;align-items:center;gap:6px;">
+        <span class="legend-color" style="background:#ea580c;border-radius:50%;box-shadow:0 0 0 2.5px rgba(234,88,12,0.35);width:8px;height:8px;display:inline-block;animation:map-pulse-warning 1.5s infinite;"></span>
+        <span>Going to Expire (&le;60d)</span>
+      </div>
+      `;
+      leg.innerHTML = html;
+    }
+
+    let chartCat, chartStates, chartTimeline, chartZones, chartDivisions;
+
+    const CHART_DEFAULTS = {
+      color: '#334155',
+      grid: 'rgba(15,23,42,0.06)',
+      font: { family: "'Inter',sans-serif", size: 11 }
+    };
+
+    function mkBarChart(id, labels, data, colors, opts = {}) {
+      const ctx = document.getElementById(id).getContext('2d');
+      return new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            data, backgroundColor: colors,
+            borderRadius: 5, borderSkipped: false,
+            hoverBackgroundColor: colors.map(c => c + 'cc')
+          }]
+        },
+        plugins: [{
+          id: 'barLabels',
+          afterDatasetsDraw(chart) {
+            const { ctx, data } = chart;
+            ctx.save();
+            ctx.font = "600 10px 'Inter', sans-serif";
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = '#475569';
+            
+            const meta = chart.getDatasetMeta(0);
+            meta.data.forEach((bar, index) => {
+              const val = data.datasets[0].data[index];
+              if (val === undefined || val === 0) return;
+              const pct = ((val / RAW_DATA.length) * 100).toFixed(1) + '%';
+              
+              const isHorizontal = chart.options.indexAxis === 'y';
+              if (isHorizontal) {
+                ctx.textAlign = 'left';
+                const textX = bar.x + 8;
+                const textY = bar.y;
+                ctx.fillText(pct, textX, textY);
+              } else {
+                ctx.textAlign = 'center';
+                const textX = bar.x;
+                const textY = bar.y - 8;
+                ctx.fillText(pct, textX, textY);
+              }
+            });
+            ctx.restore();
+          }
+        }],
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          indexAxis: opts.horizontal ? 'y' : 'x',
+          animation: { duration: 600 },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: 'rgba(13,17,23,0.95)',
+              borderColor: 'rgba(30,58,95,0.8)', borderWidth: 1,
+              titleColor: '#e8f0ff', bodyColor: '#8ba8d0',
+              padding: 10,
+              callbacks: {
+                label: ctx => {
+                  const val = ctx.chart.options.indexAxis === 'y' ? ctx.parsed.x : ctx.parsed.y;
+                  const pct = ((val / RAW_DATA.length) * 100).toFixed(1);
+                  return `  ${val} stations (${pct}% of India total)`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: CHART_DEFAULTS.color, font: CHART_DEFAULTS.font },
+              grid: { color: CHART_DEFAULTS.grid }, border: { color: 'transparent' },
+              grace: opts.horizontal ? '8%' : undefined
+            },
+            y: {
+              ticks: { color: CHART_DEFAULTS.color, font: CHART_DEFAULTS.font, maxTicksLimit: 12 },
+              grid: { color: CHART_DEFAULTS.grid }, border: { color: 'transparent' },
+              grace: opts.horizontal ? undefined : '8%'
+            }
+          }
+        }
+      });
+    }
+
+    function renderCharts() {
+      const catCounts = {};
+      filteredData.forEach(d => { catCounts[d.category] = (catCounts[d.category] || 0) + 1 });
+      const catLabels = Object.keys(catCounts).sort().map(c => {
+        const val = catCounts[c];
+        const pct = ((val / RAW_DATA.length) * 100).toFixed(1);
+        return `${c} (${pct}%)`;
+      });
+      const catVals = Object.keys(catCounts).sort().map(c => catCounts[c]);
+      const catColors = Object.keys(catCounts).sort().map(c => CAT_COLORS[c] || '#aaa');
+
+      if (chartCat) chartCat.destroy();
+      const ctx2 = document.getElementById('chart-cat').getContext('2d');
+      chartCat = new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+          labels: catLabels, datasets: [{
+            data: catVals, backgroundColor: catColors,
+            borderWidth: 2, borderColor: 'rgba(13,17,23,0.8)', hoverOffset: 8
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          cutout: '65%', animation: { duration: 700 },
+          plugins: {
+            legend: { position: 'right', labels: { color: '#334155', font: { size: 10, family: "'Inter',sans-serif" }, boxWidth: 12, padding: 8 } },
+            tooltip: {
+              backgroundColor: 'rgba(13,17,23,0.95)',
+              borderColor: 'rgba(30,58,95,0.8)', borderWidth: 1,
+              titleColor: '#e8f0ff', bodyColor: '#8ba8d0', padding: 10,
+              callbacks: {
+                label: ctx => {
+                  const val = ctx.parsed;
+                  const pct = ((val / RAW_DATA.length) * 100).toFixed(1);
+                  return `  ${ctx.label.split(' ')[0]}: ${val} stations (${pct}%)`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      const stateCounts = {};
+      filteredData.forEach(d => { stateCounts[d.state] = (stateCounts[d.state] || 0) + 1 });
+      const statesSorted = Object.entries(stateCounts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+      const stateLabels = statesSorted.map(s => s[0].length > 15 ? s[0].slice(0, 15) + '…' : s[0]);
+      const stateVals = statesSorted.map(s => s[1]);
+      const states = [...new Set(RAW_DATA.map(d => d.state))];
+      const stateColors = statesSorted.map(([s]) => `hsl(${(states.indexOf(s) / states.length) * 360},70%,55%)`);
+
+      if (chartStates) chartStates.destroy();
+      chartStates = mkBarChart('chart-states', stateLabels, stateVals, stateColors);
+
+      const monthCounts = {};
+      filteredData.forEach(d => {
+        if (!d.awarded_date) return;
+        const ym = d.awarded_date.slice(0, 7);
+        monthCounts[ym] = (monthCounts[ym] || 0) + 1;
+      });
+      const months = Object.keys(monthCounts).sort();
+      let cumul = 0;
+      const cumulVals = months.map(m => { cumul += monthCounts[m]; return cumul });
+
+      if (chartTimeline) chartTimeline.destroy();
+      const ctx4 = document.getElementById('chart-timeline').getContext('2d');
+      const grad = ctx4.createLinearGradient(0, 0, 0, 260);
+      grad.addColorStop(0, 'rgba(0,210,200,0.3)');
+      grad.addColorStop(1, 'rgba(0,210,200,0)');
+      chartTimeline = new Chart(ctx4, {
+        type: 'line',
+        data: {
+          labels: months,
+          datasets: [{
+            label: 'Cumulative Certifications',
+            data: cumulVals,
+            borderColor: '#00d2c8', backgroundColor: grad,
+            fill: true, tension: 0.4, pointRadius: 4,
+            pointBackgroundColor: '#00d2c8', pointBorderColor: '#0d1117',
+            pointBorderWidth: 2, borderWidth: 2,
+            hoverPointRadius: 6
+          }, {
+            label: 'New per Month',
+            data: months.map(m => monthCounts[m]),
+            borderColor: '#ff6b35', backgroundColor: 'transparent',
+            tension: 0.4, borderDash: [4, 4], pointRadius: 3,
+            pointBackgroundColor: '#ff6b35', borderWidth: 1.5
+          }]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          animation: { duration: 700 },
+          plugins: {
+            legend: { labels: { color: '#334155', font: { size: 10, family: "'Inter',sans-serif" }, boxWidth: 20 } },
+            tooltip: {
+              backgroundColor: '#ffffff', borderColor: '#cbd5e1',
+              borderWidth: 1, titleColor: '#0f172a', bodyColor: '#334155', padding: 10
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: '#64748b', font: { size: 10 } },
+              grid: { color: 'rgba(15,23,42,0.04)' }, border: { color: 'transparent' }
+            },
+            y: {
+              ticks: { color: '#64748b', font: { size: 10 } },
+              grid: { color: 'rgba(15,23,42,0.04)' }, border: { color: 'transparent' }
+            }
+          }
+        }
+      });
+
+      // 1. Zone-wise Station Count Chart
+      const zoneCounts = {};
+      filteredData.forEach(d => { zoneCounts[d.zone] = (zoneCounts[d.zone] || 0) + 1 });
+      const zonesSorted = Object.entries(zoneCounts).sort((a, b) => b[1] - a[1]);
+      const zoneLabels = zonesSorted.map(z => z[0]);
+      const zoneVals = zonesSorted.map(z => z[1]);
+      const zoneColors = zonesSorted.map(z => ZONE_COLORS[z[0]] || '#00d2c8');
+
+      if (chartZones) chartZones.destroy();
+      chartZones = mkBarChart('chart-zones', zoneLabels, zoneVals, zoneColors);
+
+      // 2. Division-wise Station Count Chart (Top 10)
+      const divCounts = {};
+      filteredData.forEach(d => { divCounts[d.division] = (divCounts[d.division] || 0) + 1 });
+      const divsSorted = Object.entries(divCounts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+      const divLabels = divsSorted.map(dv => dv[0].length > 15 ? dv[0].slice(0, 15) + '…' : dv[0]);
+      const divVals = divsSorted.map(dv => dv[1]);
+      const divColors = divsSorted.map((_, idx) => `hsl(${200 + (idx * 15)},75%,50%)`);
+
+      if (chartDivisions) chartDivisions.destroy();
+      chartDivisions = mkBarChart('chart-divisions', divLabels, divVals, divColors, { horizontal: true });
+    }
+
+    function sortTable(col) {
+      if (tableSort.col === col) tableSort.dir *= -1;
+      else { tableSort.col = col; tableSort.dir = 1; }
+      tablePage = 1;
+      renderTable();
+    }
+
+    function renderTable() {
+      const q = document.getElementById('table-search').value.toLowerCase();
+      let data = filteredData.filter(d =>
+        !q || d.name.toLowerCase().includes(q) || d.code.toLowerCase().includes(q) ||
+        d.state.toLowerCase().includes(q) || d.district.toLowerCase().includes(q) ||
+        d.zone.toLowerCase().includes(q) || d.category.toLowerCase().includes(q)
+      );
+
+      const { col, dir } = tableSort;
+      data.sort((a, b) => {
+        let av = a[col], bv = b[col];
+        if (typeof av === 'number') return (av - bv) * dir;
+        return String(av || '').localeCompare(String(bv || '')) * dir;
+      });
+
+      const total = data.length;
+      const pages = Math.ceil(total / PAGE_SIZE);
+      const start = (tablePage - 1) * PAGE_SIZE;
+      const page = data.slice(start, start + PAGE_SIZE);
+
+      document.getElementById('table-info').textContent =
+        `Showing ${start + 1}–${Math.min(start + PAGE_SIZE, total)} of ${total}`;
+
+      const tbody = document.getElementById('table-body');
+      tbody.innerHTML = page.map(d => {
+        const cc = CAT_COLORS[d.category] || '#aaa';
+        const zc = ZONE_COLORS[d.zone] || '#aaa';
+        return `<tr>
+      <td style="color:var(--text3)">${d.sno}</td>
+      <td style="color:var(--text);font-weight:500">${d.name}</td>
+      <td><code style="background:var(--bg2);padding:2px 6px;border-radius:4px;font-size:11px;color:var(--accent)">${d.code}</code></td>
+      <td><span class="cat-badge" style="background:${cc}22;color:${cc};border:1px solid ${cc}44">${d.category}</span></td>
+      <td><span class="zone-badge" style="background:${zc}22;color:${zc};border:1px solid ${zc}44">${d.zone}</span></td>
+      <td style="color:var(--text3);font-size:11px">${d.division}</td>
+      <td style="color:var(--text2);font-size:11px">${d.district.length > 25 ? d.district.slice(0, 25) + '…' : d.district}</td>
+      <td style="color:var(--text2)">${d.state}</td>
+      <td style="color:var(--text3);font-size:11px">${d.awarded_date}</td>
+      <td style="color:var(--orange);font-weight:600;font-size:11px">${d.expiry_date}</td>
+    </tr>`;
+      }).join('');
+
+      const pageBtns = document.getElementById('page-btns');
+      document.getElementById('table-info2').textContent = `Page ${tablePage} of ${pages}`;
+
+      let btns = `<button class="page-btn" onclick="gotoPage(${tablePage - 1})" ${tablePage <= 1 ? 'disabled' : ''}>‹</button>`;
+      const maxBtns = 7;
+      let s = Math.max(1, tablePage - 3), e = Math.min(pages, s + maxBtns - 1);
+      if (s > 1) btns += `<button class="page-btn" onclick="gotoPage(1)">1</button>`;
+      if (s > 2) btns += `<span style="color:var(--text3);padding:0 4px">…</span>`;
+      for (let i = s; i <= e; i++) btns += `<button class="page-btn ${i === tablePage ? 'active' : ''}" onclick="gotoPage(${i})">${i}</button>`;
+      if (e < pages - 1) btns += `<span style="color:var(--text3);padding:0 4px">…</span>`;
+      if (e < pages) btns += `<button class="page-btn" onclick="gotoPage(${pages})">${pages}</button>`;
+      btns += `<button class="page-btn" onclick="gotoPage(${tablePage + 1})" ${tablePage >= pages ? 'disabled' : ''}>›</button>`;
+      pageBtns.innerHTML = btns;
+    }
+
+    function gotoPage(p) {
+      const q = document.getElementById('table-search').value.toLowerCase();
+      let data = filteredData.filter(d =>
+        !q || d.name.toLowerCase().includes(q) || d.code.toLowerCase().includes(q) ||
+        d.state.toLowerCase().includes(q) || d.district.toLowerCase().includes(q) ||
+        d.zone.toLowerCase().includes(q) || d.category.toLowerCase().includes(q)
+      );
+      const pages = Math.ceil(data.length / PAGE_SIZE);
+      tablePage = Math.max(1, Math.min(p, pages));
+      renderTable();
+    }
+
+    function exportCSV() {
+      const headers = ['S.No', 'Station Name', 'Code', 'Category', 'Division', 'Zone', 'District', 'State', 'Awarded Date', 'Expiry Date'];
+      const rows = filteredData.map(d => [
+        d.sno, `"${d.name}"`, d.code, d.category, `"${d.division}"`, d.zone,
+        `"${d.district}"`, `"${d.state}"`, d.awarded_date, d.expiry_date
+      ]);
+      const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = `eat_right_stations_${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click(); URL.revokeObjectURL(url);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      populateFilters();
+      updateKPI();
+      initMap();
+      renderCharts();
+      renderTable();
+    });
+  </script>
+</body>
+
+</html>
