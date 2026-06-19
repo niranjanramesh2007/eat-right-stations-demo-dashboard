@@ -1172,6 +1172,14 @@
           <canvas id="chart-divisions"></canvas>
         </div>
       </div>
+      <div class="chart-card-full">
+        <div class="chart-header" style="margin-bottom:12px">
+          <div class="section-title">📊 Category-wise Station Count</div>
+        </div>
+        <div style="position:relative;height:260px">
+          <canvas id="chart-cat-bar"></canvas>
+        </div>
+      </div>
     </div>
 
     <div id="table-section">
@@ -1949,7 +1957,7 @@
       leg.innerHTML = html;
     }
 
-    let chartCat, chartStates, chartTimeline, chartZones, chartDivisions;
+    let chartCat, chartStates, chartTimeline, chartZones, chartDivisions, chartCatBar;
 
     const CHART_DEFAULTS = {
       color: '#334155',
@@ -2158,16 +2166,30 @@
       if (chartZones) chartZones.destroy();
       chartZones = mkBarChart('chart-zones', zoneLabels, zoneVals, zoneColors);
 
-      // 2. Division-wise Station Count Chart (Top 10)
-      const divCounts = {};
-      filteredData.forEach(d => { divCounts[d.division] = (divCounts[d.division] || 0) + 1 });
-      const divsSorted = Object.entries(divCounts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+      // 2. Division-wise Station Count Chart (Top 10) — normalize case to merge duplicates
+      const divCountsRaw = {};
+      filteredData.forEach(d => {
+        const key = d.division.trim().toUpperCase();
+        divCountsRaw[key] = (divCountsRaw[key] || 0) + 1;
+      });
+      const divsSorted = Object.entries(divCountsRaw).sort((a, b) => b[1] - a[1]).slice(0, 10);
       const divLabels = divsSorted.map(dv => dv[0].length > 15 ? dv[0].slice(0, 15) + '…' : dv[0]);
       const divVals = divsSorted.map(dv => dv[1]);
       const divColors = divsSorted.map((_, idx) => `hsl(${200 + (idx * 15)},75%,50%)`);
 
       if (chartDivisions) chartDivisions.destroy();
       chartDivisions = mkBarChart('chart-divisions', divLabels, divVals, divColors, { horizontal: true });
+
+      // 3. Category Bar Chart
+      const catBarCounts = {};
+      filteredData.forEach(d => { catBarCounts[d.category] = (catBarCounts[d.category] || 0) + 1 });
+      const catBarSorted = Object.entries(catBarCounts).sort((a, b) => a[0].localeCompare(b[0]));
+      const catBarLabels = catBarSorted.map(([c]) => c);
+      const catBarVals = catBarSorted.map(([, v]) => v);
+      const catBarColors = catBarSorted.map(([c]) => CAT_COLORS[c] || '#64748b');
+
+      if (chartCatBar) chartCatBar.destroy();
+      chartCatBar = mkBarChart('chart-cat-bar', catBarLabels, catBarVals, catBarColors);
     }
 
     function sortTable(col) {

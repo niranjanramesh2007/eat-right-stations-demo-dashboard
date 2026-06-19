@@ -1,0 +1,295 @@
+S.No,Station Name,Code,Category,Division,Zone,District,State,Awarded Date
+1,"THALASSERY",TLY,NSG-3,"PALAKKAD",SR,"Kannur","Kerala",2026-03-30
+2,"UDHAMPUR",UHP,NSG-4,"FEROZPUR",NR,"Udhampur","Jammu & Kashmir",2024-06-26
+3,"JAMMU TAWI",JAT,NSG-2,"FEROZPUR",NR,"Jammu","Jammu & Kashmir",2024-06-26
+4,"SIRHIND",SIR,NSG-4,"AMBALA",NR,"Fatehgarh Sahib","Punjab",2024-07-08
+5,"METTUPALAYAM",MTP,NSG-4,"SALEM",SR,"Coimbatore","Tamil Nadu",2024-06-26
+6,"NANDURBAR",NDB,NSG-3,"MUMBAI CENTRAL",WR,"Nandurbar","Maharashtra",2024-07-19
+7,"DWARKA",DWK,NSG-3,"RAJKOT",WR,"Devbhumi Dwarka","Gujarat",2024-07-19
+8,"ANKLESHWAR",AKV,NSG-3,"VADODARA",WR,"Bharuch","Gujarat",2024-07-19
+9,"VERAVAL",VRL,NSG-3,"BHAVNAGAR",WR,"Gir Somnath","Gujarat",2024-07-19
+10,"BHARUCH",BH,NSG-3,"VADODARA",WR,"Bharuch","Gujarat",2024-07-19
+11,"AYODHYA DHAM",AY,NSG-1,"Lucknow",NR,"Ayodhya","Uttar Pradesh",2024-09-09
+12,"CHANDERIYA",CAN,NSG-5,"Ratlam",WR,"Chittaurgarh","Rajasthan",2024-07-31
+13,"NIMBAHERA",NBH,NSG-5,"Ratlam",WR,"Chittaurgarh","Rajasthan",2024-07-31
+14,"CHITTAURGARH",COR,NSG-3,"Ratlam",WR,"Chittaurgarh","Rajasthan",2024-07-31
+15,"GAYA",GAYA,NSG-2,"Deen Dayal Upadhyaya",ECR,"Gaya","Bihar",2024-09-12
+16,"VADODARA",BRC,NSG-2,"VADODARA",WR,"Vadodara Municipal Corporation","Gujarat",2024-08-28
+17,"AISHBAGH",ASH,NSG-3,"Lucknow",NER,"Lucknow","Uttar Pradesh",2024-08-28
+18,"VISAKHAPATNAM",VSKP,NSG-1,"WALTAIR",ECOR,"Visakhapatnam","Andhra Pradesh",2024-09-12
+19,"NEW TINSUKIA",NTSK,NSG-3,"TINSUKIA",NFR,"Tinsukia","Assam",2024-09-12
+20,"KAMAKHYA",KYQ,NSG-2,"LUMDING",NFR,"Kamrup Metropolitan Dist.","Assam",2024-09-12
+21,"MAHESANA",MSH,NSG-3,"AHMEDABAD",WR,"Mahesana","Gujarat",2024-11-01
+22,"SABARMATI",SBT,NSG-5,"AHMEDABAD",WR,"Ahmedabad","Gujarat",2024-11-01
+23,"AHMADNAGAR",ANG,NSG-3,"Solapur",CR,"Ahmadnagar","Maharashtra",2024-11-01
+24,"CHINCHWAD",CCH,SG-3,"PUNE",CR,"Pune","Maharashtra",2024-11-01
+25,"DAUND",DD,NSG-3,"Solapur",CR,"Pune","Maharashtra",2024-11-08
+26,"KOPARGAON",KPG,NSG-3,"Solapur",CR,"Ahmadnagar","Maharashtra",2024-11-01
+27,"SAINAGAR SHIRDI",SNSI,NSG-3,"Solapur",CR,"Ahmadnagar","Maharashtra",2024-11-01
+28,"SATARA",STR,NSG-4,"Pune",CR,"Satara","Maharashtra",2024-11-08
+29,"KAYAMKULAM",KYJ,NSG-3,"THIRUVANANTHAPURAM",SR,"Alappuzha","Kerala",2024-11-08
+30,"MIRAJ",MRJ,NSG-3,"Pune",CR,"Sangli","Maharashtra",2024-11-08
+31,"SHIVAJINAGAR",SVJR,SG-3,"Pune",CR,"Pune","Maharashtra",2024-11-08
+32,"KOLHAPUR",KOP,NSG-3,"Pune",CR,"Kolhapur","Maharashtra",2024-11-08
+33,"PUNE",PUNE,NSG-1,"Pune",CR,"Pune","Maharashtra",2024-11-08
+34,"RAIPUR",R,NSG-2,"Raipur",SECR,"Raipur","Chhattisgarh",2024-11-08
+35,"DURG",DURG,NSG-2,"Raipur",SECR,"Durg","Chhattisgarh",2024-11-08
+36,"BILASPUR",BSP,NSG-2,"Bilaspur",SECR,"Bilaspur","Chhattisgarh",2024-11-08
+37,"HAJIPUR",HJP,NSG-2,"Sonpur",ECR,"Vaishali","Bihar",2024-11-08
+38,"CHERTALA",SRTL,NSG-4,"THIRUVANANTHAPURAM",SR,"Alappuzha","Kerala",2024-11-08
+39,"PUNALUR",PUU,NSG-6,"Madurai",SR,"Kollam","Kerala",2024-11-08
+40,"SALEM",SA,NSG-2,"SALEM",SR,"Salem","Tamil Nadu",2024-12-23
+41,"KASGANJ",KSJ,NSG-4,"Izzatnagar",NER,"Kasganj","Uttar Pradesh",2025-01-16
+42,"VIJAYAWADA",BZA,NSG-1,"VIJAYAWADA",ECOR,"N T R","Andhra Pradesh",2025-01-16
+43,"UDAIPUR CITY",UDZ,NSG-2,"Ajmer",NWR,"Udaipur","Rajasthan",2025-07-02
+44,"BAREILLY",BRY,NSG-3,"Izzatnagar",NER,"Bareilly","Uttar Pradesh",2024-12-23
+45,"FATEHABAD CHANDRAWATIGANJ",FTD,NSG-6,"Ratlam",WR,"Indore","Madhya Pradesh",2025-01-30
+46,"GAUTAMPURA ROAD",GPX,HG-3,"Ratlam",WR,"Indore","Madhya Pradesh",2025-01-30
+47,"DAMOH",DMO,NSG-3,"Jabalpur",WCR,"Damoh","Madhya Pradesh",2025-01-31
+48,"RUTHIYAI",RTA,NSG-5,"Bhopal",WCR,"Guna","Madhya Pradesh",2025-01-16
+49,"AGRA FORT",AF,NSG-3,"Agra",NCR,"Agra","Uttar Pradesh",2025-01-24
+50,"ACHHNERA",AH,NSG-5,"Agra",NCR,"Agra","Uttar Pradesh",2025-01-24
+51,"CHHAYAPURI",CYI,NSG-6,"VADODARA",WR,"Vadodara","Gujarat",2025-01-16
+52,"GURUVAYUR",GUV,NSG-4,"THIRUVANANTHAPURAM",SR,"Thrissur","Kerala",2025-01-16
+53,"KOTTARAKARA",KKZ,NSG-6,"Madurai",SR,"Kollam","Kerala",2025-01-16
+54,"DHOLPUR",DHO,NSG-4,"Agra",NCR,"Agra","Uttar Pradesh",2025-01-24
+55,"GODHRA",GDA,NSG-4,"VADODARA",WR,"GODHRA(PANCHMAHAL)","Gujarat",2025-01-16
+56,"RAJA KI MANDI",RKM,NSG-4,"Agra",NCR,"Agra","Uttar Pradesh",2025-01-24
+57,"MATHURA",MTJ,NSG-2,"Agra",NCR,"Mathura","Uttar Pradesh",2025-01-24
+58,"KOSIKALAN",KSV,NSG-4,"Agra",NCR,"Mathura","Uttar Pradesh",2025-01-24
+59,"GUNA",GUNA,NSG-4,"Bhopal",WCR,"Guna","Madhya Pradesh",2025-01-16
+60,"IDGAH",IDH,NSG-4,"Agra",NCR,"Agra","Uttar Pradesh",2025-03-12
+61,"RANCHI",RNC,NSG-2,"Ranchi",SER,"Ranchi","Jharkhand",2025-01-16
+62,"KOLKATA",KOAA,NSG-2,"Sealdah",ER,"Kolkata","West Bengal",2025-01-31
+63,"HATIA",HTE,NSG-3,"Ranchi",SER,"Ranchi","Jharkhand",2025-01-16
+64,"BOKARO STEEL CITY",BKSC,NSG-3,"Adra",SER,"Bokaro","Jharkhand",2025-01-31
+65,"TATANAGAR",TATA,NSG-2,"Chakradharpur",SER,"Purbi Singhbhum","Jharkhand",2025-01-31
+66,"KHARAGPUR",KGP,NSG-2,"KHARAGPUR",SER,"Paschim Mednipur","West Bengal",2025-01-31
+67,"BERHAMPORE COURT",BPC,NSG-3,"Sealdah",ER,"Murshidabad","West Bengal",2025-01-31
+68,"MURSHIDABAD",MBB,NSG-5,"Sealdah",ER,"Murshidabad","West Bengal",2025-01-31
+69,"QUILANDI",QLD,NSG-3,"PALAKKAD",SR,"Kozhikode","Kerala",2025-01-24
+70,"FEROK",FK,NSG-5,"PALAKKAD",SR,"Kozhikode","Kerala",2025-01-24
+71,"ANGADIPURAM",AAM,NSG-5,"PALAKKAD",SR,"Malappuram","Kerala",2025-01-24
+72,"KUTTIPPURAM",KTU,NSG-4,"PALAKKAD",SR,"Malappuram","Kerala",2025-01-24
+73,"WADAKKANCHEY",WKI,NSG-5,"THIRUVANANTHAPURAM",SR,"Thrissur","Kerala",2025-01-24
+74,"BHUJ",BHUJ,NSG-3,"AHMEDABAD",WR,"BHUJ(KUTCHH)","Gujarat",2025-01-31
+75,"PALANPUR",PNU,NSG-3,"AHMEDABAD",WR,"BANASKANTHA","Gujarat",2025-01-31
+76,"GANDHIDHAM",GIM,NSG-3,"AHMEDABAD",WR,"BHUJ(KUTCHH)","Gujarat",2025-01-31
+77,"MORADABAD",MB,NSG-3,"Moradabad",NR,"Moradabad","Uttar Pradesh",2025-02-20
+78,"TUNDLA",TDL,NSG-3,"Prayagraj",NCR,"Firozabad","Uttar Pradesh",2025-04-23
+79,"SEWAGRAM",SEGM,NSG-4,"Nagpur",WR,"Wardha","Maharashtra",2025-02-20
+80,"WARDHA",WR,NSG-3,"Nagpur",WR,"Wardha","Maharashtra",2025-02-20
+81,"BALLARSHAH",BPQ,NSG-3,"Nagpur",CR,"Chandrapur","Maharashtra",2025-02-20
+82,"CHANDRAPUR",CD,NSG-4,"Nagpur",CR,"Chandrapur","Maharashtra",2025-02-20
+83,"KHURAI",KYE,NSG-5,"Jabalpur",WCR,"Sagar","Madhya Pradesh",2025-02-20
+84,"MAKRONIA",MKRN,NSG-5,"Jabalpur",WCR,"Sagar","Madhya Pradesh",2025-04-23
+85,"PRAYAGRAJ RAMBAGH",PRRB,NSG-4,"Prayagraj",NCR,"Prayagraj","Uttar Pradesh",2025-02-20
+86,"HARDOI",HRI,NSG-3,"HARDOI",NR,"Hardoi","Uttar Pradesh",2025-02-20
+87,"GONDIA",GY,NSG-3,"Nagpur",SECR,"Gondiya","Maharashtra",2025-03-12
+88,"WANKANER",WKR,NSG-5,"RAJKOT",WR,"Rajkot","Gujarat",2025-03-12
+89,"BOTAD",BTD,NSG-4,"BHAVNAGAR",WR,"Botad","Gujarat",2025-03-12
+90,"AMALNER",AN,NSG-5,"MUMBAI CENTRAL",WR,"Jalgaon","Maharashtra",2025-03-12
+91,"DONDAICHA",DDE,NSG-4,"MUMBAI CENTRAL",WR,"Dhule","Maharashtra",2025-03-12
+93,"ORAI",ORAI,NSG-4,"Jhansi",NCR,"Jalaun","Uttar Pradesh",2025-04-24
+94,"VADNAGAR",VDG,NSG-6,"AHMEDABAD",WR,"Mahesana","Gujarat",2025-04-23
+95,"PAYYANUR",PAY,NSG-3,"PALAKKAD",SR,"Kannur","Kerala",2025-04-23
+96,"PAYANGADI",PAZ,NSG-5,"PALAKKAD",SR,"Kannur","Kerala",2025-04-23
+97,"HOSHIARPUR",HSX,NSG-5,"Firozpur",NR,"Hoshiarpur","Punjab",2025-04-23
+98,"MALDA TOWN",MLDT,NSG-3,"Malda",ER,"Maldah","West Bengal",2025-04-23
+99,"KHALTIPUR",KTJ,NSG-5,"Malda",ER,"Maldah","West Bengal",2025-04-23
+100,"JALANDHAR CITY",JUC,NSG-2,"Firozpur",NR,"Jalandhar","Punjab",2025-04-23
+101,"ANANDPUR SAHIB",ANSB,NSG-5,"AMBALA",NR,"Rupnagar","Punjab",2025-04-23
+102,"NAGDA",NAD,NSG-4,"Ratlam",WR,"Ujjain","Madhya Pradesh",2025-04-23
+103,"UJJAIN",UJN,NSG-2,"Ratlam",WR,"Ujjain","Madhya Pradesh",2025-04-23
+104,"JAORA",JAO,NSG-5,"Ratlam",WR,"Ratlam","Madhya Pradesh",2025-04-23
+105,"CHANDIGARH",CDG,NSG-2,"Ambala",NR,"Chandigarh","Chandigarh",2025-04-23
+106,"RAJPURA",RPJ,NSG-4,"AMBALA",NR,"Patiala","Punjab",2025-04-23
+107,"DHURI",DUI,NSG-5,"AMBALA",NR,"Sangrur","Punjab",2025-04-23
+109,"ARIYALUR",ALU,NSG-5,"TIRUCHIRAPALLI",SR,"Ariyalur","Tamil Nadu",2025-05-06
+110,"MAHIM",MM,SG-1,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+111,"SHEGAON",SEG,NSG-3,"Bhusawal",CR,"Buldana","Maharashtra",2025-05-06
+112,"NASHIK ROAD",NK,NSG-2,"Bhusawal",CR,"Nashik","Maharashtra",2025-05-06
+113,"ANDHERI",ADH,SG-1,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+114,"MAHALAXMI",MX,SG-2,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+115,"BORIVALI",BVI,SG-1,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+116,"MATUNGA ROAD",MRU,SG-2,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+117,"GRANT ROAD",GTR,SG-2,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+118,"CHURCHGATE",CCG,SG-1,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+119,"BHAYANDER",BYR,SG-1,"MUMBAI CENTRAL",WR,"Mira Bhayander Municipal Corporation (Thane Zone-7)","Maharashtra",2025-05-06
+120,"JOGESHWARI",JOS,SG-1,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+121,"PRABHADEVI",PBHD,SG-2,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+122,"GOREGAON",GMN,SG-1,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+123,"DAHISAR",DIC,SG-1,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+124,"DADAR",DDR,NSG-1,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+125,"BANDRA TERMINUS",BDTS,NSG-2,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+126,"NALLASOPARA",NSP,SG-1,"MUMBAI CENTRAL",WR,"Palghar","Maharashtra",2025-05-06
+127,"BANDRA LOCAL",BA,NSG-2,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+128,"KANDIVALI",KILE,SG-1,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+129,"MALAD",MDD,SG-1,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+130,"VASAI ROAD",BSR,SG-1,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+131,"VIRAR",VR,SG-1,"MUMBAI CENTRAL",WR,"Palghar","Maharashtra",2025-05-06
+132,"MARINE LINE",MEL,SG-2,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+133,"CHARNI ROAD",CYR,SG-2,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+134,"SANTACRUZ",STC,SG-1,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+135,"NAIGAON",NIG,SG-2,"MUMBAI CENTRAL",WR,"Palghar","Maharashtra",2025-05-06
+136,"MUMBAI CENTRAL",MMCT,NSG-1,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-04-23
+137,"VILE PARLEY",VLP,SG-1,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+138,"KHAR ROAD",KHAR,SG-1,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+139,"LOWER PAREL",PL,SG-2,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-05-06
+140,"ROORKEE",RK,NSG-3,"Moradabad",NR,"Hardwar","Uttarakhand",2025-04-23
+141,"YOG NAGRI RISHIKESH",YNRK,NSG-5,"Moradabad",NR,"Dehradun","Uttarakhand",2025-05-06
+142,"HARIDWAR",HW,NSG-2,"Moradabad",NR,"Hardwar","Uttarakhand",2025-05-06
+143,"NEW DELHI",NDLS,NSG-1,"Delhi",NR,"New Delhi","Delhi",2025-04-24
+144,"OLD DELHI",DLI,NSG-1,"Delhi",NR,"New Delhi","Delhi",2025-04-24
+145,"HAZRAT NIZAMUDDIN",NZM,NSG-1,"Delhi",NR,"New Delhi","Delhi",2025-04-24
+146,"ANAND VIHAR TERMINAL",ANVT,NSG-2,"Delhi",NR,"New Delhi","Delhi",2025-04-24
+147,"DELHI SHAHDARA",DSA,NSG-3,"Delhi",NR,"New Delhi","Delhi",2025-04-24
+148,"DELHI CANTT",DEC,NSG-3,"Delhi",NR,"New Delhi","Delhi",2025-04-24
+149,"CHARBAGH  LUCKNOW",LKO,NSG-2,"Lucknow",NR,"Lucknow","Uttar Pradesh",2025-05-06
+150,"DELHI SARAI ROHILLA",DEE,NSG-2,"Delhi",NR,"New Delhi","Delhi",2025-04-24
+151,"OKHLA",OKA,NSG-5,"Delhi",NR,"New Delhi","Delhi",2025-04-24
+152,"LALKUAN",LKU,NSG-4,"Izzatnagar",NER,"Nainital","Uttarakhand",2025-05-06
+153,"MANINAGAR",MAN,NSG-4,"AHMEDABAD",WR,"Ahmedabad","Gujarat",2025-05-06
+154,"TALALA",TAV,NSG-6,"BHAVNAGAR",WR,"Gir Somnath","Gujarat",2025-05-06
+155,"UNJHA",UJA,NSG-4,"AHMEDABAD",WR,"Mahesana","Gujarat",2025-05-06
+156,"KATHGODAM",KGM,NSG-3,"Izzatnagar",NER,"Nainital","Uttarakhand",2025-05-06
+157,"NILAMBUR",NIL,NSG-5,"PALAKKAD",SR,"Palakkad","Kerala",2025-06-11
+158,"PALAKKAD TOWN",PGTN,NSG-5,"PALAKKAD",SR,"Palakkad","Kerala",2025-06-11
+159,"LALITPUR",LAR,NSG-4,"JHANSI",NCR,"Lalitpur","Uttar Pradesh",2025-06-11
+160,"PATHANKOT CANTT STATION",PTKC,NSG-3,"Firozpur",NR,"Pathankot","Punjab",2025-08-27
+161,"OTTAPALAM",OTP,NSG-3,"PALAKKAD",SR,"Palakkad","Kerala",2025-06-11
+162,"SAWAI MADHOPUR RAILWAY",SWM,NSG-3,"Kota",WCR,"Sawai Madhopur","Rajasthan",2025-07-02
+163,"AJMER",AII,NSG-2,"Ajmer",NWR,"Ajmer","Rajasthan",2025-07-02
+164,"JAIPUR",JP,NSG-2,"Jaipur",NWR,"Jaipur","Rajasthan",2025-07-02
+165,"DEORIA",DEOS,NSG-3,"BANARAS",NER,"Gorakhpur","Uttar Pradesh",2025-07-02
+166,"GORAKHPUR",GKP,NSG-1,"LUCKNOW",NER,"Gorakhpur","Uttar Pradesh",2025-07-02
+167,"PRAYAGRAJ",PRYJ,NSG-2,"PRAYAGRAJ",NCR,"Prayagraj","Uttar Pradesh",2025-07-02
+168,"TRIPUNITHURA",TRTR,NSG-5,"THIRUVANANTHAPURAM",SR,"Ernakulam","Kerala",2025-07-02
+169,"BATHINDA",BTI,NSG-3,"AMBALA",NR,"Bathinda","Punjab",2025-07-02
+170,"PALANI",PLNI,NSG-4,"Madurai",SR,"Dindigul","Tamil Nadu",2025-08-27
+171,"THOOTHUKUDI",TN,NSG-3,"Madurai",SR,"Thoothukkudi","Tamil Nadu",2025-08-27
+172,"SENGOTTAI",SCT,NSG-5,"Madurai",SR,"Tirunelveli","Tamil Nadu",2025-08-27
+173,"TENKASI",TSI,NSG-3,"Madurai",SR,"Tirunelveli","Tamil Nadu",2025-08-27
+174,"KURDUWADI",KWV,NSG-4,"Solapur",CR,"Solapur","Maharashtra",2025-10-24
+175,"GANGAPUR ROAD",GUR,NSG-3,"Solapur",CR,"Solapur","Maharashtra",2025-10-24
+176,"AKKALKOT",AKOR,NSG-5,"Solapur",CR,"Solapur","Maharashtra",2025-10-24
+177,"PANDHARPUR",PVR,NSG-4,"Solapur",CR,"Solapur","Maharashtra",2025-11-28
+178,"LATUR",LUR,NSG-4,"Solapur",CR,"Solapur","Maharashtra",2025-10-24
+179,"DHARASHIV",DRSV,NSG-5,"Solapur",CR,"Dharashiv","Maharashtra",2025-11-28
+180,"WADI",WADI,NSG-4,"Solapur Division",CR,"Kalaburagi","Karnataka",2025-10-24
+181,"SOLAPUR",SUR,NSG-2,"Solapur",CR,"Solapur","Maharashtra",2025-10-24
+182,"NAGERCOIL",NCJ,NSG-3,"THIRUVANANTHAPURAM",SR,"Kanyakumari","Tamil Nadu",2025-12-04
+183,"TIRUVALLA",TRVL,NSG-3,"THIRUVANANTHAPURAM",SR,"Pathanamthitta","Kerala",2025-11-28
+184,"BHAKTI NAGAR",BKNG,NSG-5,"RAJKOT",WR,"Rajkot","Gujarat",2025-12-04
+185,"HAPA",HAPA,NSG-5,"RAJKOT",WR,"Jamnagar","Gujarat",2025-10-24
+186,"NEW ALIPURDUAR",NOQ,NSG-3,"Alipurduar",NFR,"Alipurduar","West Bengal",2025-12-04
+187,"KOKRAJHAR",KOJ,NSG-4,"ALIPURDUAR",NFR,"Kokrajhar","Assam",2026-01-31
+188,"FALAKATA",FLK,NSG-5,"Alipurduar",NFR,"Alipurduar","West Bengal",2025-12-04
+189,"GOLAKGANJ",GKJ,NSG-6,"ALIPURDUAR",NFR,"Dhubri","Assam",2026-01-01
+190,"NEW COOCHBEHAR",NCB,NSG-3,"Alipurduar",NFR,"Coochbehar","West Bengal",2025-12-04
+191,"BINNAGURI",BNV,NSG-5,"Alipurduar",NFR,"Alipurduar","West Bengal",2025-12-04
+192,"DINHATA",DHH,NSG-5,"Alipurduar",NFR,"Coochbehar","West Bengal",2025-12-04
+193,"DHUPGURI",DQG,NSG-4,"Alipurduar",NFR,"Jalpaiguri","West Bengal",2025-12-04
+194,"TRIVANDRUM CENTRAL",TVC,NSG-2,"THIRUVANANTHAPURAM",SR,"Thiruvananthapuram","Kerala",2025-10-24
+195,"JALPAIGURI ROAD",JPE,NSG-5,"Alipurduar",NFR,"Jalpaiguri","West Bengal",2025-12-04
+196,"NEW MAL JN",NMZ,NSG-5,"Alipurduar",NFR,"Jalpaiguri","West Bengal",2025-12-04
+197,"ALAPPUZHA",ALLP,NSG-3,"THIRUVANANTHAPURAM",SR,"Alappuzha","Kerala",2025-12-04
+198,"SION",SIN,SG-1,"MUMBAI",CR,"Navi Mumbai Municipal Corporation (Thane Zone-4)","Maharashtra",2025-10-24
+199,"MATUNGA",MTN,SG-2,"MUMBAI",CR,"Bhiwandi Municipal Corporation (Thane Zone-5)","Maharashtra",2025-10-24
+200,"CHINCHPOKLI",CHG,SG-2,"MUMBAI",CR,"Navi Mumbai Municipal Corporation (Thane Zone-2)","Maharashtra",2025-10-24
+201,"DIMAPUR",DMV,NSG-3,"LUMDING",NFR,"Dimapur","Nagaland",2025-10-24
+202,"BYCULLA",BY,SG-2,"MUMBAI",CR,"Navi Mumbai Municipal Corporation (Thane Zone-3)","Maharashtra",2025-10-24
+203,"MASJID",MSD,SG-2,"MUMBAI",CR,"Greater Mumbai","Maharashtra",2025-10-24
+204,"CHHATRAPATI SHIVAJI MAHARAJ TERMINUS",CSTM,NSG-1,"MUMBAI",CR,"Greater Mumbai","Maharashtra",2025-10-24
+205,"DADAR",DDR,NSG-1,"MUMBAI CENTRAL",WR,"Greater Mumbai","Maharashtra",2025-10-24
+206,"CURREY ROAD",CRD,SG-2,"MUMBAI",CR,"Greater Mumbai","Maharashtra",2025-10-24
+207,"GHATKOPAR STATION",GC,SG-1,"MUMBAI",CR,"Greater Mumbai","Maharashtra",2025-10-24
+208,"VARKALA",VAK,NSG-3,"THIRUVANANTHAPURAM",SR,"Thiruvananthapuram","Kerala",2025-10-24
+209,"THIRUVANANTHAPURAM PETTAH",TVP,NSG-6,"THIRUVANANTHAPURAM",SR,"Thiruvananthapuram","Kerala",2025-11-28
+210,"THIRUVANANTHAPURAM NORTH",TVCN,NSG-3,"THIRUVANANTHAPURAM",SR,"Thiruvananthapuram","Kerala",2025-11-28
+211,"PAREL",PR,SG-3,"MUMBAI",CR,"Kalyan Tahashil (Thane Zone-8)","Maharashtra",2025-10-24
+212,"BHANDUP STATION",BND,SG-1,"MUMBAI",CR,"Greater Mumbai","Maharashtra",2026-01-29
+213,"VIKHROLI STATION",VK,SG-1,"MUMBAI",CR,"Greater Mumbai","Maharashtra",2025-10-24
+214,"VIDYAVIHAR STATION",VVH,SG-2,"MUMBAI",CR,"Thane Municipal Corporation (Thane Zone-1)","Maharashtra",2025-10-24
+215,"ERNAKULAM TOWN",ERN,NSG-2,"THIRUVANANTHAPURAM",SR,"Ernakulam","Kerala",2025-12-04
+216,"AMBALAPUZHA",AMPA,NSG-5,"THIRUVANANTHAPURAM",SR,"Alappuzha","Kerala",2025-12-04
+217,"MANGALORE CENTRAL",MAQ,NSG-2,"Palakkad",SR,"Dakshina Kannada","Karnataka",2026-01-01
+218,"MANGALORE",MAJN,NSG-3,"Palakkad",SR,"Dakshina Kannada","Karnataka",2026-01-01
+219,"ERODE",ETW,NSG-2,"SALEM",SR,"Erode","Tamil Nadu",2026-01-01
+220,"MULUND STATION",MLND,SG-1,"MUMBAI",CR,"Navi Mumbai Municipal Corporation (Thane Zone-3)","Maharashtra",2025-11-28
+221,"KALVA STATION",KLVA,SG-2,"MUMBAI",CR,"Navi Mumbai Municipal Corporation (Thane Zone-3)","Maharashtra",2026-01-01
+222,"THANE",TNA,NSG-1,"MUMBAI",CR,"Navi Mumbai Municipal Corporation (Thane Zone-4)","Maharashtra",2025-11-28
+223,"MAVELIKARA",MVLK,NSG-5,"THIRUVANANTHAPURAM",SR,"Alappuzha","Kerala",2025-12-04
+224,"PARASSALA",PASA,NSG-5,"THIRUVANANTHAPURAM",SR,"Thiruvananthapuram","Kerala",2025-12-01
+225,"KOLLAM",QLN,NSG-2,"THIRUVANANTHAPURAM",SR,"Kollam","Kerala",2025-12-01
+226,"CHANGANACHERI",CGY,NSG-4,"THIRUVANANTHAPURAM",SR,"Kottayam","Kerala",2025-12-04
+227,"ALUVA",AWY,NSG-3,"THIRUVANANTHAPURAM",SR,"Ernakulam","Kerala",2025-12-04
+228,"THRISSUR",TCR,NSG-2,"THIRUVANANTHAPURAM",SR,"Thrissur","Kerala",2025-12-04
+229,"ERNAKULAM",ERS,NSG-2,"THIRUVANANTHAPURAM",SR,"Ernakulam","Kerala",2025-12-04
+230,"KARUNAGAPPALLY",KPY,NSG-4,"THIRUVANANTHAPURAM",SR,"Kollam","Kerala",2025-12-01
+231,"CHENGANNUR",CNGR,NSG-3,"THIRUVANANTHAPURAM",SR,"Alappuzha","Kerala",2025-12-04
+232,"VILLIVAKKAM",VLK,SG-3,"CHENNAI",SR,"Thiruvallur","Tamil Nadu",2026-01-01
+233,"SANDHURST ROAD",SNRD,SG-2,"MUMBAI",CR,"Greater Mumbai","Maharashtra",2025-11-28
+234,"KURLA",CLA,SG-1,"MUMBAI",CR,"Greater Mumbai","Maharashtra",2025-11-28
+235,"KANJURMARG",KJRD,SG-2,"MUMBAI",CR,"Greater Mumbai","Maharashtra",2025-11-28
+236,"ANAND",ANND,NSG-3,"VADODARA",WR,"Anand","Gujarat",2026-01-01
+237,"PURATCHI THALAIVAR DR MG RAMACHANDRAN CENTRAL",MAS,NSG-1,"CHENNAI",SR,"Chennai","Tamil Nadu",2026-01-01
+238,"VANIYAMBADI",VN,NSG-5,"CHENNAI",SR,"Vellore","Tamil Nadu",2026-01-01
+239,"RAJAPALAYAM",RJPM,NSG-4,"Madurai",SR,"Virudhunagar","Tamil Nadu",2026-01-01
+240,"PARAPANANGADI",PGI,NSG-5,"PALAKKAD",SR,"Malappuram","Kerala",2026-01-29
+241,"MOORE MARKET COMPLEX-CHENNAI",MASS,SG-2,"CHENNAI",SR,"Chennai","Tamil Nadu",2026-01-01
+242,"CHENNAI BEACH",MSB,NSG-2,"CHENNAI",SR,"Chennai","Tamil Nadu",2026-01-01
+243,"TIRUR",TIR,NSG-3,"PALAKKAD",SR,"Malappuram","Kerala",2026-01-29
+244,"TIRUCHIRAPALLI FORT",TP,NSG-5,"TIRUCHIRAPALLI",SR,"Tiruchirappalli","Tamil Nadu",2026-01-01
+245,"PALAKKAD",PGT,NSG-2,"PALAKKAD",SR,"Palakkad","Kerala",2026-01-01
+246,"SHORANUR",SRR,NSG-3,"PALAKKAD",SR,"Palakkad","Kerala",2026-01-29
+247,"KOTTAYAM",KTYM,NSG-3,"THIRUVANANTHAPURAM",SR,"Kottayam","Kerala",2026-01-01
+248,"VADAKARA",BDJ,NSG-3,"PALAKKAD",SR,"Kozhikode","Kerala",2026-01-01
+249,"THANJAVUR",TJ,NSG-3,"TIRUCHIRAPALLI",SR,"Thanjavur","Tamil Nadu",2026-01-01
+250,"NAGAPATTINAM",NGT,NSG-3,"TIRUCHIRAPALLI",SR,"Nagapattinam","Tamil Nadu",2026-01-01
+251,"VELANKANNI",VLKN,NSG-5,"TIRUCHIRAPALLI",SR,"Nagapattinam","Tamil Nadu",2026-01-01
+252,"NEYYATTINKARA",NYY,NSG-5,"THIRUVANANTHAPURAM",SR,"Thiruvananthapuram","Kerala",2026-01-29
+253,"KOZHIKODE",CLT,NSG-2,"PALAKKAD",SR,"Kozhikode","Kerala",2026-01-29
+254,"POLLACHI",POY,NSG-5,"PALAKKAD",SR,"Coimbatore","Tamil Nadu",2026-01-29
+255,"BALLY",BLY,SG-3,"Howrah",ER,"Howrah","West Bengal",2026-03-30
+256,"HOWRAH",HWH,NSG-1,"Howrah",ER,"Howrah","West Bengal",2026-03-30
+257,"CHALAKKUDI",CKI,NSG-5,"THIRUVANANTHAPURAM",SR,"Thrissur","Kerala",2026-03-30
+258,"RAMESWARAM",RMM,NSG-3,"Madurai",SR,"Ramanathapuram","Tamil Nadu",2026-03-30
+259,"KANNUR",CAN,NSG-2,"PALAKKAD",SR,"Kannur","Kerala",2026-03-30
+260,"ANGAMALY",AFK,NSG-4,"THIRUVANANTHAPURAM",SR,"Ernakulam","Kerala",2026-03-30
+261,"SRIRANGAM",SRGM,NSG-5,"TIRUCHIRAPALLI",SR,"Tiruchirappalli","Tamil Nadu",2026-03-30
+262,"BADARPUR",BPB,NSG-5,"LUMDING",NFR,"Karimganj","Assam",2026-03-30
+263,"DIPHU",DPU,NSG-5,"LUMDING",NFR,"Karbi Anglong","Assam",2026-03-30
+264,"ATTUR",ATU,NSG-5,"SALEM",SR,"Salem","Tamil Nadu",2026-03-30
+265,"SILCHAR",SCL,NSG-4,"LUMDING",NFR,"Cachar","Assam",2026-03-30
+266,"SARUPATHPAR",SZR,NSG-5,"LUMDING",NFR,"Golaghat","Assam",2026-03-30
+267,"NEW HAFLONG",NHLG,NSG-4,"LUMDING",NFR,"Dima Hasao","Assam",2026-03-30
+268,"LUMBDING",LMG,NSG-4,"LUMDING",NFR,"Hojai","Assam",2026-03-30
+269,"JAGIROAD",JID,NSG-5,"LUMDING",NFR,"Marigaon","Assam",2026-03-30
+270,"KARIMGANJ",KXJ,NSG-3,"LUMDING",NFR,"Karimganj","Assam",2026-03-30
+271,"LANKA",LKA,NSG-5,"LUMDING",NFR,"Hojai","Assam",2026-03-30
+272,"HOJAI",HJI,NSG-5,"LUMDING",NFR,"Hojai","Assam",2026-03-30
+273,"TALEGAON",TGN,SG-3,"Pune",CR,"Pune Municipal Corporation","Maharashtra",2026-03-30
+274,"KARAD",KRD,NSG-5,"Pune",CR,"Satara","Maharashtra",2026-03-30
+275,"SANGLI",SLI,NSG-4,"Pune",CR,"Sangli","Maharashtra",2026-03-30
+276,"HADAPSAR",HDP,NSG-6,"Pune",CR,"Pune Municipal Corporation","Maharashtra",2026-03-30
+277,"AKURDI",AKRD,SG-3,"Pune",CR,"Pune Municipal Corporation","Maharashtra",2026-03-30
+278,"BARAMATI",BRMT,NSG-5,"Pune",CR,"Pune Municipal Corporation","Maharashtra",2026-03-30
+279,"CHAPARMUKH",CPKK,NSG-5,"LUMDING",NFR,"Nagaon","Assam",2026-03-30
+280,"KOVILPATTI",CVP,NSG-3,"Madurai",SR,"Thoothukkudi","Tamil Nadu",2026-03-30
+281,"ROURKELA",ROU,NSG-3,"Chakradharpur",SER,"SUNDARGARH(EXCEPT MUNICIPAL CORPORATION)","Orissa",2026-03-30
+282,"UDHAGAMANDALAM",UAM,NSG-4,"SALEM",SR,"The Nilgiris","Tamil Nadu",2026-03-30
+283,"JHARSUGUDA",JSG,NSG-3,"Chakradharpur",SER,"JHARSUGUDA","Orissa",2026-03-30
+284,"BARGARH",BRG,NSG-5,"Sambalpur",ECOR,"BARAGARH","Orissa",2026-03-30
+285,"SAMBALPUR",SBP,NSG-3,"Sambalpur",ECOR,"SAMBALPUR MUNICIPAL CORPORATION","Orissa",2026-03-30
+286,"TITILAGARH",TIG,NSG-4,"Sambalpur",ECOR,"BOLANGIR","Orissa",2026-03-30
+287,"THIRUCHENDUR",TCN,NSG-4,"Madurai",SR,"Thoothukkudi","Tamil Nadu",2026-03-30
+288,"KUMBAKONAM",KMU,NSG-3,"TIRUCHIRAPALLI",SR,"Thanjavur","Tamil Nadu",2026-03-30
+289,"HASSAN",HAS,NSG-4,"Mysuru",CR,"Hassan","Karnataka",2026-03-30
+290,"CUDDALORE PORT",CUPJ,NSG-5,"TIRUCHIRAPALLI",SR,"Cuddalore","Tamil Nadu",2026-03-30
+291,"TENI",TENI,NSG-5,"Madurai",SR,"Theni","Tamil Nadu",2026-03-30
+292,"TIRUPPUR",TUP,NSG-3,"SALEM",SR,"Tirupur","Tamil Nadu",2026-06-02
+293,"KASARAGOD",KGQ,NSG-3,"PALAKKAD",SR,"Kasaragod","Kerala",2026-06-02
+294,"KANHANGAD",KZE,NSG-4,"PALAKKAD",SR,"Kasaragod","Kerala",2026-06-02
+295,"TIRUCHIRAPPALLI",TPJ,NSG-2,"TIRUCHIRAPALLI",SR,"Tiruchirappalli","Tamil Nadu",2026-06-02
+296,"KARUR",KRR,NSG-4,"SALEM",SR,"Karur","Tamil Nadu",2026-06-02
