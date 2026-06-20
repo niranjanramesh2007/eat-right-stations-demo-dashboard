@@ -1469,6 +1469,15 @@
           <canvas id="chart-timeline"></canvas>
         </div>
       </div>
+      <!-- 6. Upcoming Expirations by Quarter -->
+      <div class="chart-card-full">
+        <div class="chart-header" style="margin-bottom:12px">
+          <div class="section-title">⏳ Upcoming Expiration Schedule (by Quarter)</div>
+        </div>
+        <div style="position:relative;height:260px">
+          <canvas id="chart-expiry-schedule"></canvas>
+        </div>
+      </div>
     </div>
     <!-- Certification Expiry & Renewal Planning -->
     <div id="expiry-planning-section" class="chart-card-full" style="margin-bottom: 20px;">
@@ -2464,7 +2473,7 @@
       leg.innerHTML = html;
     }
 
-    let chartCat, chartStates, chartTimeline, chartZones, chartDivisions, chartCatBar, chartZoneDiv;
+    let chartCat, chartStates, chartTimeline, chartZones, chartDivisions, chartCatBar, chartZoneDiv, chartExpiry;
     let activeZonePill = null;
 
     const CHART_DEFAULTS = {
@@ -2675,6 +2684,34 @@
           }
         }
       });
+
+      // 6. Upcoming Expiration Schedule by Quarter
+      const qCounts = {};
+      filteredData.forEach(d => {
+        if (!d.expiry_date) return;
+        const parts = d.expiry_date.split('-');
+        if (parts.length < 2) return;
+        const yr = parseInt(parts[0]);
+        const mo = parseInt(parts[1]);
+        const q = Math.ceil(mo / 3);
+        const key = `${yr}-Q${q}`;
+        qCounts[key] = (qCounts[key] || 0) + 1;
+      });
+
+      const qList = [];
+      for (let y = 2026; y <= 2028; y++) {
+        for (let q = 1; q <= 4; q++) {
+          if (y === 2026 && q < 2) continue; // Start at 2026-Q2
+          if (y === 2028 && q > 2) continue; // End at 2028-Q2
+          qList.push(`${y}-Q${q}`);
+        }
+      }
+
+      const qVals = qList.map(q => qCounts[q] || 0);
+      const qColors = qList.map((_, idx) => `hsl(${35 + (idx * 28)}, 75%, 48%)`);
+
+      if (chartExpiry) chartExpiry.destroy();
+      chartExpiry = mkBarChart('chart-expiry-schedule', qList, qVals, qColors);
 
       // 1. Zone-wise Station Count Chart
       const zoneCounts = {};
