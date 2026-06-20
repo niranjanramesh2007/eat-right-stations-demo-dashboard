@@ -1156,8 +1156,8 @@
         <option value="2025">2025</option>
         <option value="2026">2026</option>
       </select>
-      <select class="filter-select" id="f-station" onchange="applyFilters()" style="min-width:180px">
-        <option value="">All Stations</option>
+      <select class="filter-select" id="f-division" onchange="applyFilters()" style="min-width:160px">
+        <option value="">All Divisions</option>
       </select>
       <span class="filter-count" id="filter-count">296</span>
       <button id="reset-btn" onclick="resetFilters()">✕ Reset</button>
@@ -1383,7 +1383,7 @@
       {"sno": 15, "name": "GAYA", "code": "GAYA", "category": "NSG-2", "division": "Deen Dayal Upadhyaya", "zone": "ECR", "district": "Gaya", "state": "Bihar", "awarded_date": "2024-09-12", "expiry_date": "2026-09-12"},
       {"sno": 16, "name": "VADODARA", "code": "BRC", "category": "NSG-2", "division": "VADODARA", "zone": "WR", "district": "Vadodara Municipal Corporation", "state": "Gujarat", "awarded_date": "2024-08-28", "expiry_date": "2026-08-28"},
       {"sno": 17, "name": "AISHBAGH", "code": "ASH", "category": "NSG-3", "division": "Lucknow", "zone": "NER", "district": "Lucknow", "state": "Uttar Pradesh", "awarded_date": "2024-08-28", "expiry_date": "2026-08-28"},
-      {"sno": 18, "name": "VISAKHAPATNAM", "code": "VSKP", "category": "NSG-1", "division": "WALTAIR", "zone": "SCOR", "district": "Visakhapatnam", "state": "Andhra Pradesh", "awarded_date": "2024-09-12", "expiry_date": "2026-09-12"},
+      {"sno": 18, "name": "VISAKHAPATNAM", "code": "VSKP", "category": "NSG-1", "division": "VISAKHAPATNAM", "zone": "SCOR", "district": "Visakhapatnam", "state": "Andhra Pradesh", "awarded_date": "2024-09-12", "expiry_date": "2026-09-12"},
       {"sno": 19, "name": "NEW TINSUKIA", "code": "NTSK", "category": "NSG-3", "division": "TINSUKIA", "zone": "NFR", "district": "Tinsukia", "state": "Assam", "awarded_date": "2024-09-12", "expiry_date": "2026-09-12"},
       {"sno": 20, "name": "KAMAKHYA", "code": "KYQ", "category": "NSG-2", "division": "LUMDING", "zone": "NFR", "district": "Kamrup Metropolitan Dist.", "state": "Assam", "awarded_date": "2024-09-12", "expiry_date": "2026-09-12"},
       {"sno": 21, "name": "MAHESANA", "code": "MSH", "category": "NSG-3", "division": "AHMEDABAD", "zone": "WR", "district": "Mahesana", "state": "Gujarat", "awarded_date": "2024-11-01", "expiry_date": "2026-11-01"},
@@ -1845,7 +1845,7 @@
       const states = [...new Set(RAW_DATA.map(d => d.state))].sort();
       const cats = [...new Set(RAW_DATA.map(d => d.category))].sort();
       const districts = [...new Set(RAW_DATA.map(d => d.district))].sort();
-      const stations = [...new Set(RAW_DATA.map(d => d.name))].sort();
+      const divisions = [...new Set(RAW_DATA.map(d => d.division.trim().toUpperCase()))].sort();
 
       const fz = document.getElementById('f-zone');
       zones.forEach(z => { const o = document.createElement('option'); o.value = z; o.textContent = z; fz.appendChild(o) });
@@ -1855,8 +1855,8 @@
       cats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; fc.appendChild(o) });
       const fd = document.getElementById('f-district');
       districts.forEach(d => { const o = document.createElement('option'); o.value = d; o.textContent = d; fd.appendChild(o) });
-      const fn = document.getElementById('f-station');
-      stations.forEach(n => { const o = document.createElement('option'); o.value = n; o.textContent = n; fn.appendChild(o) });
+      const fdiv = document.getElementById('f-division');
+      divisions.forEach(d => { const o = document.createElement('option'); o.value = d; o.textContent = d; fdiv.appendChild(o) });
     }
 
     function applyFilters() {
@@ -1865,7 +1865,7 @@
       const cat = document.getElementById('f-category').value;
       const dist = document.getElementById('f-district').value;
       const yr = document.getElementById('f-year').value;
-      const station = document.getElementById('f-station').value;
+      const division = document.getElementById('f-division').value;
 
       filteredData = RAW_DATA.filter(d => {
         if (zone && d.zone !== zone) return false;
@@ -1873,7 +1873,7 @@
         if (cat && d.category !== cat) return false;
         if (dist && d.district !== dist) return false;
         if (yr && !d.awarded_date.startsWith(yr)) return false;
-        if (station && d.name !== station) return false;
+        if (division && d.division.trim().toUpperCase() !== division) return false;
         return true;
       });
 
@@ -1886,7 +1886,7 @@
     }
 
     function resetFilters() {
-      ['f-zone', 'f-state', 'f-category', 'f-district', 'f-year', 'f-station'].forEach(id => {
+      ['f-zone', 'f-state', 'f-category', 'f-district', 'f-year', 'f-division'].forEach(id => {
         document.getElementById(id).value = '';
       });
       applyFilters();
