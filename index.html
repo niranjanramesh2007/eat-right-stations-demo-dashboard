@@ -2082,7 +2082,14 @@
     function populateFilters() {
       const zones = [...new Set(RAW_DATA.map(d => d.zone))].sort();
       const states = [...new Set(RAW_DATA.map(d => d.state))].sort();
-      const cats = [...new Set(RAW_DATA.map(d => d.category))].sort();
+      const CAT_ORDER = ['NSG-1','NSG-2','NSG-3','NSG-4','NSG-5','NSG-6','SG-1','SG-2','SG-3','HG-3'];
+      const cats = [...new Set(RAW_DATA.map(d => d.category))].sort((a, b) => {
+        const ai = CAT_ORDER.indexOf(a), bi = CAT_ORDER.indexOf(b);
+        if (ai === -1 && bi === -1) return a.localeCompare(b);
+        if (ai === -1) return 1;
+        if (bi === -1) return -1;
+        return ai - bi;
+      });
       const districts = [...new Set(RAW_DATA.map(d => d.district))].sort();
       const divisions = [...new Set(RAW_DATA.map(d => d.division.trim().toUpperCase()))].sort();
 
@@ -2428,7 +2435,21 @@
           html += `<div style="font-size:9px;color:var(--text3);margin-bottom:4px">Top 8 shown</div>`;
       }
 
-      Object.entries(items).sort().forEach(([k, v]) => {
+      const CAT_ORDER = ['NSG-1','NSG-2','NSG-3','NSG-4','NSG-5','NSG-6','SG-1','SG-2','SG-3','HG-3'];
+      let sortedEntries = Object.entries(items);
+      if (colorBy === 'category') {
+        sortedEntries.sort((a, b) => {
+          const ai = CAT_ORDER.indexOf(a[0]), bi = CAT_ORDER.indexOf(b[0]);
+          if (ai === -1 && bi === -1) return a[0].localeCompare(b[0]);
+          if (ai === -1) return 1;
+          if (bi === -1) return -1;
+          return ai - bi;
+        });
+      } else {
+        sortedEntries.sort();
+      }
+
+      sortedEntries.forEach(([k, v]) => {
         html += `<div class="legend-item"><div class="legend-dot" style="background:${v};box-shadow:0 0 6px ${v}80"></div>${k}</div>`;
       });
       // Add section for alerts at the bottom of the legend
