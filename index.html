@@ -2163,15 +2163,28 @@
     }
 
     function renderCharts() {
+      // Canonical category order — HG-3 is lowest tier, always last
+      const CAT_ORDER = ['NSG-1','NSG-2','NSG-3','NSG-4','NSG-5','NSG-6','SG-1','SG-2','SG-3','HG-3'];
+      function sortCats(keys) {
+        return keys.slice().sort((a, b) => {
+          const ai = CAT_ORDER.indexOf(a), bi = CAT_ORDER.indexOf(b);
+          if (ai === -1 && bi === -1) return a.localeCompare(b);
+          if (ai === -1) return 1;
+          if (bi === -1) return -1;
+          return ai - bi;
+        });
+      }
+
       const catCounts = {};
       filteredData.forEach(d => { catCounts[d.category] = (catCounts[d.category] || 0) + 1 });
-      const catLabels = Object.keys(catCounts).sort().map(c => {
+      const catSortedKeys = sortCats(Object.keys(catCounts));
+      const catLabels = catSortedKeys.map(c => {
         const val = catCounts[c];
         const pct = ((val / RAW_DATA.length) * 100).toFixed(1);
         return `${c} (${pct}%)`;
       });
-      const catVals = Object.keys(catCounts).sort().map(c => catCounts[c]);
-      const catColors = Object.keys(catCounts).sort().map(c => CAT_COLORS[c] || '#aaa');
+      const catVals = catSortedKeys.map(c => catCounts[c]);
+      const catColors = catSortedKeys.map(c => CAT_COLORS[c] || '#aaa');
 
       if (chartCat) chartCat.destroy();
       const ctx2 = document.getElementById('chart-cat').getContext('2d');
@@ -2298,10 +2311,10 @@
       if (chartDivisions) chartDivisions.destroy();
       chartDivisions = mkBarChart('chart-divisions', divLabels, divVals, divColors, { horizontal: true });
 
-      // 3. Category Bar Chart
+      // 3. Category Bar Chart — sorted by canonical tier order, HG-3 last
       const catBarCounts = {};
       filteredData.forEach(d => { catBarCounts[d.category] = (catBarCounts[d.category] || 0) + 1 });
-      const catBarSorted = Object.entries(catBarCounts).sort((a, b) => a[0].localeCompare(b[0]));
+      const catBarSorted = sortCats(Object.keys(catBarCounts)).map(c => [c, catBarCounts[c]]);
       const catBarLabels = catBarSorted.map(([c]) => c);
       const catBarVals = catBarSorted.map(([, v]) => v);
       const catBarColors = catBarSorted.map(([c]) => CAT_COLORS[c] || '#64748b');
