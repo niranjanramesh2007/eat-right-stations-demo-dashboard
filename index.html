@@ -620,11 +620,14 @@
     .zd-expand-inner {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.35s ease, padding 0.2s ease;
+      transition: max-height 0.35s ease, padding 0.2s ease, border-color 0.2s ease;
       background: var(--bg);
+      border-bottom: 1px solid transparent;
+    }
+    .zd-expand-inner.open {
+      max-height: 600px;
       border-bottom: 1px solid var(--border);
     }
-    .zd-expand-inner.open { max-height: 600px; }
     .zd-station-list { display: flex; flex-wrap: wrap; gap: 7px; padding: 10px 14px 12px; }
     .zd-station-chip {
       display: inline-flex; align-items: center; gap: 6px;
@@ -2062,6 +2065,23 @@
       document.getElementById('map-count').textContent = filteredData.length;
 
       updateLegend(colorBy);
+
+      // Auto-zoom map to fit active markers
+      if (filteredData.length > 0) {
+        const coords = filteredData.map(d => getCoords(d));
+        if (filteredData.length === 1) {
+          map.setView(coords[0], 11, { animate: true });
+        } else if (isShortlisted) {
+          // Fit bounds if some filters are active, but keep a reasonable zoom padding
+          map.fitBounds(L.latLngBounds(coords), { padding: [40, 40], maxZoom: 11, animate: true });
+        } else {
+          // If all stations are shown (no filters), reset to standard India bounds
+          map.fitBounds([[8.0, 68.0], [37.0, 97.5]], { animate: true });
+        }
+      } else {
+        // Reset to original India bounds
+        map.fitBounds([[8.0, 68.0], [37.0, 97.5]], { animate: true });
+      }
     }
 
     function updateLegend(colorBy) {
@@ -2345,6 +2365,9 @@
 
       if (chartCatBar) chartCatBar.destroy();
       chartCatBar = mkBarChart('chart-cat-bar', catBarLabels, catBarVals, catBarColors);
+
+      // Sync and update Zone-Division breakdown chart
+      updateZonePills();
     }
 
     function buildZonePills() {
@@ -2359,16 +2382,62 @@
         pill.style.background = color;
         pill.dataset.zone = zone;
         pill.addEventListener('click', () => {
-          document.querySelectorAll('.zone-pill').forEach(p => p.classList.remove('active'));
-          pill.classList.add('active');
           activeZonePill = zone;
-          renderZoneDivChart(zone);
+          updateZonePills();
         });
         pillContainer.appendChild(pill);
       });
-      // Auto-select first pill
+      // Initialize active zone pill to first
       const first = pillContainer.querySelector('.zone-pill');
-      if (first) { first.classList.add('active'); activeZonePill = first.dataset.zone; renderZoneDivChart(first.dataset.zone); }
+      if (first) { activeZonePill = first.dataset.zone; }
+    }
+
+    function updateZonePills() {
+      // Get counts under current filters
+      const counts = {};
+      filteredData.forEach(d => { counts[d.zone] = (counts[d.zone] || 0) + 1; });
+      
+      const globalZone = document.getElementById('f-zone').value;
+      
+      // If the current activeZonePill has 0 count under filters, or if there's a global zone filter, sync activeZonePill
+      if (globalZone) {
+        activeZonePill = globalZone;
+      } else if (activeZonePill && !counts[activeZonePill] && filteredData.length > 0) {
+        // Find zone with max stations
+        const bestZone = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+        if (bestZone) {
+          activeZonePill = bestZone[0];
+        }
+      }
+      
+      // Update each pill's text, active state, and disabled look
+      document.querySelectorAll('.zone-pill').forEach(pill => {
+        const zone = pill.dataset.zone;
+        const count = counts[zone] || 0;
+        
+        // Show count inside pill
+        pill.textContent = `${zone} (${count})`;
+        
+        // Toggle active and opacity
+        if (zone === activeZonePill) {
+          pill.classList.add('active');
+          pill.style.opacity = '1';
+          pill.style.pointerEvents = 'auto';
+        } else {
+          pill.classList.remove('active');
+          if (count === 0) {
+            pill.style.opacity = '0.28';
+            pill.style.pointerEvents = 'none'; // disable clicking if 0 stations
+          } else {
+            pill.style.opacity = '0.8';
+            pill.style.pointerEvents = 'auto';
+          }
+        }
+      });
+      
+      if (activeZonePill) {
+        renderZoneDivChart(activeZonePill);
+      }
     }
 
     function renderZoneDivChart(zone) {
@@ -2597,8 +2666,8 @@
       populateFilters();
       updateKPI();
       initMap();
-      renderCharts();
       buildZonePills();
+      renderCharts();
       renderTable();
     });
   </script>
