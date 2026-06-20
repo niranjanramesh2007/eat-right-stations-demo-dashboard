@@ -595,7 +595,7 @@
       gap: 24px;
       align-items: start;
     }
-    .zone-div-donut-wrap { position: relative; height: 280px; }
+    .zone-div-donut-wrap { position: relative; height: 280px; max-width: 280px; margin: 0 auto; }
     .zone-div-center-label {
       position: absolute; top: 50%; left: 50%;
       transform: translate(-50%, -50%);
@@ -989,6 +989,13 @@
       }
     }
 
+    @media(max-width:900px) {
+      .zone-div-body {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+    }
+
     @media(max-width:768px) {
       #kpi-row {
         grid-template-columns: repeat(2, 1fr)
@@ -1202,6 +1209,9 @@
       <select class="filter-select" id="f-zone" onchange="applyFilters()">
         <option value="">All Zones</option>
       </select>
+      <select class="filter-select" id="f-division" onchange="applyFilters()" style="min-width:160px">
+        <option value="">All Divisions</option>
+      </select>
       <select class="filter-select" id="f-state" onchange="applyFilters()">
         <option value="">All States</option>
       </select>
@@ -1216,9 +1226,6 @@
         <option value="2024">2024</option>
         <option value="2025">2025</option>
         <option value="2026">2026</option>
-      </select>
-      <select class="filter-select" id="f-division" onchange="applyFilters()" style="min-width:160px">
-        <option value="">All Divisions</option>
       </select>
       <span class="filter-count" id="filter-count">296</span>
       <button id="reset-btn" onclick="resetFilters()">✕ Reset</button>
@@ -1937,13 +1944,49 @@
     }
 
     function applyFilters() {
-      const zone = document.getElementById('f-zone').value;
-      const state = document.getElementById('f-state').value;
+      let zone = document.getElementById('f-zone').value;
+      let division = document.getElementById('f-division').value;
+      let state = document.getElementById('f-state').value;
       const cat = document.getElementById('f-category').value;
       const dist = document.getElementById('f-district').value;
       const yr = document.getElementById('f-year').value;
-      const division = document.getElementById('f-division').value;
 
+      // 1. Calculate valid Zones based on State and Division selections
+      const validZones = new Set(RAW_DATA.filter(d => {
+        if (state && d.state !== state) return false;
+        if (division && d.division.trim().toUpperCase() !== division) return false;
+        return true;
+      }).map(d => d.zone));
+
+      // 2. Calculate valid Divisions based on Zone and State selections
+      const validDivs = new Set(RAW_DATA.filter(d => {
+        if (zone && d.zone !== zone) return false;
+        if (state && d.state !== state) return false;
+        return true;
+      }).map(d => d.division.trim().toUpperCase()));
+
+      // 3. Calculate valid States based on Zone and Division selections
+      const validStates = new Set(RAW_DATA.filter(d => {
+        if (zone && d.zone !== zone) return false;
+        if (division && d.division.trim().toUpperCase() !== division) return false;
+        return true;
+      }).map(d => d.state));
+
+      // Auto-reset values if they are no longer valid under new selections
+      if (zone && !validZones.has(zone)) {
+        document.getElementById('f-zone').value = '';
+        zone = '';
+      }
+      if (division && !validDivs.has(division)) {
+        document.getElementById('f-division').value = '';
+        division = '';
+      }
+      if (state && !validStates.has(state)) {
+        document.getElementById('f-state').value = '';
+        state = '';
+      }
+
+      // Filter the data
       filteredData = RAW_DATA.filter(d => {
         if (zone && d.zone !== zone) return false;
         if (state && d.state !== state) return false;
@@ -1960,10 +2003,47 @@
       refreshMapMarkers();
       renderCharts();
       renderTable();
+
+      // Update disabled states for dropdown options dynamically
+      syncDropdownOptions(zone, division, state);
+    }
+
+    function syncDropdownOptions(activeZone, activeDiv, activeState) {
+      const validZones = new Set(RAW_DATA.filter(d => {
+        if (activeState && d.state !== activeState) return false;
+        if (activeDiv && d.division.trim().toUpperCase() !== activeDiv) return false;
+        return true;
+      }).map(d => d.zone));
+
+      const validDivs = new Set(RAW_DATA.filter(d => {
+        if (activeZone && d.zone !== activeZone) return false;
+        if (activeState && d.state !== activeState) return false;
+        return true;
+      }).map(d => d.division.trim().toUpperCase()));
+
+      const validStates = new Set(RAW_DATA.filter(d => {
+        if (activeZone && d.zone !== activeZone) return false;
+        if (activeDiv && d.division.trim().toUpperCase() !== activeDiv) return false;
+        return true;
+      }).map(d => d.state));
+
+      // Enable/disable options based on validity
+      document.querySelectorAll('#f-zone option').forEach(opt => {
+        if (!opt.value) return;
+        opt.disabled = !validZones.has(opt.value);
+      });
+      document.querySelectorAll('#f-division option').forEach(opt => {
+        if (!opt.value) return;
+        opt.disabled = !validDivs.has(opt.value);
+      });
+      document.querySelectorAll('#f-state option').forEach(opt => {
+        if (!opt.value) return;
+        opt.disabled = !validStates.has(opt.value);
+      });
     }
 
     function resetFilters() {
-      ['f-zone', 'f-state', 'f-category', 'f-district', 'f-year', 'f-division'].forEach(id => {
+      ['f-zone', 'f-division', 'f-state', 'f-category', 'f-district', 'f-year'].forEach(id => {
         document.getElementById(id).value = '';
       });
       applyFilters();
