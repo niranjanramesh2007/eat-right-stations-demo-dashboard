@@ -294,7 +294,7 @@
 
     #kpi-row {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 16px;
       margin-bottom: 20px;
     }
@@ -1104,6 +1104,67 @@
       height: 35px;
       filter: drop-shadow(0 2px 5px rgba(15,23,42,0.3));
     }
+    .clickable-kpi { cursor: pointer; transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s; }
+    .clickable-kpi:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(15,23,42,0.12); }
+    .kpi-dropdown {
+      position: absolute;
+      top: 105%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 320px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(15,23,42,0.25);
+      z-index: 2000;
+      display: none;
+      flex-direction: column;
+      padding: 12px;
+      text-align: left;
+    }
+    .kpi-dropdown.open { display: flex; }
+    .kpi-dropdown-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      color: var(--text);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+    }
+    .kpi-dropdown-close {
+      background: transparent;
+      border: none;
+      color: var(--text3);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: background 0.15s;
+    }
+    .kpi-dropdown-close:hover { background: var(--bg2); color: var(--text); }
+    .kpi-dropdown-body {
+      max-height: 200px;
+      overflow-y: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding-right: 4px;
+    }
+    .kpi-div-chip {
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      border-radius: 12px;
+      padding: 3px 8px;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text2);
+    }
   </style>
 </head>
 
@@ -1187,6 +1248,22 @@
         <div class="kpi-val" id="k-cats">10</div>
         <div class="kpi-label">Categories</div>
         <div class="kpi-sub">NSG / SG / HG tiers</div>
+      </div>
+      <div class="kpi-card clickable-kpi" style="--kpi-color:#ec4899;position:relative;overflow:visible;" onclick="toggleDivisionsKpiList(event)">
+        <div class="kpi-icon">🏢</div>
+        <div class="kpi-val" id="k-divisions">0</div>
+        <div class="kpi-label" style="display:flex;align-items:center;justify-content:center;gap:4px">
+          Divisions
+          <span style="font-size:9px;opacity:0.8">&#9660;</span>
+        </div>
+        <div class="kpi-sub">Click to view list</div>
+        <div class="kpi-dropdown" id="kpi-divisions-dropdown" onclick="event.stopPropagation()">
+          <div class="kpi-dropdown-header">
+            <span>Active Divisions (<span id="kpi-div-count">0</span>)</span>
+            <button class="kpi-dropdown-close" onclick="toggleDivisionsKpiList(event)">✕</button>
+          </div>
+          <div class="kpi-dropdown-body" id="kpi-divisions-list"></div>
+        </div>
       </div>
     </div>
 
@@ -1907,11 +1984,23 @@
       const zones = new Set(filteredData.map(d => d.zone)).size;
       const states = new Set(filteredData.map(d => d.state)).size;
       const cats = new Set(filteredData.map(d => d.category)).size;
+      const uniqueDivs = [...new Set(filteredData.map(d => d.division.trim().toUpperCase()))].sort();
+      const divisionsCount = uniqueDivs.length;
 
       animateCount(document.getElementById('k-total'), filteredData.length);
       animateCount(document.getElementById('k-zones'), zones);
       animateCount(document.getElementById('k-states'), states);
       animateCount(document.getElementById('k-cats'), cats);
+      animateCount(document.getElementById('k-divisions'), divisionsCount);
+
+      // Populate divisions list in dropdown
+      document.getElementById('kpi-div-count').textContent = divisionsCount;
+      const listContainer = document.getElementById('kpi-divisions-list');
+      if (divisionsCount === 0) {
+        listContainer.innerHTML = '<div style="color:var(--text3);width:100%;text-align:center;padding:10px;">No divisions</div>';
+      } else {
+        listContainer.innerHTML = uniqueDivs.map(div => `<span class="kpi-div-chip">${div}</span>`).join('');
+      }
     }
 
     function initMap() {
@@ -2661,6 +2750,20 @@
       a.href = url; a.download = `eat_right_stations_${new Date().toISOString().slice(0, 10)}.csv`;
       a.click(); URL.revokeObjectURL(url);
     }
+
+    function toggleDivisionsKpiList(event) {
+      if (event) event.stopPropagation();
+      const dropdown = document.getElementById('kpi-divisions-dropdown');
+      dropdown.classList.toggle('open');
+    }
+
+    // Close KPI divisions list when clicking outside
+    document.addEventListener('click', () => {
+      const dropdown = document.getElementById('kpi-divisions-dropdown');
+      if (dropdown && dropdown.classList.contains('open')) {
+        dropdown.classList.remove('open');
+      }
+    });
 
     window.addEventListener('DOMContentLoaded', () => {
       populateFilters();
