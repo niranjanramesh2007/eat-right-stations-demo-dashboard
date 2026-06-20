@@ -593,22 +593,22 @@
     .zone-pill.active { opacity: 1; border-color: rgba(0,0,0,0.35); box-shadow: 0 2px 8px rgba(0,0,0,0.22); transform: translateY(-1px); }
     .zone-div-body {
       display: grid;
-      grid-template-columns: 300px 1fr;
-      gap: 24px;
+      grid-template-columns: 360px 1fr;
+      gap: 36px;
       align-items: start;
     }
-    .zone-div-donut-wrap { position: relative; height: 280px; max-width: 280px; margin: 0 auto; }
+    .zone-div-donut-wrap { position: relative; height: 340px; max-width: 340px; margin: 0 auto; }
     .zone-div-center-label {
       position: absolute; top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       text-align: center; pointer-events: none;
     }
-    .zone-div-center-label .zd-big { font-size: 30px; font-weight: 800; line-height: 1; color: var(--text); }
-    .zone-div-center-label .zd-sub { font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
+    .zone-div-center-label .zd-big { font-size: 36px; font-weight: 800; line-height: 1; color: var(--text); }
+    .zone-div-center-label .zd-sub { font-size: 11px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
     .zone-div-stats { overflow-x: auto; }
     .zd-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-    .zd-table th { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; padding: 7px 10px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
-    .zd-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: middle; }
+    .zd-table th { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; padding: 12px 16px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
+    .zd-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: middle; }
     .zd-table tr:last-child td { border-bottom: none; }
     .zd-table tbody tr:hover { background: rgba(0,210,200,0.04); }
     .zd-bar-wrap { width: 100%; background: var(--bg2); border-radius: 4px; height: 7px; overflow: hidden; }
@@ -702,7 +702,7 @@
     }
 
     th {
-      padding: 10px 14px;
+      padding: 14px 18px;
       text-align: left;
       font-size: 10px;
       font-weight: 700;
@@ -721,7 +721,7 @@
     }
 
     td {
-      padding: 10px 14px;
+      padding: 14px 18px;
       border-bottom: 1px solid var(--border);
       color: var(--text2);
       vertical-align: middle;
@@ -1174,6 +1174,116 @@
       font-weight: 600;
       color: var(--text2);
     }
+
+    /* Expiry alerts planner widget */
+    .expiry-planning-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 15px;
+    }
+    @media (max-width: 900px) {
+      .expiry-planning-container {
+        grid-template-columns: 1fr;
+      }
+    }
+    .expiry-box {
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      height: 380px;
+    }
+    .expiry-box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .expiry-title {
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .expiry-count-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 12px;
+      color: #fff;
+    }
+    .expiry-list {
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-right: 4px;
+    }
+    .expiry-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .expiry-item:hover {
+      transform: translateY(-1px);
+      border-color: var(--border2);
+    }
+    .expiry-item-info {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .expiry-item-name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .expiry-item-sub {
+      font-size: 10px;
+      color: var(--text3);
+    }
+    .expiry-item-days {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+    .expiry-item-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .expiry-locate-btn {
+      background: transparent;
+      border: 1px solid var(--border2);
+      color: var(--text2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 9px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.15s;
+    }
+    .expiry-locate-btn:hover {
+      background: rgba(0, 210, 200, 0.1);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
   </style>
 </head>
 
@@ -1314,22 +1424,7 @@
     </div>
 
     <div id="charts-row">
-      <div class="chart-card-full">
-        <div class="chart-header" style="margin-bottom:12px">
-          <div class="section-title">🏆 Top States by Station Count</div>
-        </div>
-        <div style="position:relative;height:260px">
-          <canvas id="chart-states"></canvas>
-        </div>
-      </div>
-      <div class="chart-card-full">
-        <div class="chart-header" style="margin-bottom:12px">
-          <div class="section-title">📅 Certification Timeline</div>
-        </div>
-        <div style="position:relative;height:260px">
-          <canvas id="chart-timeline"></canvas>
-        </div>
-      </div>
+      <!-- 1. Zone-wise Station Distribution -->
       <div class="chart-card-full">
         <div class="chart-header" style="margin-bottom:12px">
           <div class="section-title">🌐 Zone-wise Station Distribution</div>
@@ -1338,6 +1433,7 @@
           <canvas id="chart-zones"></canvas>
         </div>
       </div>
+      <!-- 2. Top Divisions by Station Count -->
       <div class="chart-card-full">
         <div class="chart-header" style="margin-bottom:12px">
           <div class="section-title">🚂 Top Divisions by Station Count</div>
@@ -1346,12 +1442,63 @@
           <canvas id="chart-divisions"></canvas>
         </div>
       </div>
+      <!-- 3. Category-wise Station Count -->
       <div class="chart-card-full">
         <div class="chart-header" style="margin-bottom:12px">
           <div class="section-title">📊 Category-wise Station Count</div>
         </div>
         <div style="position:relative;height:260px">
           <canvas id="chart-cat-bar"></canvas>
+        </div>
+      </div>
+      <!-- 4. Top States by Station Count -->
+      <div class="chart-card-full">
+        <div class="chart-header" style="margin-bottom:12px">
+          <div class="section-title">🏆 Top States by Station Count</div>
+        </div>
+        <div style="position:relative;height:260px">
+          <canvas id="chart-states"></canvas>
+        </div>
+      </div>
+      <!-- 5. Certification Timeline -->
+      <div class="chart-card-full">
+        <div class="chart-header" style="margin-bottom:12px">
+          <div class="section-title">📅 Certification Timeline</div>
+        </div>
+        <div style="position:relative;height:260px">
+          <canvas id="chart-timeline"></canvas>
+        </div>
+      </div>
+    <!-- Certification Expiry & Renewal Planning -->
+    <div id="expiry-planning-section" class="chart-card-full" style="margin-bottom: 20px;">
+      <div class="chart-header" style="margin-bottom:12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div class="section-title">📅 Certification Expiry & Renewal Planning</div>
+        <div style="font-size: 11px; color: var(--text3); font-weight: 500;">
+          Helps authorities plan renewal audits ahead of expiration.
+        </div>
+      </div>
+      
+      <div class="expiry-planning-container">
+        <!-- 6 Months Box -->
+        <div class="expiry-box">
+          <div class="expiry-box-header">
+            <span class="expiry-title">⚠️ Expiring within 6 Months</span>
+            <span class="expiry-count-badge" id="expiry-6m-count" style="background: var(--accent2);">0</span>
+          </div>
+          <div class="expiry-list" id="expiry-6m-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+        
+        <!-- 1 Year Box -->
+        <div class="expiry-box">
+          <div class="expiry-box-header">
+            <span class="expiry-title">📅 Expiring within 1 Year</span>
+            <span class="expiry-count-badge" id="expiry-1y-count" style="background: var(--accent3);">0</span>
+          </div>
+          <div class="expiry-list" id="expiry-1y-list">
+            <!-- Dynamically populated -->
+          </div>
         </div>
       </div>
     </div>
@@ -1395,6 +1542,11 @@
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
           <input type="text" class="table-search" id="table-search" placeholder="🔍 Search stations..."
             oninput="renderTable()">
+          <select class="filter-select" id="table-expiry-filter" onchange="renderTable()" style="min-width:180px; padding: 7px 12px; height: 34px; margin: 0;">
+            <option value="">All Certifications</option>
+            <option value="6m">⚠️ Expiring within 6 Months</option>
+            <option value="1y">📅 Expiring within 1 Year</option>
+          </select>
           <span id="table-info" style="font-size:11px;color:var(--text3)">Showing 1–20 of 296</span>
         </div>
       </div>
@@ -1530,8 +1682,8 @@
       {"sno": 76, "name": "GANDHIDHAM", "code": "GIM", "category": "NSG-3", "division": "AHMEDABAD", "zone": "WR", "district": "BHUJ(KUTCHH)", "state": "Gujarat", "awarded_date": "2025-01-31", "expiry_date": "2027-01-31"},
       {"sno": 77, "name": "MORADABAD", "code": "MB", "category": "NSG-3", "division": "Moradabad", "zone": "NR", "district": "Moradabad", "state": "Uttar Pradesh", "awarded_date": "2025-02-20", "expiry_date": "2027-02-20"},
       {"sno": 78, "name": "TUNDLA", "code": "TDL", "category": "NSG-3", "division": "Prayagraj", "zone": "NCR", "district": "Firozabad", "state": "Uttar Pradesh", "awarded_date": "2025-04-23", "expiry_date": "2027-04-23"},
-      {"sno": 79, "name": "SEWAGRAM", "code": "SEGM", "category": "NSG-4", "division": "Nagpur", "zone": "WR", "district": "Wardha", "state": "Maharashtra", "awarded_date": "2025-02-20", "expiry_date": "2027-02-20"},
-      {"sno": 80, "name": "WARDHA", "code": "WR", "category": "NSG-3", "division": "Nagpur", "zone": "WR", "district": "Wardha", "state": "Maharashtra", "awarded_date": "2025-02-20", "expiry_date": "2027-02-20"},
+      {"sno": 79, "name": "SEWAGRAM", "code": "SEGM", "category": "NSG-4", "division": "Nagpur", "zone": "CR", "district": "Wardha", "state": "Maharashtra", "awarded_date": "2025-02-20", "expiry_date": "2027-02-20"},
+      {"sno": 80, "name": "WARDHA", "code": "WR", "category": "NSG-3", "division": "Nagpur", "zone": "CR", "district": "Wardha", "state": "Maharashtra", "awarded_date": "2025-02-20", "expiry_date": "2027-02-20"},
       {"sno": 81, "name": "BALLARSHAH", "code": "BPQ", "category": "NSG-3", "division": "Nagpur", "zone": "CR", "district": "Chandrapur", "state": "Maharashtra", "awarded_date": "2025-02-20", "expiry_date": "2027-02-20"},
       {"sno": 82, "name": "CHANDRAPUR", "code": "CD", "category": "NSG-4", "division": "Nagpur", "zone": "CR", "district": "Chandrapur", "state": "Maharashtra", "awarded_date": "2025-02-20", "expiry_date": "2027-02-20"},
       {"sno": 83, "name": "KHURAI", "code": "KYE", "category": "NSG-5", "division": "Jabalpur", "zone": "WCR", "district": "Sagar", "state": "Madhya Pradesh", "awarded_date": "2025-02-20", "expiry_date": "2027-02-20"},
@@ -2005,6 +2157,7 @@
       refreshMapMarkers();
       renderCharts();
       renderTable();
+      updateExpiryPlanning();
 
       // Update disabled states for dropdown options dynamically
       syncDropdownOptions(zone, division, state);
@@ -2751,13 +2904,34 @@
       renderTable();
     }
 
-    function renderTable() {
+    function getTableFilteredData() {
       const q = document.getElementById('table-search').value.toLowerCase();
+      const expiryFilter = document.getElementById('table-expiry-filter').value;
+      
       let data = filteredData.filter(d =>
         !q || d.name.toLowerCase().includes(q) || d.code.toLowerCase().includes(q) ||
         d.state.toLowerCase().includes(q) || d.district.toLowerCase().includes(q) ||
         d.zone.toLowerCase().includes(q) || d.category.toLowerCase().includes(q)
       );
+
+      if (expiryFilter) {
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        const limitDays = expiryFilter === '6m' ? 180 : 365;
+        
+        data = data.filter(d => {
+          const exp = new Date(d.expiry_date);
+          exp.setHours(0,0,0,0);
+          const diff = exp - today;
+          const diffDays = Math.ceil(diff / (1000 * 60 * 60 * 24));
+          return diffDays >= 0 && diffDays <= limitDays;
+        });
+      }
+      return data;
+    }
+
+    function renderTable() {
+      const data = getTableFilteredData();
 
       const { col, dir } = tableSort;
       data.sort((a, b) => {
@@ -2767,30 +2941,34 @@
       });
 
       const total = data.length;
-      const pages = Math.ceil(total / PAGE_SIZE);
+      const pages = Math.ceil(total / PAGE_SIZE) || 1;
       const start = (tablePage - 1) * PAGE_SIZE;
       const page = data.slice(start, start + PAGE_SIZE);
 
       document.getElementById('table-info').textContent =
-        `Showing ${start + 1}–${Math.min(start + PAGE_SIZE, total)} of ${total}`;
+        total === 0 ? 'Showing 0–0 of 0' : `Showing ${start + 1}–${Math.min(start + PAGE_SIZE, total)} of ${total}`;
 
       const tbody = document.getElementById('table-body');
-      tbody.innerHTML = page.map(d => {
-        const cc = CAT_COLORS[d.category] || '#aaa';
-        const zc = ZONE_COLORS[d.zone] || '#aaa';
-        return `<tr>
-      <td style="color:var(--text3)">${d.sno}</td>
-      <td style="color:var(--text);font-weight:500">${d.name}</td>
-      <td><code style="background:var(--bg2);padding:2px 6px;border-radius:4px;font-size:11px;color:var(--accent)">${d.code}</code></td>
-      <td><span class="cat-badge" style="background:${cc};border:none">${d.category}</span></td>
-      <td><span class="zone-badge" style="background:${zc};color:#fff;border:none;box-shadow:0 1px 3px rgba(0,0,0,0.18)">${d.zone}</span></td>
-      <td style="color:var(--text3);font-size:11px">${d.division}</td>
-      <td style="color:var(--text2);font-size:11px">${d.district.length > 25 ? d.district.slice(0, 25) + '…' : d.district}</td>
-      <td style="color:var(--text2)">${d.state}</td>
-      <td style="color:var(--text3);font-size:11px">${d.awarded_date}</td>
-      <td style="color:var(--orange);font-weight:600;font-size:11px">${d.expiry_date}</td>
-    </tr>`;
-      }).join('');
+      if (total === 0) {
+        tbody.innerHTML = `<tr><td colspan="10" style="color:var(--text3);text-align:center;padding:24px">No stations found matching filters</td></tr>`;
+      } else {
+        tbody.innerHTML = page.map(d => {
+          const cc = CAT_COLORS[d.category] || '#aaa';
+          const zc = ZONE_COLORS[d.zone] || '#aaa';
+          return `<tr>
+        <td style="color:var(--text3)">${d.sno}</td>
+        <td style="color:var(--text);font-weight:500">${d.name}</td>
+        <td><code style="background:var(--bg2);padding:2px 6px;border-radius:4px;font-size:11px;color:var(--accent)">${d.code}</code></td>
+        <td><span class="cat-badge" style="background:${cc};border:none">${d.category}</span></td>
+        <td><span class="zone-badge" style="background:${zc};color:#fff;border:none;box-shadow:0 1px 3px rgba(0,0,0,0.18)">${d.zone}</span></td>
+        <td style="color:var(--text3);font-size:11px">${d.division}</td>
+        <td style="color:var(--text2);font-size:11px">${d.district.length > 25 ? d.district.slice(0, 25) + '…' : d.district}</td>
+        <td style="color:var(--text2)">${d.state}</td>
+        <td style="color:var(--text3);font-size:11px">${d.awarded_date}</td>
+        <td style="color:var(--orange);font-weight:600;font-size:11px">${d.expiry_date}</td>
+      </tr>`;
+        }).join('');
+      }
 
       const pageBtns = document.getElementById('page-btns');
       document.getElementById('table-info2').textContent = `Page ${tablePage} of ${pages}`;
@@ -2808,15 +2986,93 @@
     }
 
     function gotoPage(p) {
-      const q = document.getElementById('table-search').value.toLowerCase();
-      let data = filteredData.filter(d =>
-        !q || d.name.toLowerCase().includes(q) || d.code.toLowerCase().includes(q) ||
-        d.state.toLowerCase().includes(q) || d.district.toLowerCase().includes(q) ||
-        d.zone.toLowerCase().includes(q) || d.category.toLowerCase().includes(q)
-      );
-      const pages = Math.ceil(data.length / PAGE_SIZE);
+      const data = getTableFilteredData();
+      const pages = Math.ceil(data.length / PAGE_SIZE) || 1;
       tablePage = Math.max(1, Math.min(p, pages));
       renderTable();
+    }
+
+    function updateExpiryPlanning() {
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      
+      const list6m = [];
+      const list1y = [];
+      
+      filteredData.forEach(d => {
+        const exp = new Date(d.expiry_date);
+        exp.setHours(0,0,0,0);
+        const diff = exp - today;
+        const diffDays = Math.ceil(diff / (1000 * 60 * 60 * 24));
+        
+        const stationInfo = {
+          ...d,
+          daysLeft: diffDays
+        };
+        
+        if (diffDays >= 0 && diffDays <= 180) {
+          list6m.push(stationInfo);
+        }
+        if (diffDays >= 0 && diffDays <= 365) {
+          list1y.push(stationInfo);
+        }
+      });
+      
+      // Sort lists by days remaining (so most urgent is on top)
+      list6m.sort((a, b) => a.daysLeft - b.daysLeft);
+      list1y.sort((a, b) => a.daysLeft - b.daysLeft);
+      
+      // Update count badges
+      document.getElementById('expiry-6m-count').textContent = list6m.length;
+      document.getElementById('expiry-1y-count').textContent = list1y.length;
+      
+      // Helper function to build list html
+      function buildListHtml(list, color, urgentClass) {
+        if (list.length === 0) {
+          return `<div style="color:var(--text3); font-size: 11px; text-align: center; padding: 40px 10px;">🟢 No stations expiring in this period.</div>`;
+        }
+        return list.map(s => {
+          const badgeStyle = urgentClass === 'danger' 
+            ? 'background: rgba(239, 68, 68, 0.1); color: var(--red); border: 1px solid rgba(239, 68, 68, 0.2);'
+            : 'background: rgba(217, 119, 6, 0.1); color: var(--accent3); border: 1px solid rgba(217, 119, 6, 0.2);';
+            
+          return `
+            <div class="expiry-item">
+              <div class="expiry-item-info">
+                <span class="expiry-item-name">${s.name}</span>
+                <span class="expiry-item-sub">${s.code} • ${s.division} (${s.zone}) • ${s.state}</span>
+              </div>
+              <div class="expiry-item-days">
+                <span class="expiry-item-badge" style="${badgeStyle}">${s.daysLeft} days left</span>
+                <button class="expiry-locate-btn" onclick="locateStationOnMap('${s.code}')">🔍 Locate</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+      
+      document.getElementById('expiry-6m-list').innerHTML = buildListHtml(list6m, 'var(--accent2)', 'danger');
+      document.getElementById('expiry-1y-list').innerHTML = buildListHtml(list1y, 'var(--accent3)', 'warning');
+    }
+
+    function locateStationOnMap(code) {
+      const s = RAW_DATA.find(d => d.code === code);
+      if (!s) return;
+      
+      document.getElementById('map-section').scrollIntoView({ behavior: 'smooth' });
+      
+      const [lat, lng] = getCoords(s);
+      map.setView([lat, lng], 13, { animate: true });
+      
+      markerLayer.eachLayer(marker => {
+        const popup = marker.getPopup();
+        if (popup) {
+          const content = popup.getContent();
+          if (content && content.includes(`Code</span><span class="popup-val">${code}</span>`)) {
+            marker.openPopup();
+          }
+        }
+      });
     }
 
     function exportCSV() {
@@ -2854,6 +3110,7 @@
       buildZonePills();
       renderCharts();
       renderTable();
+      updateExpiryPlanning();
     });
   </script>
 </body>
