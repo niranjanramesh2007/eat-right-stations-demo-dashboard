@@ -612,6 +612,30 @@
     .zd-bar-wrap { width: 100%; background: var(--bg2); border-radius: 4px; height: 7px; overflow: hidden; }
     .zd-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
     .zd-rank { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; font-size: 10px; font-weight: 700; background: var(--bg2); color: var(--text3); }
+    .zd-div-row { cursor: pointer; transition: background 0.15s; }
+    .zd-div-row:hover { background: rgba(0,0,0,0.03) !important; }
+    .zd-chevron { display: inline-block; transition: transform 0.25s ease; font-style: normal; font-size: 10px; color: var(--text3); margin-left: 6px; }
+    .zd-chevron.open { transform: rotate(90deg); }
+    .zd-expand-row td { padding: 0 !important; border-bottom: none; }
+    .zd-expand-inner {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.2s ease;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .zd-expand-inner.open { max-height: 600px; }
+    .zd-station-list { display: flex; flex-wrap: wrap; gap: 7px; padding: 10px 14px 12px; }
+    .zd-station-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--card); border: 1px solid var(--border2);
+      border-radius: 20px; padding: 4px 10px;
+      font-size: 11px; font-weight: 500; color: var(--text2);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .zd-station-chip:hover { border-color: var(--accent); box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+    .zd-chip-code { font-size: 10px; font-weight: 700; color: var(--accent); background: rgba(13,166,158,0.1); padding: 1px 5px; border-radius: 4px; }
+    .zd-chip-cat { font-size: 9px; font-weight: 700; color: #fff; padding: 1px 6px; border-radius: 10px; }
 
     .chart-card-wide {
       background: var(--card);
@@ -2419,13 +2443,35 @@
         tbody.innerHTML = `<tr><td colspan="5" style="color:var(--text3);text-align:center;padding:20px">No stations in ${zone} under current filters</td></tr>`;
         return;
       }
+
+      // Build a lookup: division -> list of stations
+      const divStations = {};
+      zoneData.forEach(d => {
+        const key = d.division.trim().toUpperCase();
+        if (!divStations[key]) divStations[key] = [];
+        divStations[key].push(d);
+      });
+
       tbody.innerHTML = sorted.map(([div, count], i) => {
         const pz = ((count / total) * 100).toFixed(1);
         const pa = ((count / totalAll) * 100).toFixed(1);
         const bc = palette[i];
-        return `<tr>
+        const divId = `zd-expand-${zone}-${i}`;
+        const stations = (divStations[div] || []).sort((a, b) => a.name.localeCompare(b.name));
+        const chipsHtml = stations.map(s => {
+          const cc = CAT_COLORS[s.category] || '#aaa';
+          return `<span class="zd-station-chip">
+            <span class="zd-chip-code">${s.code}</span>
+            ${s.name}
+            <span class="zd-chip-cat" style="background:${cc}">${s.category}</span>
+          </span>`;
+        }).join('');
+        return `<tr class="zd-div-row" onclick="toggleDivExpand('${divId}', this)">
           <td><span class="zd-rank">${i+1}</span></td>
-          <td style="font-weight:600;color:var(--text)">${div}</td>
+          <td style="font-weight:600;color:var(--text)">
+            ${div}
+            <i class="zd-chevron" id="chv-${divId}">&#9658;</i>
+          </td>
           <td style="font-weight:700;color:${bc}">${count}</td>
           <td>
             <div style="display:flex;align-items:center;gap:8px">
@@ -2434,8 +2480,28 @@
             </div>
           </td>
           <td style="color:var(--text3);font-size:11px">${pa}%</td>
+        </tr>
+        <tr class="zd-expand-row">
+          <td colspan="5">
+            <div class="zd-expand-inner" id="${divId}">
+              <div class="zd-station-list">${chipsHtml}</div>
+            </div>
+          </td>
         </tr>`;
       }).join('');
+    }
+
+    function toggleDivExpand(id, row) {
+      const panel = document.getElementById(id);
+      const chevron = document.getElementById('chv-' + id);
+      const isOpen = panel.classList.contains('open');
+      // Close all others first
+      document.querySelectorAll('.zd-expand-inner.open').forEach(el => el.classList.remove('open'));
+      document.querySelectorAll('.zd-chevron.open').forEach(el => el.classList.remove('open'));
+      if (!isOpen) {
+        panel.classList.add('open');
+        chevron.classList.add('open');
+      }
     }
 
     function sortTable(col) {
