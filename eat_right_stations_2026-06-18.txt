@@ -84,7 +84,7 @@ S.No,Station Name,Code,Category,Division,Zone,District,State,Awarded Date
 83,"KHURAI",KYE,NSG-5,"Jabalpur",WCR,"Sagar","Madhya Pradesh",2025-02-20
 84,"MAKRONIA",MKRN,NSG-5,"Jabalpur",WCR,"Sagar","Madhya Pradesh",2025-04-23
 85,"PRAYAGRAJ RAMBAGH",PRRB,NSG-4,"Prayagraj",NCR,"Prayagraj","Uttar Pradesh",2025-02-20
-86,"HARDOI",HRI,NSG-3,"HARDOI",NR,"Hardoi","Uttar Pradesh",2025-02-20
+86,"HARDOI",HRI,NSG-3,"FEROZPUR",NR,"Hardoi","Uttar Pradesh",2025-02-20
 87,"GONDIA",GY,NSG-3,"Nagpur",SECR,"Gondiya","Maharashtra",2025-03-12
 88,"WANKANER",WKR,NSG-5,"RAJKOT",WR,"Rajkot","Gujarat",2025-03-12
 89,"BOTAD",BTD,NSG-4,"BHAVNAGAR",WR,"Botad","Gujarat",2025-03-12
