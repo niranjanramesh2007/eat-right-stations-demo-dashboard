@@ -1,4 +1,4 @@
-[
+﻿[
   {
     "sno": 1,
     "name": "THALASSERY",
@@ -16,7 +16,7 @@
     "name": "UDHAMPUR",
     "code": "UHP",
     "category": "NSG-4",
-    "division": "FEROZPUR",
+    "division": "Firozpur",
     "zone": "NR",
     "district": "Udhampur",
     "state": "Jammu & Kashmir",
@@ -28,7 +28,7 @@
     "name": "JAMMU TAWI",
     "code": "JAT",
     "category": "NSG-2",
-    "division": "FEROZPUR",
+    "division": "Firozpur",
     "zone": "NR",
     "district": "Jammu",
     "state": "Jammu & Kashmir",
@@ -1024,7 +1024,7 @@
     "name": "HARDOI",
     "code": "HRI",
     "category": "NSG-3",
-    "division": "FEROZPUR",
+    "division": "Firozpur",
     "zone": "NR",
     "district": "Hardoi",
     "state": "Uttar Pradesh",
