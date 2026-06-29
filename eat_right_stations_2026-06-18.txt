@@ -176,7 +176,7 @@ S.No,Station Name,Code,Category,Division,Zone,District,State,Awarded Date
 177,"PANDHARPUR",PVR,NSG-4,"Solapur",CR,"Solapur","Maharashtra",2025-11-28
 178,"LATUR",LUR,NSG-4,"Solapur",CR,"Solapur","Maharashtra",2025-10-24
 179,"DHARASHIV",DRSV,NSG-5,"Solapur",CR,"Dharashiv","Maharashtra",2025-11-28
-180,"WADI",WADI,NSG-4,"Solapur Division",CR,"Kalaburagi","Karnataka",2025-10-24
+180,"WADI",WADI,NSG-4,"Solapur",CR,"Kalaburagi","Karnataka",2025-10-24
 181,"SOLAPUR",SUR,NSG-2,"Solapur",CR,"Solapur","Maharashtra",2025-10-24
 182,"NAGERCOIL",NCJ,NSG-3,"THIRUVANANTHAPURAM",SR,"Kanyakumari","Tamil Nadu",2025-12-04
 183,"TIRUVALLA",TRVL,NSG-3,"THIRUVANANTHAPURAM",SR,"Pathanamthitta","Kerala",2025-11-28
